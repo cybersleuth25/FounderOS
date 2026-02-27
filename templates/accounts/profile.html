@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<div class="mb-8">
+  <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+    <i class="fa-solid fa-user-circle text-zinc-400"></i> Founder Profile
+  </h1>
+  <p class="text-zinc-400 text-sm mt-1">Keep your profile up to date to get better AI recommendations.</p>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6">
+  <!-- Avatar Card -->
+  <div class="lg:col-span-1">
+    <div class="card text-center">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-sky-500 to-blue-700 flex items-center justify-center text-3xl font-bold text-white mx-auto mb-4">
+        {{ user.username|first|upper }}
+      </div>
+      <div class="text-white font-semibold text-lg">{{ user.username }}</div>
+      <div class="text-zinc-400 text-sm">{{ user.email }}</div>
+      {% if profile.startup_name %}
+        <div class="mt-2 text-sky-400 text-sm font-medium">{{ profile.startup_name }}</div>
+      {% endif %}
+      {% if profile.location %}
+        <div class="text-zinc-500 text-xs mt-1"><i class="fa-solid fa-location-dot mr-1"></i>{{ profile.location }}</div>
+      {% endif %}
+      <div class="mt-4 pt-4 border-t border-zinc-700 text-xs text-zinc-500">
+        Member since {{ user.date_joined|date:"M Y" }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Form -->
+  <div class="lg:col-span-2">
+    <div class="card">
+      <h2 class="font-semibold text-white mb-5">Edit Profile</h2>
+      <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="form-label">Startup Name</label>
+            <input type="text" name="startup_name" value="{{ profile.startup_name }}" class="form-input" placeholder="My Startup" />
+          </div>
+          <div>
+            <label class="form-label">Location</label>
+            <input type="text" name="location" value="{{ profile.location }}" class="form-input" placeholder="Pune, Maharashtra" />
+          </div>
+          <div>
+            <label class="form-label">Stage</label>
+            <select name="stage" class="form-input">
+              <option value="idea" {% if profile.stage == 'idea' %}selected{% endif %}>Idea Stage</option>
+              <option value="mvp" {% if profile.stage == 'mvp' %}selected{% endif %}>MVP Stage</option>
+              <option value="early" {% if profile.stage == 'early' %}selected{% endif %}>Early Traction</option>
+              <option value="growth" {% if profile.stage == 'growth' %}selected{% endif %}>Growth Stage</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Industry</label>
+            <select name="industry" class="form-input">
+              <option value="tech" {% if profile.industry == 'tech' %}selected{% endif %}>Technology</option>
+              <option value="agri" {% if profile.industry == 'agri' %}selected{% endif %}>Agriculture</option>
+              <option value="health" {% if profile.industry == 'health' %}selected{% endif %}>Healthcare</option>
+              <option value="edu" {% if profile.industry == 'edu' %}selected{% endif %}>Education</option>
+              <option value="finance" {% if profile.industry == 'finance' %}selected{% endif %}>FinTech</option>
+              <option value="retail" {% if profile.industry == 'retail' %}selected{% endif %}>Retail/E-commerce</option>
+              <option value="logistics" {% if profile.industry == 'logistics' %}selected{% endif %}>Logistics</option>
+              <option value="other" {% if profile.industry == 'other' %}selected{% endif %}>Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Phone</label>
+            <input type="text" name="phone" value="{{ profile.phone }}" class="form-input" placeholder="+91 98765 43210" />
+          </div>
+          <div>
+            <label class="form-label">LinkedIn</label>
+            <input type="url" name="linkedin" value="{{ profile.linkedin }}" class="form-input" placeholder="https://linkedin.com/in/..." />
+          </div>
+          <div class="md:col-span-2">
+            <label class="form-label">Bio</label>
+            <textarea name="bio" rows="3" class="form-input resize-none" placeholder="Tell us about yourself and your startup journey...">{{ profile.bio }}</textarea>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-5">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-save"></i> Save Changes
+          </button>
+          <a href="{% url 'dashboard' %}" class="btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

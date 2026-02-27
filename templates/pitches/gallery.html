@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block title %}Pitch Gallery — Community Feed{% endblock %}
+{% block content %}
+
+<!-- Header -->
+<div class="flex items-start justify-between mb-6 flex-wrap gap-4">
+  <div>
+    <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+      <i class="fa-solid fa-film text-purple-400"></i> Pitch Gallery
+    </h1>
+    <p class="text-zinc-400 text-sm mt-1">Explore pitches from all founders — get inspired and get discovered.</p>
+  </div>
+  <a href="{% url 'pitch_lab' %}" class="btn-primary">
+    <i class="fa-solid fa-plus"></i> Submit My Pitch
+  </a>
+</div>
+
+<!-- Search + Filters -->
+<form method="get" class="flex items-center gap-3 mb-8 flex-wrap">
+  <div class="relative flex-1 min-w-48">
+    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+    <input type="text" name="q" value="{{ search }}" placeholder="Search pitches..."
+      class="form-input pl-10 w-full" />
+  </div>
+  <div class="flex items-center gap-2">
+    <a href="?{% if search %}q={{ search }}&{% endif %}type="
+      class="px-4 py-2.5 rounded-lg text-sm font-medium border transition-colors {% if not filter_type %}bg-zinc-700 border-zinc-600 text-white{% else %}border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800{% endif %}">
+      All ({{ total_count }})
+    </a>
+    <a href="?{% if search %}q={{ search }}&{% endif %}type=video"
+      class="px-4 py-2.5 rounded-lg text-sm font-medium border transition-colors flex items-center gap-1.5 {% if filter_type == 'video' %}bg-zinc-700 border-zinc-600 text-white{% else %}border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800{% endif %}">
+      <i class="fa-solid fa-video text-purple-400 text-xs"></i> Videos
+    </a>
+    <a href="?{% if search %}q={{ search }}&{% endif %}type=text"
+      class="px-4 py-2.5 rounded-lg text-sm font-medium border transition-colors flex items-center gap-1.5 {% if filter_type == 'text' %}bg-zinc-700 border-zinc-600 text-white{% else %}border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800{% endif %}">
+      <i class="fa-solid fa-align-left text-sky-400 text-xs"></i> Text Pitches
+    </a>
+  </div>
+  <button type="submit" class="btn-secondary">
+    <i class="fa-solid fa-filter text-xs"></i> Filter
+  </button>
+</form>
+
+<!-- Pitch Feed Grid -->
+{% if pitches %}
+<div class="columns-1 md:columns-2 xl:columns-3 gap-5 space-y-5">
+  {% for pitch in pitches %}
+  <div class="break-inside-avoid bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-600 transition-colors group">
+
+    <!-- Video if present -->
+    {% if pitch.video %}
+    <div class="relative bg-black aspect-video">
+      <video class="w-full h-full object-cover"
+        poster=""
+        preload="metadata"
+        controls
+        controlsList="nodownload">
+        <source src="{{ pitch.video.url }}" type="video/mp4">
+      </video>
+      <div class="absolute top-2 right-2">
+        <span class="bg-black/60 backdrop-blur-sm text-purple-400 text-xs font-medium px-2 py-0.5 rounded-full border border-purple-500/30">
+          <i class="fa-solid fa-video text-xs mr-1"></i>Video Pitch
+        </span>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Content -->
+    <div class="p-4">
+      <!-- Author row -->
+      <div class="flex items-center gap-2.5 mb-3">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+          {{ pitch.user.username|first|upper }}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-white text-sm font-medium leading-tight">
+            {% if pitch.user.founder_profile.startup_name %}
+              {{ pitch.user.founder_profile.startup_name }}
+            {% else %}
+              {{ pitch.user.username }}
+            {% endif %}
+          </div>
+          <div class="text-zinc-500 text-xs">
+            @{{ pitch.user.username }}
+            {% if pitch.user.founder_profile.industry %}
+              · {{ pitch.user.founder_profile.get_industry_display }}
+            {% endif %}
+          </div>
+        </div>
+        {% if pitch.overall_score %}
+        <div class="text-right flex-shrink-0">
+          <div class="text-sm font-bold {% if pitch.overall_score >= 75 %}text-emerald-400{% elif pitch.overall_score >= 50 %}text-amber-400{% else %}text-red-400{% endif %}">
+            {{ pitch.overall_score }}<span class="text-zinc-600 text-xs">/100</span>
+          </div>
+          <div class="text-zinc-600 text-xs">AI score</div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Title -->
+      <h3 class="text-white font-semibold mb-2 group-hover:text-sky-400 transition-colors">
+        {{ pitch.title }}
+      </h3>
+
+      <!-- Description -->
+      {% if pitch.description %}
+      <p class="text-zinc-400 text-sm leading-relaxed line-clamp-4 mb-3">
+        {{ pitch.description }}
+      </p>
+      {% endif %}
+
+      <!-- Score bars (if analyzed) -->
+      {% if pitch.clarity_score and pitch.engagement_score %}
+      <div class="grid grid-cols-2 gap-2 mb-3">
+        <div>
+          <div class="flex justify-between text-xs text-zinc-500 mb-1">
+            <span>Clarity</span><span class="text-zinc-300">{{ pitch.clarity_score }}</span>
+          </div>
+          <div class="h-1 bg-zinc-800 rounded-full overflow-hidden">
+            <div class="h-full bg-sky-500 rounded-full" style="width:{{ pitch.clarity_score }}%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs text-zinc-500 mb-1">
+            <span>Engagement</span><span class="text-zinc-300">{{ pitch.engagement_score }}</span>
+          </div>
+          <div class="h-1 bg-zinc-800 rounded-full overflow-hidden">
+            <div class="h-full bg-purple-500 rounded-full" style="width:{{ pitch.engagement_score }}%"></div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Footer -->
+      <div class="flex items-center justify-between pt-3 border-t border-zinc-800">
+        <div class="flex items-center gap-2">
+          {% if pitch.file %}
+            <span class="text-zinc-500 text-xs flex items-center gap-1">
+              <i class="fa-solid fa-file-lines text-sky-400"></i> Document
+            </span>
+          {% endif %}
+          {% if pitch.video %}
+            <span class="text-zinc-500 text-xs flex items-center gap-1">
+              <i class="fa-solid fa-film text-purple-400"></i> Video
+            </span>
+          {% endif %}
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-zinc-600 text-xs">{{ pitch.created_at|date:"M d, Y" }}</span>
+          {% if pitch.user == request.user %}
+            <a href="{% url 'pitch_detail' pitch.pk %}" class="text-sky-400 hover:text-sky-300 text-xs font-medium">
+              View Report <i class="fa-solid fa-arrow-right text-xs"></i>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<!-- Empty state -->
+<div class="text-center py-24">
+  <div class="w-20 h-20 bg-zinc-900 rounded-2xl flex items-center justify-center mx-auto mb-5">
+    <i class="fa-solid fa-film text-zinc-700 text-4xl"></i>
+  </div>
+  <h3 class="text-zinc-400 font-semibold text-lg mb-2">
+    {% if search %}No pitches found for "{{ search }}"{% else %}No pitches yet{% endif %}
+  </h3>
+  <p class="text-zinc-600 text-sm mb-6">Be the first to share your startup pitch with the community.</p>
+  <a href="{% url 'pitch_lab' %}" class="btn-primary">
+    <i class="fa-solid fa-plus"></i> Create First Pitch
+  </a>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Government Schemes{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+      <i class="fa-solid fa-landmark text-emerald-400"></i> Government Schemes
+    </h1>
+    <p class="text-zinc-400 text-sm mt-1">Discover schemes you're eligible for based on your startup profile.</p>
+  </div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6">
+  <!-- Matcher Form -->
+  <div class="lg:col-span-1">
+    <div class="card">
+      <h2 class="font-semibold text-white mb-4">Find Matching Schemes</h2>
+      <form method="post" action="{% url 'schemes_match' %}">
+        {% csrf_token %}
+        <div class="space-y-4">
+          <div>
+            <label class="form-label">Industry</label>
+            <select name="industry" class="form-input">
+              <option value="Technology">Technology</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+              <option value="FinTech">FinTech</option>
+              <option value="Retail/E-commerce">Retail/E-commerce</option>
+              <option value="Logistics">Logistics</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Startup Stage</label>
+            <select name="stage" class="form-input">
+              <option value="Idea Stage">Idea Stage</option>
+              <option value="MVP Stage">MVP Stage</option>
+              <option value="Early Traction">Early Traction</option>
+              <option value="Growth Stage">Growth Stage</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Location</label>
+            <input type="text" name="location" class="form-input" placeholder="City, State"
+              value="{{ profile.location }}" />
+          </div>
+          <div>
+            <label class="form-label">Brief Description</label>
+            <textarea name="description" rows="4" class="form-input resize-none"
+              placeholder="Describe your startup briefly..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary w-full mt-5 justify-center">
+          <i class="fa-solid fa-magnifying-glass"></i> Match Schemes
+        </button>
+      </form>
+
+      <!-- Known Schemes Info -->
+      <div class="mt-6 pt-5 border-t border-zinc-700">
+        <h3 class="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-3">Available Schemes</h3>
+        <div class="space-y-1.5 text-xs text-zinc-500">
+          <div>• Startup India Seed Fund — ₹20 Lakhs</div>
+          <div>• Mudra Yojana (Shishu/Kishore)</div>
+          <div>• GENESIS Scheme — ₹5 Crores</div>
+          <div>• Atal Innovation Mission</div>
+          <div>• Stand Up India — ₹1 Crore</div>
+          <div>• SIDBI Startup Mitra</div>
+          <div>• PM Vishwakarma Scheme</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="lg:col-span-2">
+    {% if matches %}
+      <h2 class="font-semibold text-zinc-300 mb-4">Your Scheme Matches ({{ matches|length }})</h2>
+      <div class="space-y-4">
+        {% for match in matches %}
+        <div class="card hover:border-emerald-500/20 transition-colors">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="text-white font-semibold">{{ match.scheme_name }}</h3>
+              <div class="mt-1">
+                {% if match.status == 'eligible' %}
+                  <span class="badge-green"><i class="fa-solid fa-circle-check text-xs"></i> Eligible</span>
+                {% elif match.status == 'partially' %}
+                  <span class="badge-yellow"><i class="fa-solid fa-circle-half-stroke text-xs"></i> Partially Eligible</span>
+                {% else %}
+                  <span class="badge-red"><i class="fa-solid fa-circle-xmark text-xs"></i> Not Eligible</span>
+                {% endif %}
+              </div>
+            </div>
+            <div class="text-right flex-shrink-0 ml-4">
+              <div class="text-2xl font-bold text-emerald-400">{{ match.eligibility_score }}%</div>
+              <div class="text-zinc-500 text-xs">eligibility</div>
+            </div>
+          </div>
+          <!-- Progress Bar -->
+          <div class="h-2 bg-zinc-700 rounded-full overflow-hidden mb-3">
+            <div class="h-full {% if match.eligibility_score >= 70 %}bg-emerald-500{% elif match.eligibility_score >= 40 %}bg-amber-500{% else %}bg-red-500{% endif %} rounded-full transition-all" style="width:{{ match.eligibility_score }}%"></div>
+          </div>
+          <p class="text-zinc-400 text-sm">{{ match.reasoning }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="card text-center py-16">
+        <i class="fa-solid fa-landmark text-zinc-700 text-5xl mb-4"></i>
+        <h3 class="text-zinc-400 font-medium mb-2">No matches yet</h3>
+        <p class="text-zinc-600 text-sm">Use the form to find government schemes you qualify for.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

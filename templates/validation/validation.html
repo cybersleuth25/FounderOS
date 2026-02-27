@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Document Verification{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+      <i class="fa-solid fa-file-circle-check text-purple-400"></i> Document Verification
+    </h1>
+    <p class="text-zinc-400 text-sm mt-1">Upload business documents to validate their format and completeness.</p>
+  </div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6">
+  <!-- Upload Form -->
+  <div class="lg:col-span-1">
+    <div class="card">
+      <h2 class="font-semibold text-white mb-4">Upload Document</h2>
+      <form method="post" action="{% url 'validation_upload' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="space-y-4">
+          <div>
+            <label class="form-label">Document Title *</label>
+            <input type="text" name="title" required class="form-input" placeholder="Business Plan, GST Certificate..." />
+          </div>
+          <div>
+            <label class="form-label">File *</label>
+            <input type="file" name="file" required class="form-input text-zinc-400 cursor-pointer"
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt" />
+            <p class="text-zinc-600 text-xs mt-1">PDF, Word, Image, or Text — Max 10MB</p>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary w-full mt-5 justify-center">
+          <i class="fa-solid fa-upload"></i> Upload & Validate
+        </button>
+      </form>
+
+      <div class="mt-5 pt-4 border-t border-zinc-700">
+        <h3 class="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-2">What We Validate</h3>
+        <ul class="space-y-1 text-xs text-zinc-500">
+          <li>• File format compatibility</li>
+          <li>• File size requirements</li>
+          <li>• Document completeness</li>
+          <li>• Basic content checks</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Documents List -->
+  <div class="lg:col-span-2">
+    {% if documents %}
+      <h2 class="font-semibold text-zinc-300 mb-4">Your Documents ({{ documents|length }})</h2>
+      <div class="space-y-4">
+        {% for doc in documents %}
+        <div class="card">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <h3 class="text-white font-medium">{{ doc.title }}</h3>
+                {% if doc.validation_status == 'pass' %}
+                  <span class="badge-green"><i class="fa-solid fa-circle-check text-xs"></i> Passed</span>
+                {% elif doc.validation_status == 'fail' %}
+                  <span class="badge-red"><i class="fa-solid fa-circle-xmark text-xs"></i> Issues Found</span>
+                {% else %}
+                  <span class="badge-yellow"><i class="fa-solid fa-clock text-xs"></i> Pending</span>
+                {% endif %}
+              </div>
+              <p class="text-zinc-400 text-sm">{{ doc.report }}</p>
+              {% if doc.suggestions and doc.suggestions != 'No suggestions — document looks good!' %}
+                <div class="mt-2 p-2.5 bg-amber-900/20 border border-amber-800/30 rounded-lg">
+                  <p class="text-amber-300 text-xs"><i class="fa-solid fa-lightbulb mr-1"></i>{{ doc.suggestions }}</p>
+                </div>
+              {% endif %}
+              <div class="text-zinc-600 text-xs mt-2">Uploaded {{ doc.created_at|date:"M d, Y" }}</div>
+            </div>
+            <div class="flex items-center gap-2 ml-4 flex-shrink-0">
+              <a href="{{ doc.file.url }}" target="_blank" class="p-2 rounded-lg bg-zinc-900 hover:bg-sky-500/10 text-zinc-400 hover:text-sky-400 transition-colors">
+                <i class="fa-solid fa-download text-sm"></i>
+              </a>
+              <form method="post" action="{% url 'validation_delete' doc.pk %}" onsubmit="return confirm('Delete this document?')">
+                {% csrf_token %}
+                <button type="submit" class="p-2 rounded-lg bg-zinc-900 hover:bg-red-500/10 text-zinc-400 hover:text-red-400 transition-colors">
+                  <i class="fa-solid fa-trash text-sm"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="card text-center py-16">
+        <i class="fa-solid fa-file-circle-check text-zinc-700 text-5xl mb-4"></i>
+        <h3 class="text-zinc-400 font-medium mb-2">No documents uploaded</h3>
+        <p class="text-zinc-600 text-sm">Upload business documents to validate their completeness.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

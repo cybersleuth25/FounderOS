@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Risk Report — {{ report.startup_name }}{% endblock %}
+{% block content %}
+<div class="mb-6">
+  <a href="{% url 'risk_home' %}" class="text-zinc-400 hover:text-white text-sm flex items-center gap-1 mb-4">
+    <i class="fa-solid fa-arrow-left text-xs"></i> Back to Risk Analysis
+  </a>
+  <h1 class="text-2xl font-bold text-white">{{ report.startup_name }}</h1>
+  <p class="text-zinc-400 text-sm mt-1">{{ report.industry }} · {{ report.stage }} · {{ report.created_at|date:"F d, Y" }}</p>
+</div>
+
+<!-- Risk Scores -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div class="card text-center">
+    <div class="text-3xl font-bold {% if report.overall_score >= 70 %}text-red-400{% elif report.overall_score >= 45 %}text-amber-400{% else %}text-emerald-400{% endif %}">
+      {{ report.overall_score }}
+    </div>
+    <div class="text-zinc-400 text-xs mt-1">Overall Risk</div>
+    <div class="text-xs mt-1 {% if report.overall_score >= 70 %}text-red-400{% elif report.overall_score >= 45 %}text-amber-400{% else %}text-emerald-400{% endif %}">
+      {% if report.overall_score >= 70 %}High Risk{% elif report.overall_score >= 45 %}Medium Risk{% else %}Low Risk{% endif %}
+    </div>
+  </div>
+  <div class="card text-center">
+    <div class="text-3xl font-bold text-red-400">{{ report.financial_risk }}</div>
+    <div class="text-zinc-400 text-xs mt-1">Financial Risk</div>
+  </div>
+  <div class="card text-center">
+    <div class="text-3xl font-bold text-amber-400">{{ report.market_risk }}</div>
+    <div class="text-zinc-400 text-xs mt-1">Market Risk</div>
+  </div>
+  <div class="card text-center">
+    <div class="text-3xl font-bold text-blue-400">{{ report.operational_risk }}</div>
+    <div class="text-zinc-400 text-xs mt-1">Operational Risk</div>
+  </div>
+</div>
+
+<!-- SWOT -->
+<div class="grid md:grid-cols-2 gap-4 mb-6">
+  <div class="card border-l-4 border-emerald-500">
+    <h2 class="font-semibold text-emerald-400 mb-3 flex items-center gap-2"><i class="fa-solid fa-circle-plus"></i> Strengths</h2>
+    <ul class="space-y-2">
+      {% for s in strengths %}
+        <li class="text-zinc-300 text-sm flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 text-xs mt-1"></i>{{ s }}</li>
+      {% empty %}<li class="text-zinc-500 text-sm">No data</li>{% endfor %}
+    </ul>
+  </div>
+  <div class="card border-l-4 border-red-500">
+    <h2 class="font-semibold text-red-400 mb-3 flex items-center gap-2"><i class="fa-solid fa-circle-minus"></i> Weaknesses</h2>
+    <ul class="space-y-2">
+      {% for w in weaknesses %}
+        <li class="text-zinc-300 text-sm flex items-start gap-2"><i class="fa-solid fa-xmark text-red-400 text-xs mt-1"></i>{{ w }}</li>
+      {% empty %}<li class="text-zinc-500 text-sm">No data</li>{% endfor %}
+    </ul>
+  </div>
+  <div class="card border-l-4 border-sky-500">
+    <h2 class="font-semibold text-sky-400 mb-3 flex items-center gap-2"><i class="fa-solid fa-arrow-trend-up"></i> Opportunities</h2>
+    <ul class="space-y-2">
+      {% for o in opportunities %}
+        <li class="text-zinc-300 text-sm flex items-start gap-2"><i class="fa-solid fa-arrow-right text-sky-400 text-xs mt-1"></i>{{ o }}</li>
+      {% empty %}<li class="text-zinc-500 text-sm">No data</li>{% endfor %}
+    </ul>
+  </div>
+  <div class="card border-l-4 border-amber-500">
+    <h2 class="font-semibold text-amber-400 mb-3 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i> Threats</h2>
+    <ul class="space-y-2">
+      {% for t in threats %}
+        <li class="text-zinc-300 text-sm flex items-start gap-2"><i class="fa-solid fa-warning text-amber-400 text-xs mt-1"></i>{{ t }}</li>
+      {% empty %}<li class="text-zinc-500 text-sm">No data</li>{% endfor %}
+    </ul>
+  </div>
+</div>
+
+<!-- Mitigations -->
+{% if mitigations %}
+<div class="card">
+  <h2 class="font-semibold text-white mb-4 flex items-center gap-2">
+    <i class="fa-solid fa-lightbulb text-purple-400"></i> Mitigation Strategies
+  </h2>
+  <ol class="space-y-3">
+    {% for m in mitigations %}
+    <li class="flex items-start gap-3 text-zinc-300 text-sm">
+      <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">{{ forloop.counter }}</span>
+      {{ m }}
+    </li>
+    {% endfor %}
+  </ol>
+</div>
+{% endif %}
+{% endblock %}

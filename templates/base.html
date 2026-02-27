@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}FounderOS{% endblock %} — Startup Validation Platform
+    </title>
+    <meta
+      name="description"
+      content="{% block meta_desc %}FounderOS helps early-stage founders validate ideas, analyze risks, and discover government funding schemes.{% endblock %}"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
+            colors: {
+              brand: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                900: "#0c4a6e",
+              },
+              surface: {
+                900: "#09090b",
+                800: "#18181b",
+                700: "#27272a",
+                600: "#3f3f46",
+                500: "#52525b",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      /* .nav-link */
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.625rem 0.75rem;
+        border-radius: 0.5rem;
+        color: #a1a1aa; /* zinc-400 */
+        transition: all 0.15s;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+      }
+      .nav-link:hover {
+        color: #ffffff;
+        background-color: #27272a; /* zinc-800 */
+      }
+      .nav-link.active {
+        background-color: #27272a; /* zinc-800 */
+        color: #ffffff;
+      }
+      /* .btn-primary */
+      .btn-primary {
+        background-color: #0ea5e9; /* sky-500 */
+        color: #ffffff;
+        font-weight: 600;
+        padding: 0.625rem 1.25rem;
+        border-radius: 0.5rem;
+        transition: all 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .btn-primary:hover {
+        background-color: #0284c7; /* sky-600 */
+      }
+      /* .btn-secondary */
+      .btn-secondary {
+        border: 1px solid #3f3f46; /* zinc-700 */
+        color: #d4d4d8; /* zinc-300 */
+        font-weight: 500;
+        padding: 0.625rem 1.25rem;
+        border-radius: 0.5rem;
+        transition: all 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        background: transparent;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .btn-secondary:hover {
+        background-color: #27272a; /* zinc-800 */
+        color: #ffffff;
+      }
+      /* .card */
+      .card {
+        background-color: rgba(39, 39, 42, 0.5); /* zinc-800/50 */
+        border: 1px solid rgba(63, 63, 70, 0.5); /* zinc-700/50 */
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+      }
+      /* .form-input */
+      .form-input {
+        width: 100%;
+        background-color: #09090b; /* zinc-900 */
+        border: 1px solid #3f3f46; /* zinc-700 */
+        border-radius: 0.5rem;
+        padding: 0.625rem 1rem;
+        color: #ffffff;
+        font-size: 0.875rem;
+        transition: border-color 0.15s, box-shadow 0.15s;
+        outline: none;
+      }
+      .form-input::placeholder {
+        color: #71717a; /* zinc-500 */
+      }
+      .form-input:focus {
+        border-color: #0ea5e9; /* sky-500 */
+        box-shadow: 0 0 0 1px #0ea5e9;
+      }
+      /* .form-label */
+      .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #d4d4d8; /* zinc-300 */
+        margin-bottom: 0.375rem;
+      }
+      /* badges */
+      .badge-green {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.625rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        background-color: rgba(6, 78, 59, 0.5); /* emerald-900/50 */
+        color: #34d399; /* emerald-400 */
+        border: 1px solid rgba(6, 95, 70, 0.5); /* emerald-800/50 */
+      }
+      .badge-yellow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.625rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        background-color: rgba(120, 53, 15, 0.5); /* amber-900/50 */
+        color: #fbbf24; /* amber-400 */
+        border: 1px solid rgba(146, 64, 14, 0.5); /* amber-800/50 */
+      }
+      .badge-red {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.625rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        background-color: rgba(127, 29, 29, 0.5); /* red-900/50 */
+        color: #f87171; /* red-400 */
+        border: 1px solid rgba(153, 27, 27, 0.5); /* red-800/50 */
+      }
+    </style>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body class="bg-zinc-950 text-white min-h-screen">
+    {% if user.is_authenticated %}
+    <!-- App Layout with sidebar -->
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside
+        class="w-60 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-10"
+      >
+        <!-- Logo -->
+        <div class="px-5 py-5 border-b border-zinc-800">
+          <a href="{% url 'dashboard' %}" class="flex items-center gap-2.5">
+            <div
+              class="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center"
+            >
+              <i class="fa-solid fa-rocket text-white text-sm"></i>
+            </div>
+            <span class="font-bold text-white text-lg">FounderOS</span>
+          </a>
+        </div>
+        <!-- Nav -->
+        <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          <a
+            href="{% url 'dashboard' %}"
+            class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+          >
+            <i class="fa-solid fa-gauge-high w-4"></i> Dashboard
+          </a>
+          <a
+            href="{% url 'pitch_lab' %}"
+            class="nav-link {% if 'pitch' in request.resolver_match.url_name and 'gallery' not in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <i class="fa-solid fa-file-powerpoint w-4"></i> Pitch Lab
+          </a>
+          <a
+            href="{% url 'pitch_gallery' %}"
+            class="nav-link {% if request.resolver_match.url_name == 'pitch_gallery' %}active{% endif %}"
+          >
+            <i class="fa-solid fa-film w-4"></i> Pitch Gallery
+          </a>
+          <a
+            href="{% url 'risk_home' %}"
+            class="nav-link {% if 'risk' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <i class="fa-solid fa-shield-halved w-4"></i> Risk Analysis
+          </a>
+          <a
+            href="{% url 'schemes_home' %}"
+            class="nav-link {% if 'scheme' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <i class="fa-solid fa-landmark w-4"></i> Gov. Schemes
+          </a>
+          <a
+            href="{% url 'validation_home' %}"
+            class="nav-link {% if 'validation' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <i class="fa-solid fa-file-circle-check w-4"></i> Doc Verify
+          </a>
+          <a
+            href="{% url 'matching_home' %}"
+            class="nav-link {% if 'match' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <i class="fa-solid fa-users w-4"></i> Matching
+          </a>
+        </nav>
+        <!-- User Footer -->
+        <div class="px-3 py-4 border-t border-zinc-800">
+          <a
+            href="{% url 'profile' %}"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-zinc-800 transition-colors group"
+          >
+            <div
+              class="w-8 h-8 rounded-full bg-sky-600 flex items-center justify-center text-xs font-bold flex-shrink-0"
+            >
+              {{ user.username|first|upper }}
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-white truncate">
+                {{ user.username }}
+              </p>
+              <p class="text-xs text-zinc-500 truncate">{{ user.email }}</p>
+            </div>
+            <i
+              class="fa-solid fa-cog text-zinc-600 group-hover:text-zinc-400 text-xs"
+            ></i>
+          </a>
+          <a
+            href="{% url 'logout' %}"
+            class="nav-link mt-1 text-red-400 hover:text-red-300 hover:bg-red-900/20"
+          >
+            <i class="fa-solid fa-right-from-bracket w-4"></i> Sign Out
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="ml-60 flex-1 min-h-screen">
+        <div class="max-w-6xl mx-auto px-6 py-8">
+          {% if messages %} {% for msg in messages %}
+          <div
+            class="mb-4 px-4 py-3 rounded-lg border {% if msg.tags == 'error' %}bg-red-900/30 border-red-800 text-red-300{% elif msg.tags == 'success' %}bg-emerald-900/30 border-emerald-800 text-emerald-300{% else %}bg-blue-900/30 border-blue-800 text-blue-300{% endif %} text-sm flex items-center gap-2"
+            id="flash-msg"
+          >
+            <i
+              class="fa-solid {% if msg.tags == 'error' %}fa-triangle-exclamation{% elif msg.tags == 'success' %}fa-circle-check{% else %}fa-circle-info{% endif %}"
+            ></i>
+            {{ msg }}
+          </div>
+          {% endfor %}
+          <script>
+            setTimeout(() => {
+              document
+                .querySelectorAll("#flash-msg")
+                .forEach((el) => el.remove());
+            }, 4000);
+          </script>
+          {% endif %} {% block content %}{% endblock %}
+        </div>
+      </main>
+    </div>
+
+    {% else %}
+    <!-- Public layout -->
+    {% block public_content %}{% endblock %}
+    {% endif %}
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

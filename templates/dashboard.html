@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<!-- Page Header -->
+<div class="mb-8">
+  <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+    <i class="fa-solid fa-gauge-high text-sky-400"></i>
+    Welcome back, {{ user.username }}
+  </h1>
+  <p class="text-zinc-400 text-sm mt-1">
+    {% if profile.startup_name %}<span class="text-zinc-300">{{ profile.startup_name }}</span> — {% endif %}
+    Your startup validation dashboard
+  </p>
+</div>
+
+<!-- Stats Row -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <div class="card text-center">
+    <div class="w-8 h-8 bg-sky-500/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+      <i class="fa-solid fa-file-powerpoint text-sky-400 text-sm"></i>
+    </div>
+    <div class="text-3xl font-bold text-sky-400">{{ pitch_count }}</div>
+    <div class="text-zinc-400 text-xs mt-1">Pitches Analyzed</div>
+  </div>
+  <div class="card text-center">
+    <div class="w-8 h-8 bg-red-500/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+      <i class="fa-solid fa-shield-halved text-red-400 text-sm"></i>
+    </div>
+    <div class="text-3xl font-bold {% if latest_risk %}{% if latest_risk.overall_score >= 70 %}text-red-400{% elif latest_risk.overall_score >= 45 %}text-amber-400{% else %}text-emerald-400{% endif %}{% else %}text-zinc-500{% endif %}">
+      {% if latest_risk %}{{ latest_risk.overall_score }}{% else %}—{% endif %}
+    </div>
+    <div class="text-zinc-400 text-xs mt-1">Risk Score</div>
+  </div>
+  <div class="card text-center">
+    <div class="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+      <i class="fa-solid fa-landmark text-emerald-400 text-sm"></i>
+    </div>
+    <div class="text-3xl font-bold text-emerald-400">{{ scheme_matches|length }}</div>
+    <div class="text-zinc-400 text-xs mt-1">Scheme Matches</div>
+  </div>
+  <div class="card text-center">
+    <div class="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+      <i class="fa-solid fa-chart-bar text-purple-400 text-sm"></i>
+    </div>
+    <div class="text-3xl font-bold text-purple-400">{{ avg_pitch_score }}</div>
+    <div class="text-zinc-400 text-xs mt-1">Avg Pitch Score</div>
+  </div>
+</div>
+
+<!-- Main 3-column Grid -->
+<div class="grid lg:grid-cols-12 gap-6">
+
+  <!-- Left: Recent Pitches + Risk -->
+  <div class="lg:col-span-5 space-y-5">
+
+    <!-- Recent Pitches -->
+    <div class="card">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-white flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-file-powerpoint text-sky-400"></i> Recent Pitches
+        </h2>
+        <a href="{% url 'pitch_lab' %}" class="text-sky-400 hover:text-sky-300 text-xs">View All</a>
+      </div>
+      {% if pitches %}
+        <div class="space-y-2">
+          {% for pitch in pitches %}
+            <a href="{% url 'pitch_detail' pitch.pk %}" class="flex items-center justify-between p-3 bg-zinc-900 rounded-lg hover:bg-zinc-800/80 transition-colors">
+              <div class="flex-1 min-w-0">
+                <div class="text-white text-sm font-medium truncate">{{ pitch.title }}</div>
+                <div class="text-zinc-500 text-xs mt-0.5">{{ pitch.created_at|date:"M d, Y" }}</div>
+              </div>
+              {% if pitch.overall_score %}
+                <div class="text-lg font-bold ml-3 {% if pitch.overall_score >= 75 %}text-emerald-400{% elif pitch.overall_score >= 50 %}text-amber-400{% else %}text-red-400{% endif %}">
+                  {{ pitch.overall_score }}<span class="text-xs text-zinc-600">/100</span>
+                </div>
+              {% else %}
+                <i class="fa-solid fa-chevron-right text-zinc-700 text-xs ml-3"></i>
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center py-6">
+          <i class="fa-solid fa-file-powerpoint text-zinc-700 text-3xl mb-2"></i>
+          <p class="text-zinc-500 text-xs">No pitches yet.</p>
+          <a href="{% url 'pitch_lab' %}" class="btn-primary mt-3 text-xs px-3 py-1.5">
+            <i class="fa-solid fa-plus text-xs"></i> Add Pitch
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Risk Summary -->
+    {% if latest_risk %}
+    <div class="card">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-white flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-shield-halved text-red-400"></i> Last Risk Analysis
+        </h2>
+        <a href="{% url 'risk_home' %}" class="text-sky-400 hover:text-sky-300 text-xs">View All</a>
+      </div>
+      <div class="text-zinc-300 text-sm font-medium mb-3">{{ latest_risk.startup_name }}</div>
+      <div class="space-y-2">
+        <div>
+          <div class="flex justify-between text-xs text-zinc-500 mb-1"><span>Financial Risk</span><span class="text-zinc-300">{{ latest_risk.financial_risk }}/100</span></div>
+          <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-red-500 rounded-full" style="width:{{ latest_risk.financial_risk }}%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs text-zinc-500 mb-1"><span>Market Risk</span><span class="text-zinc-300">{{ latest_risk.market_risk }}/100</span></div>
+          <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-amber-500 rounded-full" style="width:{{ latest_risk.market_risk }}%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs text-zinc-500 mb-1"><span>Operational Risk</span><span class="text-zinc-300">{{ latest_risk.operational_risk }}/100</span></div>
+          <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width:{{ latest_risk.operational_risk }}%"></div></div>
+        </div>
+      </div>
+      <a href="{% url 'risk_report' latest_risk.pk %}" class="btn-secondary w-full mt-4 justify-center text-xs">
+        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Full Report
+      </a>
+    </div>
+    {% else %}
+    <div class="card">
+      <h2 class="font-semibold text-white flex items-center gap-2 text-sm mb-3">
+        <i class="fa-solid fa-shield-halved text-red-400"></i> Risk Analysis
+      </h2>
+      <div class="text-center py-5">
+        <i class="fa-solid fa-shield-halved text-zinc-700 text-3xl mb-2"></i>
+        <p class="text-zinc-500 text-xs mb-3">No risk analysis run yet.</p>
+        <a href="{% url 'risk_home' %}" class="btn-primary text-xs px-3 py-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> Run Analysis
+        </a>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Quick Actions -->
+    <div class="card">
+      <h2 class="font-semibold text-white mb-3 text-sm">Quick Actions</h2>
+      <div class="grid grid-cols-2 gap-2">
+        <a href="{% url 'pitch_lab' %}" class="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 hover:bg-sky-500/10 transition-colors text-xs text-zinc-300 hover:text-sky-400 border border-transparent hover:border-sky-500/20">
+          <i class="fa-solid fa-plus-circle text-sky-400"></i> New Pitch
+        </a>
+        <a href="{% url 'risk_home' %}" class="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 hover:bg-red-500/10 transition-colors text-xs text-zinc-300 hover:text-red-400 border border-transparent hover:border-red-500/20">
+          <i class="fa-solid fa-chart-bar text-red-400"></i> Analyze Risk
+        </a>
+        <a href="{% url 'schemes_home' %}" class="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 hover:bg-emerald-500/10 transition-colors text-xs text-zinc-300 hover:text-emerald-400 border border-transparent hover:border-emerald-500/20">
+          <i class="fa-solid fa-magnifying-glass text-emerald-400"></i> Find Schemes
+        </a>
+        <a href="{% url 'pitch_gallery' %}" class="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 hover:bg-purple-500/10 transition-colors text-xs text-zinc-300 hover:text-purple-400 border border-transparent hover:border-purple-500/20">
+          <i class="fa-solid fa-film text-purple-400"></i> Pitch Gallery
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle: News Feed -->
+  <div class="lg:col-span-4">
+    <div class="card h-full">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-white flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-newspaper text-amber-400"></i> Startup News
+        </h2>
+        <span class="text-zinc-600 text-xs flex items-center gap-1">
+          <i class="fa-solid fa-circle text-emerald-400 text-xs animate-pulse"></i> Live
+        </span>
+      </div>
+
+      {% if news %}
+        <div class="space-y-4">
+          {% for article in news %}
+          <a href="{{ article.link }}" target="_blank" rel="noopener"
+            class="group block p-3 rounded-xl hover:bg-zinc-800/60 transition-colors -mx-1">
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 bg-amber-500/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-500/20 transition-colors">
+                <i class="fa-solid fa-newspaper text-amber-400 text-xs"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-zinc-200 text-xs font-medium leading-snug group-hover:text-white transition-colors line-clamp-2">
+                  {{ article.title }}
+                </h3>
+                {% if article.description %}
+                  <p class="text-zinc-600 text-xs mt-1 line-clamp-2 leading-snug">{{ article.description }}</p>
+                {% endif %}
+                <div class="flex items-center gap-2 mt-1.5">
+                  <span class="text-zinc-600 text-xs">{{ article.source }}</span>
+                  <span class="text-zinc-700 text-xs">·</span>
+                  <span class="text-zinc-600 text-xs">{{ article.date }}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-zinc-700 text-xs ml-auto group-hover:text-sky-400 transition-colors"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+          {% if not forloop.last %}
+          <div class="border-t border-zinc-800/50 -mx-1"></div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center py-8">
+          <i class="fa-solid fa-newspaper text-zinc-700 text-3xl mb-2"></i>
+          <p class="text-zinc-500 text-xs">News unavailable right now.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Right: Profile + Schemes -->
+  <div class="lg:col-span-3 space-y-5">
+
+    <!-- Profile Card -->
+    <div class="card">
+      <div class="text-center mb-4">
+        <div class="w-12 h-12 bg-gradient-to-br from-sky-500 to-indigo-600 rounded-full flex items-center justify-center text-xl font-bold text-white mx-auto mb-2">
+          {{ user.username|first|upper }}
+        </div>
+        <div class="text-white font-semibold text-sm">{{ user.username }}</div>
+        {% if profile.startup_name %}
+          <div class="text-sky-400 text-xs mt-0.5">{{ profile.startup_name }}</div>
+        {% endif %}
+      </div>
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between">
+          <span class="text-zinc-500">Stage</span>
+          <span class="text-zinc-300">{{ profile.get_stage_display }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-zinc-500">Industry</span>
+          <span class="text-zinc-300">{{ profile.get_industry_display }}</span>
+        </div>
+        {% if profile.location %}
+        <div class="flex justify-between">
+          <span class="text-zinc-500">Location</span>
+          <span class="text-zinc-300">{{ profile.location }}</span>
+        </div>
+        {% endif %}
+      </div>
+      <a href="{% url 'profile' %}" class="btn-secondary w-full mt-4 justify-center text-xs">
+        <i class="fa-solid fa-pencil text-xs"></i> Edit Profile
+      </a>
+    </div>
+
+    <!-- Scheme Matches -->
+    <div class="card">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-white flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-landmark text-emerald-400"></i> Schemes
+        </h2>
+        <a href="{% url 'schemes_home' %}" class="text-sky-400 hover:text-sky-300 text-xs">
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+      {% if scheme_matches %}
+        <div class="space-y-2">
+          {% for match in scheme_matches %}
+            <div class="p-2.5 bg-zinc-900 rounded-lg">
+              <div class="text-zinc-200 text-xs font-medium truncate">{{ match.scheme_name }}</div>
+              <div class="flex items-center gap-2 mt-1.5">
+                <div class="flex-1 h-1 bg-zinc-700 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-500 rounded-full" style="width:{{ match.eligibility_score }}%"></div>
+                </div>
+                <span class="text-emerald-400 text-xs font-semibold">{{ match.eligibility_score }}%</span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center py-4">
+          <p class="text-zinc-600 text-xs mb-2">Find schemes you qualify for.</p>
+          <a href="{% url 'schemes_home' %}" class="btn-primary text-xs px-3 py-1.5">Match Now</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Validation Quick Upload -->
+    <div class="card">
+      <h2 class="font-semibold text-white flex items-center gap-2 text-sm mb-3">
+        <i class="fa-solid fa-file-circle-check text-purple-400"></i> Doc Verify
+      </h2>
+      <p class="text-zinc-500 text-xs mb-3">Upload business documents for instant validation.</p>
+      <a href="{% url 'validation_home' %}" class="btn-secondary w-full justify-center text-xs">
+        <i class="fa-solid fa-upload text-xs"></i> Upload Document
+      </a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

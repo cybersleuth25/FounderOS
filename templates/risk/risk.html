@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Risk Analysis{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+      <i class="fa-solid fa-shield-halved text-red-400"></i> Risk Analysis
+    </h1>
+    <p class="text-zinc-400 text-sm mt-1">Get a comprehensive AI-powered risk assessment for your startup.</p>
+  </div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6">
+  <!-- Form -->
+  <div class="lg:col-span-1">
+    <div class="card">
+      <h2 class="font-semibold text-white mb-4">New Risk Assessment</h2>
+      <form method="post" action="{% url 'risk_analyze' %}">
+        {% csrf_token %}
+        <div class="space-y-4">
+          <div>
+            <label class="form-label">Startup Name *</label>
+            <input type="text" name="startup_name" required class="form-input" placeholder="My Startup" />
+          </div>
+          <div>
+            <label class="form-label">Industry</label>
+            <select name="industry" class="form-input">
+              <option value="Technology">Technology</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+              <option value="FinTech">FinTech</option>
+              <option value="Retail/E-commerce">Retail/E-commerce</option>
+              <option value="Logistics">Logistics</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Stage</label>
+            <select name="stage" class="form-input">
+              <option value="Idea Stage">Idea Stage</option>
+              <option value="MVP Stage">MVP Stage</option>
+              <option value="Early Traction">Early Traction</option>
+              <option value="Growth Stage">Growth Stage</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Startup Description *</label>
+            <textarea name="description" rows="5" required class="form-input resize-none"
+              placeholder="Describe your startup, target market, revenue model, team, and current traction..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary w-full mt-5 justify-center">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Run Risk Analysis
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reports List -->
+  <div class="lg:col-span-2">
+    <h2 class="font-semibold text-zinc-300 mb-4">Previous Reports</h2>
+    {% if reports %}
+      <div class="space-y-4">
+        {% for report in reports %}
+        <a href="{% url 'risk_report' report.pk %}" class="card block hover:border-sky-500/30 transition-colors">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-white font-medium">{{ report.startup_name }}</div>
+              <div class="text-zinc-500 text-xs mt-1">{{ report.industry }} · {{ report.stage }} · {{ report.created_at|date:"M d, Y" }}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-2xl font-bold {% if report.overall_score >= 70 %}text-red-400{% elif report.overall_score >= 45 %}text-amber-400{% else %}text-emerald-400{% endif %}">
+                {{ report.overall_score }}
+              </div>
+              <div class="text-zinc-500 text-xs">risk score</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mt-3">
+            <div>
+              <div class="text-xs text-zinc-500 mb-1">Financial</div>
+              <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-red-500 rounded-full" style="width:{{ report.financial_risk }}%"></div></div>
+            </div>
+            <div>
+              <div class="text-xs text-zinc-500 mb-1">Market</div>
+              <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-amber-500 rounded-full" style="width:{{ report.market_risk }}%"></div></div>
+            </div>
+            <div>
+              <div class="text-xs text-zinc-500 mb-1">Operational</div>
+              <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width:{{ report.operational_risk }}%"></div></div>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="card text-center py-16">
+        <i class="fa-solid fa-shield-halved text-zinc-700 text-5xl mb-4"></i>
+        <h3 class="text-zinc-400 font-medium mb-2">No risk reports yet</h3>
+        <p class="text-zinc-600 text-sm">Run your first risk analysis to see results here.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

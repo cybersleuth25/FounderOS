@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Pitch Lab{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+      <i class="fa-solid fa-file-powerpoint text-sky-400"></i> Pitch Lab
+    </h1>
+    <p class="text-zinc-400 text-sm mt-1">Upload your pitch and get an AI-powered analysis report.</p>
+  </div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6">
+  <!-- Upload Form -->
+  <div class="lg:col-span-1">
+    <div class="card">
+      <h2 class="font-semibold text-white mb-4">New Pitch Analysis</h2>
+      <form method="post" action="{% url 'pitch_create' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="space-y-4">
+          <div>
+            <label class="form-label">Pitch Title *</label>
+            <input type="text" name="title" required class="form-input" placeholder="My SaaS Startup Pitch" />
+          </div>
+          <div>
+            <label class="form-label">Pitch Description / Summary *</label>
+            <textarea name="description" rows="5" required class="form-input resize-none"
+              placeholder="Describe your startup idea, target market, problem solved, and unique value proposition..."></textarea>
+          </div>
+          <div>
+            <label class="form-label">Upload Pitch Document <span class="text-zinc-600">(optional)</span></label>
+            <input type="file" name="file" accept=".pdf,.doc,.docx,.txt" class="form-input text-zinc-400 cursor-pointer" />
+            <p class="text-zinc-600 text-xs mt-1">PDF, Word, or text — Max 10MB</p>
+          </div>
+          <div>
+            <label class="form-label">Pitch Video <span class="text-zinc-600">(optional)</span></label>
+            <input type="file" name="video" accept="video/*" class="form-input text-zinc-400 cursor-pointer" />
+            <p class="text-zinc-600 text-xs mt-1">MP4, MOV — Max 50MB</p>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary w-full mt-5 justify-center">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze with AI
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pitches List -->
+  <div class="lg:col-span-2">
+    {% if pitches %}
+      <div class="space-y-4">
+        {% for pitch in pitches %}
+        <div class="card hover:border-sky-500/30 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <a href="{% url 'pitch_detail' pitch.pk %}" class="text-white font-semibold hover:text-sky-400 transition-colors">
+                {{ pitch.title }}
+              </a>
+              {% if pitch.description %}
+                <p class="text-zinc-400 text-sm mt-1 line-clamp-2">{{ pitch.description|truncatewords:20 }}</p>
+              {% endif %}
+              <div class="flex items-center gap-3 mt-3">
+                <span class="text-zinc-500 text-xs">{{ pitch.created_at|date:"M d, Y" }}</span>
+                {% if pitch.file %}<span class="badge-green"><i class="fa-solid fa-file text-xs"></i> Document</span>{% endif %}
+                {% if pitch.video %}<span class="badge-yellow"><i class="fa-solid fa-video text-xs"></i> Video</span>{% endif %}
+              </div>
+            </div>
+            <div class="flex items-center gap-3 ml-4">
+              {% if pitch.overall_score %}
+              <div class="text-center">
+                <div class="text-2xl font-bold {% if pitch.overall_score >= 75 %}text-emerald-400{% elif pitch.overall_score >= 50 %}text-amber-400{% else %}text-red-400{% endif %}">
+                  {{ pitch.overall_score }}
+                </div>
+                <div class="text-zinc-500 text-xs">score</div>
+              </div>
+              {% endif %}
+              <div class="flex gap-2">
+                <a href="{% url 'pitch_detail' pitch.pk %}" class="p-2 rounded-lg bg-zinc-900 hover:bg-sky-500/10 text-zinc-400 hover:text-sky-400 transition-colors">
+                  <i class="fa-solid fa-eye text-sm"></i>
+                </a>
+                <form method="post" action="{% url 'pitch_delete' pitch.pk %}" onsubmit="return confirm('Delete this pitch?')">
+                  {% csrf_token %}
+                  <button type="submit" class="p-2 rounded-lg bg-zinc-900 hover:bg-red-500/10 text-zinc-400 hover:text-red-400 transition-colors">
+                    <i class="fa-solid fa-trash text-sm"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="card text-center py-16">
+        <i class="fa-solid fa-file-powerpoint text-zinc-700 text-5xl mb-4"></i>
+        <h3 class="text-zinc-400 font-medium mb-2">No pitches yet</h3>
+        <p class="text-zinc-600 text-sm">Submit your first pitch using the form on the left to get an AI-powered analysis.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
