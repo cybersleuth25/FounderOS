@@ -1,58 +1,93 @@
+<!-- prettier-ignore -->
 {% extends 'base.html' %}
+<!-- prettier-ignore -->
 {% block title %}Dashboard{% endblock %}
-
+<!-- prettier-ignore -->
 {% block extra_head %}
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap"
+  rel="stylesheet"
+/>
 <style>
-  .db-h    { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
-  .db-body { font-family: 'DM Sans', sans-serif; }
+  .db-h {
+    font-family: "Syne", sans-serif;
+    letter-spacing: -0.02em;
+  }
+  .db-body {
+    font-family: "DM Sans", sans-serif;
+  }
 
-  /* ── Hero panel ── */
+  /* ── Hero ── */
   .hero-panel {
-    position: relative; overflow: hidden;
-    background: linear-gradient(135deg, #08101e 0%, #0a0e1a 60%, #060812 100%);
-    border: 1px solid rgba(56,189,248,0.1);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #080f10 0%, #0a1416 60%, #060c0d 100%);
+    border: 1px solid var(--border-hi);
     border-radius: 1.125rem;
     padding: 2.25rem 2.5rem;
     min-height: 220px;
   }
   .hero-panel::before {
-    content: '';
-    position: absolute; top: -80px; right: -80px;
-    width: 350px; height: 350px;
-    background: radial-gradient(circle, rgba(56,189,248,0.12) 0%, transparent 70%);
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(
+      circle,
+      rgba(20, 184, 166, 0.1) 0%,
+      transparent 70%
+    );
   }
   .hero-panel::after {
-    content: '';
-    position: absolute; bottom: -60px; left: 40%;
-    width: 220px; height: 220px;
-    background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+    content: "";
+    position: absolute;
+    bottom: -60px;
+    left: 40%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.06) 0%,
+      transparent 70%
+    );
   }
 
-  /* ── Stat chips (hero row) ── */
+  /* ── Stat chips ── */
   .stat-chip {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
     border-radius: 0.875rem;
     padding: 0.875rem 1.1rem;
     text-align: center;
-    min-width: 80px;
-    transition: background 0.2s, border-color 0.2s;
+    min-width: 78px;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
   }
-  .stat-chip:hover { background: rgba(56,189,248,0.06); border-color: rgba(56,189,248,0.18); }
+  .stat-chip:hover {
+    background: var(--teal-dim);
+    border-color: var(--border-hi);
+  }
 
   /* ── Quick filter pills ── */
   .qf-pill {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.35rem 0.9rem; border-radius: 9999px;
-    font-size: 0.75rem; font-weight: 600; text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
     transition: all 0.15s;
   }
 
   /* ── Bottom cards ── */
   .b-card {
-    background: rgba(14,14,18,0.8);
-    border: 1px solid rgba(63,63,70,0.4);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
     border-radius: 1rem;
     padding: 1.25rem;
     -webkit-backdrop-filter: blur(6px);
@@ -60,317 +95,652 @@
     height: 100%;
   }
 
-  /* news */
+  /* ── News ── */
   .news-item {
-    display: block; padding: 0.75rem 0.625rem;
+    display: block;
+    padding: 0.7rem 0.625rem;
     border-radius: 0.625rem;
     text-decoration: none;
     transition: background 0.15s;
   }
-  .news-item:hover { background: rgba(56,189,248,0.04); }
+  .news-item:hover {
+    background: var(--teal-dim);
+  }
 
-  @keyframes spin-once { to { transform: rotate(360deg); } }
-  .spin-anim { animation: spin-once 0.6s linear; }
+  @keyframes spin-once {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .spin-anim {
+    animation: spin-once 0.6s linear;
+  }
 
   @keyframes pulse-live {
-    0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
-    50% { opacity:0.7; box-shadow: 0 0 0 4px rgba(52,211,153,0); }
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.4);
+    }
+    50% {
+      opacity: 0.7;
+      box-shadow: 0 0 0 4px rgba(20, 184, 166, 0);
+    }
   }
-  .live-dot { width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse-live 2s infinite;display:inline-block; }
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--teal);
+    animation: pulse-live 2s infinite;
+    display: inline-block;
+  }
 
   .pitch-row {
-    display:flex;align-items:center;gap:.625rem;padding:.5rem .625rem;
-    border-radius:.625rem;background:rgba(9,9,11,0.6);
-    border:1px solid rgba(63,63,70,0.3);text-decoration:none;
-    transition:border-color .2s,background .2s;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.625rem;
+    border-radius: 0.625rem;
+    background: rgba(6, 13, 14, 0.7);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition:
+      border-color 0.2s,
+      background 0.2s;
   }
-  .pitch-row:hover { border-color:rgba(56,189,248,.2);background:rgba(56,189,248,.04); }
+  .pitch-row:hover {
+    border-color: var(--border-hi);
+    background: var(--teal-dim);
+  }
 
   .stage-dot {
-    width:26px;height:26px;border-radius:50%;
-    border:2px solid #3f3f46;background:#09090b;
-    display:flex;align-items:center;justify-content:center;
-    font-size:10px;font-weight:700;color:#52525b;
-    position:relative;z-index:1;transition:all .3s;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--surface-3);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-3);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s;
   }
-  .stage-dot.active { border-color:#38bdf8;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;box-shadow:0 0 14px rgba(56,189,248,.4); }
-  .stage-dot.done   { border-color:#34d399;background:#064e3b;color:#34d399; }
+  .stage-dot.active {
+    border-color: var(--teal);
+    background: linear-gradient(135deg, var(--teal), #0d9488);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(20, 184, 166, 0.4);
+  }
+  .stage-dot.done {
+    border-color: var(--teal);
+    background: rgba(20, 184, 166, 0.1);
+    color: var(--teal);
+  }
 </style>
-{% endblock %}
+{% endblock %} {% block content %}
 
-{% block content %}
-
-<!-- ════════════════════════════════════════════
-     HERO PANEL  (top — full width)
-════════════════════════════════════════════ -->
+<!-- ════════ HERO (full width) ════════ -->
 <div class="hero-panel mb-5 anim-fade-up delay-0">
   <div class="relative z-10 flex flex-col lg:flex-row lg:items-center gap-6">
-
-    <!-- Left: greeting + stats chips -->
+    <!-- Left -->
     <div class="flex-1">
-      <p class="db-body text-sky-400 text-xs font-semibold uppercase tracking-widest mb-1">Command Centre</p>
-      <h1 class="db-h text-3xl font-black text-white mb-1">
-        Hey, <span class="text-sky-400">{{ user.username }}</span>
+      <p
+        class="db-body text-xs font-semibold uppercase tracking-widest mb-1"
+        style="color: var(--teal)"
+      >
+        Command Centre
+      </p>
+      <h1 class="db-h text-3xl font-black mb-1" style="color: var(--text-1)">
+        Hey, <span style="color: var(--teal)">{{ user.username }}</span>
       </h1>
       {% if profile.startup_name %}
-        <p class="db-body text-zinc-400 text-sm mb-4">
-          <span class="text-zinc-200 font-medium">{{ profile.startup_name }}</span>
-          &nbsp;&middot;&nbsp;{{ profile.get_stage_display }}&nbsp;&middot;&nbsp;{{ profile.get_industry_display }}
-        </p>
+      <p class="db-body text-sm mb-4" style="color: var(--text-3)">
+        <span style="color: var(--text-2); font-weight: 500"
+          >{{ profile.startup_name }}</span
+        >
+        &nbsp;&middot;&nbsp;{{ profile.get_stage_display
+        }}&nbsp;&middot;&nbsp;{{ profile.get_industry_display }}
+      </p>
       {% else %}
-        <p class="db-body text-zinc-500 text-sm mb-4">Set up your profile to personalise insights.</p>
+      <p class="db-body text-sm mb-4" style="color: var(--text-3)">
+        Set up your profile to personalise insights.
+      </p>
       {% endif %}
-
-      <!-- Stat chips row -->
+      <!-- Stat chips -->
       <div class="flex flex-wrap gap-3">
         <div class="stat-chip">
-          <div class="db-h text-xl font-black text-sky-400">{{ pitch_count }}</div>
-          <div class="db-body text-zinc-600 text-xs mt-0.5">Pitches</div>
-        </div>
-        <div class="stat-chip">
-          <div class="db-h text-xl font-black {% if latest_risk %}{% if latest_risk.overall_score >= 70 %}text-red-400{% elif latest_risk.overall_score >= 45 %}text-amber-400{% else %}text-emerald-400{% endif %}{% else %}text-zinc-700{% endif %}">
-            {% if latest_risk %}{{ latest_risk.overall_score }}{% else %}&mdash;{% endif %}
+          <div class="db-h text-xl font-black" style="color: var(--teal)">
+            {{ pitch_count }}
           </div>
-          <div class="db-body text-zinc-600 text-xs mt-0.5">Risk</div>
+          <div class="db-body text-xs mt-0.5" style="color: var(--text-3)">
+            Pitches
+          </div>
         </div>
         <div class="stat-chip">
-          <div class="db-h text-xl font-black text-emerald-400">{{ scheme_matches|length }}</div>
-          <div class="db-body text-zinc-600 text-xs mt-0.5">Schemes</div>
+          <div
+            class="db-h text-xl font-black {% if latest_risk %}{% if latest_risk.overall_score >= 70 %}text-red-400{% elif latest_risk.overall_score >= 45 %}text-amber-400{% else %}text-emerald-400{% endif %}{% else %}text-zinc-700{% endif %}"
+          >
+            {% if latest_risk %}{{ latest_risk.overall_score }}{% else
+            %}&mdash;{% endif %}
+          </div>
+          <div class="db-body text-xs mt-0.5" style="color: var(--text-3)">
+            Risk
+          </div>
         </div>
         <div class="stat-chip">
-          <div class="db-h text-xl font-black text-purple-400">{{ avg_pitch_score }}</div>
-          <div class="db-body text-zinc-600 text-xs mt-0.5">Avg Score</div>
+          <div class="db-h text-xl font-black" style="color: var(--amber)">
+            {{ scheme_matches|length }}
+          </div>
+          <div class="db-body text-xs mt-0.5" style="color: var(--text-3)">
+            Schemes
+          </div>
+        </div>
+        <div class="stat-chip">
+          <div class="db-h text-xl font-black text-purple-400">
+            {{ avg_pitch_score }}
+          </div>
+          <div class="db-body text-xs mt-0.5" style="color: var(--text-3)">
+            Avg Score
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Right: quick actions + stage tracker -->
+    <!-- Right: actions + stage tracker -->
     <div class="flex flex-col gap-4 lg:items-end">
       <!-- Quick action pills -->
       <div class="flex flex-wrap gap-2">
-        <a href="{% url 'pitch_lab' %}" class="qf-pill bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500/20 anim-fade-up delay-100">
+        <a
+          href="{% url 'pitch_lab' %}"
+          class="qf-pill anim-fade-up delay-100"
+          style="
+            background: var(--teal-dim);
+            border: 1px solid var(--border-hi);
+            color: var(--teal);
+          "
+        >
           <i class="fa-solid fa-plus-circle text-xs"></i> New Pitch
         </a>
-        <a href="{% url 'risk_home' %}" class="qf-pill bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 anim-fade-up delay-150">
+        <a
+          href="{% url 'risk_home' %}"
+          class="qf-pill anim-fade-up delay-150"
+          style="
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+          "
+        >
           <i class="fa-solid fa-shield-halved text-xs"></i> Run Risk
         </a>
-        <a href="{% url 'schemes_home' %}" class="qf-pill bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 anim-fade-up delay-200">
+        <a
+          href="{% url 'schemes_home' %}"
+          class="qf-pill anim-fade-up delay-200"
+          style="
+            background: var(--amber-dim);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: var(--amber);
+          "
+        >
           <i class="fa-solid fa-landmark text-xs"></i> Find Schemes
         </a>
       </div>
 
-      <!-- Stage progress mini-tracker -->
-      <div class="bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3">
-        <p class="db-body text-zinc-600 text-xs mb-2.5 text-center">Startup Stage</p>
-        <div class="relative flex items-start justify-between gap-3" style="min-width:220px">
-          <div class="absolute top-3 left-3.5 right-3.5 h-px bg-zinc-800 z-0"></div>
+      <!-- Stage progress tracker -->
+      <div
+        class="rounded-xl px-4 py-3"
+        style="
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--border);
+        "
+      >
+        <p
+          class="db-body text-xs mb-2.5 text-center"
+          style="color: var(--text-3)"
+        >
+          Startup Stage
+        </p>
+        <div
+          class="relative flex items-start justify-between gap-3"
+          style="min-width: 220px"
+        >
+          <div
+            class="absolute top-3 left-3.5 right-3.5 h-px z-0"
+            style="background: var(--surface-3)"
+          ></div>
           {% for s,label,icon in stage_steps %}
           <div class="flex flex-col items-center gap-1.5 z-10">
-            <div class="stage-dot {% if profile.stage == s %}active{% elif profile.stage == 'mvp' and s == 'idea' %}done{% elif profile.stage == 'early' and s in 'idea,mvp' %}done{% elif profile.stage == 'growth' and s != 'growth' %}done{% endif %}">
-              <i class="fa-solid {{ icon }}" style="font-size:9px"></i>
+            <div
+              class="stage-dot {% if profile.stage == s %}active{% elif profile.stage == 'mvp' and s == 'idea' %}done{% elif profile.stage == 'early' and s in 'idea,mvp' %}done{% elif profile.stage == 'growth' and s != 'growth' %}done{% endif %}"
+            >
+              <i class="fa-solid {{ icon }}" style="font-size: 9px"></i>
             </div>
-            <span class="db-body text-zinc-600 text-center" style="font-size:10px">{{ label }}</span>
+            <span
+              class="db-body text-center"
+              style="font-size: 10px; color: var(--text-3)"
+              >{{ label }}</span
+            >
           </div>
           {% endfor %}
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     BOTTOM 3-COLUMN GRID
-════════════════════════════════════════════ -->
+<!-- ════════ BOTTOM 3-COL GRID ════════ -->
 <div class="grid lg:grid-cols-3 gap-5">
-
-  <!-- ── COL 1: Recent Pitches + Health Score ── -->
+  <!-- Col 1: Pitches + Health -->
   <div class="flex flex-col gap-5 anim-fade-up delay-150">
-
     <!-- Recent Pitches -->
     <div class="b-card">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="db-h font-bold text-white text-sm flex items-center gap-2">
-          <i class="fa-solid fa-file-powerpoint text-sky-400 text-xs"></i> Recent Pitches
+        <h2
+          class="db-h font-bold text-sm flex items-center gap-2"
+          style="color: var(--text-1)"
+        >
+          <i
+            class="fa-solid fa-file-powerpoint text-xs"
+            style="color: var(--teal)"
+          ></i>
+          Recent Pitches
         </h2>
-        <a href="{% url 'pitch_lab' %}" class="db-body text-sky-400 hover:text-sky-300 text-xs flex items-center gap-1">
+        <a
+          href="{% url 'pitch_lab' %}"
+          class="db-body text-xs flex items-center gap-1"
+          style="color: var(--teal)"
+        >
           All <i class="fa-solid fa-arrow-right text-xs"></i>
         </a>
       </div>
       {% if pitches %}
-        <div class="space-y-1.5">
-          {% for pitch in pitches %}
-            <a href="{% url 'pitch_detail' pitch.pk %}" class="pitch-row">
-              <div class="flex-1 min-w-0">
-                <div class="db-body text-white text-xs font-medium truncate">{{ pitch.title }}</div>
-                <div class="db-body text-zinc-600 text-xs">{{ pitch.created_at|date:"M d" }}</div>
-              </div>
-              {% if pitch.overall_score %}
-                <span class="db-h text-sm font-black {% if pitch.overall_score >= 75 %}text-emerald-400{% elif pitch.overall_score >= 50 %}text-amber-400{% else %}text-red-400{% endif %}">{{ pitch.overall_score }}</span>
-              {% else %}
-                <i class="fa-solid fa-chevron-right text-zinc-700 text-xs"></i>
-              {% endif %}
-            </a>
-          {% endfor %}
-        </div>
+      <div class="space-y-1.5">
+        {% for pitch in pitches %}
+        <a href="{% url 'pitch_detail' pitch.pk %}" class="pitch-row">
+          <div class="flex-1 min-w-0">
+            <div
+              class="db-body text-xs font-medium truncate"
+              style="color: var(--text-1)"
+            >
+              {{ pitch.title }}
+            </div>
+            <div class="db-body text-xs" style="color: var(--text-3)">
+              {{ pitch.created_at|date:"M d" }}
+            </div>
+          </div>
+          {% if pitch.overall_score %}
+          <span
+            class="db-h text-sm font-black {% if pitch.overall_score >= 75 %}text-emerald-400{% elif pitch.overall_score >= 50 %}text-amber-400{% else %}text-red-400{% endif %}"
+            >{{ pitch.overall_score }}</span
+          >
+          {% else %}
+          <i
+            class="fa-solid fa-chevron-right text-xs"
+            style="color: var(--text-3)"
+          ></i>
+          {% endif %}
+        </a>
+        {% endfor %}
+      </div>
       {% else %}
-        <div class="text-center py-6">
-          <i class="fa-solid fa-file-powerpoint text-zinc-800 text-3xl mb-2"></i>
-          <p class="db-body text-zinc-600 text-xs mb-3">No pitches yet.</p>
-          <a href="{% url 'pitch_lab' %}" class="btn-primary text-xs px-3 py-1.5">
-            <i class="fa-solid fa-plus text-xs"></i> Add Pitch
-          </a>
-        </div>
+      <div class="text-center py-6">
+        <i
+          class="fa-solid fa-file-powerpoint text-3xl mb-2"
+          style="color: var(--surface-3)"
+        ></i>
+        <p class="db-body text-xs mb-3" style="color: var(--text-3)">
+          No pitches yet.
+        </p>
+        <a href="{% url 'pitch_lab' %}" class="btn-primary text-xs px-3 py-1.5">
+          <i class="fa-solid fa-plus text-xs"></i> Add Pitch
+        </a>
+      </div>
       {% endif %}
     </div>
 
-    <!-- Startup Health Score -->
-    <div class="b-card" style="border-color:rgba(99,102,241,0.15)">
-      <h2 class="db-h font-bold text-white text-sm flex items-center gap-2 mb-3">
-        <i class="fa-solid fa-heart-pulse text-pink-400 text-xs"></i> Health Score
+    <!-- Health Score -->
+    <div class="b-card" style="border-color: rgba(20, 184, 166, 0.15)">
+      <h2
+        class="db-h font-bold text-sm flex items-center gap-2 mb-3"
+        style="color: var(--text-1)"
+      >
+        <i class="fa-solid fa-heart-pulse text-xs text-pink-400"></i> Health
+        Score
       </h2>
       <div class="flex items-center gap-4">
-        <div class="relative flex-shrink-0" style="width:80px;height:52px;overflow:hidden">
-          <svg width="80" height="80" viewBox="0 0 80 80" style="margin-top:-2px">
-            <path d="M 6 58 A 34 34 0 0 1 74 58" fill="none" stroke="#27272a" stroke-width="8" stroke-linecap="round"/>
-            <path id="health-arc" d="M 6 58 A 34 34 0 0 1 74 58" fill="none" stroke="url(#hg)" stroke-width="8" stroke-linecap="round"
-              stroke-dasharray="106.8" stroke-dashoffset="106.8"/>
+        <div
+          class="relative flex-shrink-0"
+          style="width: 80px; height: 52px; overflow: hidden"
+        >
+          <svg
+            width="80"
+            height="80"
+            viewBox="0 0 80 80"
+            style="margin-top: -2px"
+          >
+            <path
+              d="M 6 58 A 34 34 0 0 1 74 58"
+              fill="none"
+              stroke="var(--surface-3)"
+              stroke-width="8"
+              stroke-linecap="round"
+            />
+            <path
+              id="health-arc"
+              d="M 6 58 A 34 34 0 0 1 74 58"
+              fill="none"
+              stroke="url(#hg)"
+              stroke-width="8"
+              stroke-linecap="round"
+              stroke-dasharray="106.8"
+              stroke-dashoffset="106.8"
+            />
             <defs>
               <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#f43f5e"/>
-                <stop offset="50%" stop-color="#f59e0b"/>
-                <stop offset="100%" stop-color="#10b981"/>
+                <stop offset="0%" stop-color="#f43f5e" />
+                <stop offset="50%" stop-color="#f59e0b" />
+                <stop offset="100%" stop-color="#14b8a6" />
               </linearGradient>
             </defs>
           </svg>
-          <div class="absolute inset-0 flex items-center justify-center" style="padding-top:12px">
-            <span id="health-score-num" class="db-h text-lg font-black text-white">&mdash;</span>
+          <div
+            class="absolute inset-0 flex items-center justify-center"
+            style="padding-top: 12px"
+          >
+            <span
+              id="health-score-num"
+              class="db-h text-lg font-black"
+              style="color: var(--text-1)"
+              >&mdash;</span
+            >
           </div>
         </div>
         <div class="flex-1 space-y-1.5 text-xs">
           <div class="flex justify-between">
-            <span class="db-body text-zinc-500 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 inline-block"></span> Pitch</span>
-            <span class="db-body text-zinc-300">{{ avg_pitch_score }}/100</span>
+            <span
+              class="db-body flex items-center gap-1"
+              style="color: var(--text-3)"
+              ><span
+                class="w-1.5 h-1.5 rounded-full inline-block"
+                style="background: var(--teal)"
+              ></span>
+              Pitch</span
+            >
+            <span class="db-body" style="color: var(--text-2)"
+              >{{ avg_pitch_score }}/100</span
+            >
           </div>
           <div class="flex justify-between">
-            <span class="db-body text-zinc-500 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-400 inline-block"></span> Risk</span>
-            <span class="db-body text-zinc-300">{% if latest_risk %}{{ latest_risk.overall_score }}/100{% else %}N/A{% endif %}</span>
+            <span
+              class="db-body flex items-center gap-1"
+              style="color: var(--text-3)"
+              ><span
+                class="w-1.5 h-1.5 rounded-full inline-block bg-red-400"
+              ></span>
+              Risk</span
+            >
+            <span class="db-body" style="color: var(--text-2)"
+              >{% if latest_risk %}{{ latest_risk.overall_score }}/100{% else
+              %}N/A{% endif %}</span
+            >
           </div>
-          <div id="health-label" class="db-body text-zinc-600 text-xs mt-1">Calculating...</div>
+          <div
+            id="health-label"
+            class="db-body text-xs mt-1"
+            style="color: var(--text-3)"
+          >
+            Calculating...
+          </div>
         </div>
       </div>
     </div>
-
   </div>
 
-  <!-- ── COL 2: Live News Feed ── -->
-  <div class="b-card flex flex-col anim-fade-up delay-250" style="border-color:rgba(63,63,70,0.3)">
-    <!-- Header -->
+  <!-- Col 2: News -->
+  <div
+    class="b-card flex flex-col anim-fade-up delay-250"
+    style="border-color: var(--border)"
+  >
     <div class="flex items-center justify-between mb-3">
-      <h2 class="db-h font-bold text-white text-sm flex items-center gap-2">
-        <i class="fa-solid fa-newspaper text-amber-400 text-xs"></i> Startup News
+      <h2
+        class="db-h font-bold text-sm flex items-center gap-2"
+        style="color: var(--text-1)"
+      >
+        <i
+          class="fa-solid fa-newspaper text-xs"
+          style="color: var(--amber)"
+        ></i>
+        Startup News
       </h2>
       <div class="flex items-center gap-2">
-        <!-- Countdown arc -->
-        <svg width="22" height="22" viewBox="0 0 22 22" style="transform:rotate(-90deg)">
-          <circle cx="11" cy="11" r="8" fill="none" stroke="#27272a" stroke-width="2"/>
-          <circle id="countdown-arc" cx="11" cy="11" r="8" fill="none" stroke="#38bdf8" stroke-width="2"
-            stroke-dasharray="50.3" stroke-dashoffset="0" stroke-linecap="round"/>
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 22 22"
+          style="transform: rotate(-90deg)"
+        >
+          <circle
+            cx="11"
+            cy="11"
+            r="8"
+            fill="none"
+            stroke="var(--surface-3)"
+            stroke-width="2"
+          />
+          <circle
+            id="countdown-arc"
+            cx="11"
+            cy="11"
+            r="8"
+            fill="none"
+            stroke="var(--teal)"
+            stroke-width="2"
+            stroke-dasharray="50.3"
+            stroke-dashoffset="0"
+            stroke-linecap="round"
+          />
         </svg>
-        <span class="db-body flex items-center gap-1 text-xs text-zinc-600">
+        <span
+          class="db-body flex items-center gap-1 text-xs"
+          style="color: var(--text-3)"
+        >
           <span class="live-dot"></span> Live
         </span>
-        <button id="news-refresh-btn" onclick="fetchNews(true)"
-          class="w-6 h-6 flex items-center justify-center rounded-lg bg-zinc-900 hover:bg-amber-500/10 border border-zinc-800 hover:border-amber-500/30 text-zinc-600 hover:text-amber-400 transition-all"
-          title="Refresh now">
-          <i id="refresh-icon" class="fa-solid fa-rotate-right" style="font-size:10px"></i>
+        <button
+          id="news-refresh-btn"
+          onclick="fetchNews(true)"
+          class="w-6 h-6 flex items-center justify-center rounded-lg transition-all"
+          style="
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-3);
+          "
+          title="Refresh now"
+        >
+          <i
+            id="refresh-icon"
+            class="fa-solid fa-rotate-right"
+            style="font-size: 10px"
+          ></i>
         </button>
       </div>
     </div>
 
-    <!-- News items -->
-    <div id="news-container" class="flex-1 space-y-0.5 overflow-y-auto" style="max-height:360px">
-      {% if news %}
-        {% for article in news %}
-        <a href="{{ article.link }}" target="_blank" rel="noopener" class="news-item group">
-          <div class="flex items-start gap-2.5">
-            <div class="w-7 h-7 bg-amber-500/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-500/20 transition-colors">
-              <i class="fa-solid fa-newspaper text-amber-400" style="font-size:10px"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="db-body text-zinc-300 text-xs font-medium leading-snug group-hover:text-white line-clamp-2">{{ article.title }}</p>
-              <div class="flex items-center gap-1.5 mt-0.5">
-                <span class="db-body text-zinc-700 text-xs">{{ article.source }}</span>
-                <span class="text-zinc-800">&middot;</span>
-                <span class="db-body text-zinc-700 text-xs">{{ article.date }}</span>
-              </div>
-            </div>
-            <i class="fa-solid fa-arrow-up-right-from-square text-zinc-800 group-hover:text-sky-500 transition-colors flex-shrink-0 mt-1" style="font-size:9px"></i>
+    <div
+      id="news-container"
+      class="flex-1 space-y-0.5 overflow-y-auto"
+      style="max-height: 360px"
+    >
+      {% if news %} {% for article in news %}
+      <a
+        href="{{ article.link }}"
+        target="_blank"
+        rel="noopener"
+        class="news-item group"
+      >
+        <div class="flex items-start gap-2.5">
+          <div
+            class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
+            style="background: var(--amber-dim)"
+          >
+            <i
+              class="fa-solid fa-newspaper"
+              style="color: var(--amber); font-size: 10px"
+            ></i>
           </div>
-        </a>
-        {% if not forloop.last %}<div class="border-t border-zinc-800/30 mx-1"></div>{% endif %}
-        {% endfor %}
-      {% else %}
-        <div class="text-center py-8">
-          <i class="fa-solid fa-newspaper text-zinc-800 text-2xl mb-2"></i>
-          <p class="db-body text-zinc-600 text-xs">Click refresh to load news.</p>
+          <div class="flex-1 min-w-0">
+            <p
+              class="db-body text-xs font-medium leading-snug line-clamp-2"
+              style="color: var(--text-2)"
+            >
+              {{ article.title }}
+            </p>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="db-body text-xs" style="color: var(--text-3)"
+                >{{ article.source }}</span
+              >
+              <span style="color: var(--surface-3)">&middot;</span>
+              <span class="db-body text-xs" style="color: var(--text-3)"
+                >{{ article.date }}</span
+              >
+            </div>
+          </div>
+          <i
+            class="fa-solid fa-arrow-up-right-from-square flex-shrink-0 mt-1 transition-colors"
+            style="font-size: 9px; color: var(--surface-3)"
+          ></i>
         </div>
+      </a>
+      {% if not forloop.last %}
+      <div class="mx-1" style="border-top: 1px solid var(--border)"></div>
+      {% endif %} {% endfor %} {% else %}
+      <div class="text-center py-8">
+        <i
+          class="fa-solid fa-newspaper text-2xl mb-2"
+          style="color: var(--surface-3)"
+        ></i>
+        <p class="db-body text-xs" style="color: var(--text-3)">
+          Click refresh to load news.
+        </p>
+      </div>
       {% endif %}
     </div>
 
-    <!-- Footer -->
-    <div class="mt-3 pt-3 border-t border-zinc-800/40 flex items-center justify-between">
-      <span class="db-body text-zinc-700 text-xs" id="last-updated">Updated just now</span>
-      <span class="db-body text-zinc-700 text-xs" id="next-refresh-text">5:00</span>
+    <div
+      class="mt-3 pt-3 flex items-center justify-between"
+      style="border-top: 1px solid var(--border)"
+    >
+      <span
+        class="db-body text-xs"
+        id="last-updated"
+        style="color: var(--text-3)"
+        >Updated just now</span
+      >
+      <span
+        class="db-body text-xs"
+        id="next-refresh-text"
+        style="color: var(--text-3)"
+        >5:00</span
+      >
     </div>
   </div>
 
-  <!-- ── COL 3: Schemes + Founder Tip ── -->
+  <!-- Col 3: Schemes + Tip + Quick Actions -->
   <div class="flex flex-col gap-5 anim-fade-up delay-350">
-
     <!-- Scheme Matches -->
     <div class="b-card">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="db-h font-bold text-white text-sm flex items-center gap-2">
-          <i class="fa-solid fa-landmark text-emerald-400 text-xs"></i> Scheme Matches
+        <h2
+          class="db-h font-bold text-sm flex items-center gap-2"
+          style="color: var(--text-1)"
+        >
+          <i
+            class="fa-solid fa-landmark text-xs"
+            style="color: var(--amber)"
+          ></i>
+          Scheme Matches
         </h2>
-        <a href="{% url 'schemes_home' %}" class="text-sky-400 hover:text-sky-300 text-xs">
+        <a
+          href="{% url 'schemes_home' %}"
+          style="color: var(--teal)"
+          class="text-xs"
+        >
           <i class="fa-solid fa-arrow-right text-xs"></i>
         </a>
       </div>
       {% if scheme_matches %}
-        <div class="space-y-2">
-          {% for match in scheme_matches %}
-            <div class="p-2.5 bg-zinc-900/60 rounded-xl border border-zinc-800/40">
-              <div class="db-body text-zinc-200 text-xs font-medium truncate">{{ match.scheme_name }}</div>
-              <div class="flex items-center gap-2 mt-1.5">
-                <div class="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
-                  <div class="h-full bg-emerald-500 rounded-full" style="width:{{ match.eligibility_score }}%"></div>
-                </div>
-                <span class="db-body text-emerald-400 text-xs font-semibold">{{ match.eligibility_score }}%</span>
-              </div>
+      <div class="space-y-2">
+        {% for match in scheme_matches %}
+        <div
+          class="p-2.5 rounded-xl"
+          style="background: var(--surface-2); border: 1px solid var(--border)"
+        >
+          <div
+            class="db-body text-xs font-medium truncate"
+            style="color: var(--text-2)"
+          >
+            {{ match.scheme_name }}
+          </div>
+          <div class="flex items-center gap-2 mt-1.5">
+            <div
+              class="flex-1 h-1 rounded-full overflow-hidden"
+              style="background: var(--surface-3)"
+            >
+              <div
+                class="h-full rounded-full"
+                style="width: {{ match.eligibility_score }}%; background: var(--teal);"
+              ></div>
             </div>
-          {% endfor %}
+            <span
+              class="db-body text-xs font-semibold"
+              style="color: var(--teal)"
+              >{{ match.eligibility_score }}%</span
+            >
+          </div>
         </div>
+        {% endfor %}
+      </div>
       {% else %}
-        <div class="text-center py-4">
-          <p class="db-body text-zinc-600 text-xs mb-2">No matches yet.</p>
-          <a href="{% url 'schemes_home' %}" class="btn-primary text-xs px-3 py-1.5">Match Now</a>
-        </div>
-      {% endif %}
-
-      {% if latest_risk %}
-      <!-- Risk mini bars -->
-      <div class="mt-4 pt-3 border-t border-zinc-800/40 space-y-2">
-        <p class="db-body text-zinc-600 text-xs mb-2">Latest Risk Breakdown</p>
+      <div class="text-center py-4">
+        <p class="db-body text-xs mb-2" style="color: var(--text-3)">
+          No matches yet.
+        </p>
+        <a
+          href="{% url 'schemes_home' %}"
+          class="btn-primary text-xs px-3 py-1.5"
+          >Match Now</a
+        >
+      </div>
+      {% endif %} {% if risk_bars %}
+      <div
+        class="mt-4 pt-3 space-y-2"
+        style="border-top: 1px solid var(--border)"
+      >
+        <p class="db-body text-xs mb-2" style="color: var(--text-3)">
+          Latest Risk Breakdown
+        </p>
         {% for label, val, color in risk_bars %}
         <div>
           <div class="flex justify-between text-xs mb-0.5">
-            <span class="db-body text-zinc-600">{{ label }}</span>
-            <span class="db-body text-zinc-400">{{ val }}</span>
+            <span class="db-body" style="color: var(--text-3)"
+              >{{ label }}</span
+            >
+            <span class="db-body" style="color: var(--text-2)"
+              >{{ val|default:0 }}</span
+            >
           </div>
-          <div class="h-1 bg-zinc-800 rounded-full overflow-hidden">
-            <div class="h-full {{ color }} rounded-full" style="width:{{ val }}%"></div>
+          <div
+            class="h-1 rounded-full overflow-hidden"
+            style="background: var(--surface-3)"
+          >
+            <div
+              class="h-full {{ color }} rounded-full"
+              style="width: {{ val|default:0 }}%;"
+            ></div>
           </div>
         </div>
         {% endfor %}
@@ -379,144 +749,269 @@
     </div>
 
     <!-- Founder Tip -->
-    <div class="b-card" style="border-color:rgba(168,85,247,0.15);background:linear-gradient(135deg,rgba(20,10,40,0.7),rgba(10,8,28,0.7))">
-      <h2 class="db-h font-bold text-white text-sm flex items-center gap-2 mb-2">
-        <i class="fa-solid fa-lightbulb text-amber-400 text-xs"></i> Founder Tip
+    <div
+      class="b-card"
+      style="
+        border-color: rgba(245, 158, 11, 0.12);
+        background: linear-gradient(
+          135deg,
+          rgba(20, 10, 5, 0.7),
+          rgba(10, 8, 5, 0.7)
+        );
+      "
+    >
+      <h2
+        class="db-h font-bold text-sm flex items-center gap-2 mb-2"
+        style="color: var(--text-1)"
+      >
+        <i
+          class="fa-solid fa-lightbulb text-xs"
+          style="color: var(--amber)"
+        ></i>
+        Founder Tip
       </h2>
-      <p id="founder-tip" class="db-body text-zinc-400 text-xs leading-relaxed"></p>
-      <button onclick="nextTip()" class="db-body mt-3 text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1.5 transition-colors">
+      <p
+        id="founder-tip"
+        class="db-body text-xs leading-relaxed"
+        style="color: var(--text-2)"
+      ></p>
+      <button
+        onclick="nextTip()"
+        class="db-body mt-3 text-xs flex items-center gap-1.5 transition-colors"
+        style="
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: var(--amber);
+        "
+      >
         <i class="fa-solid fa-shuffle text-xs"></i> New tip
       </button>
     </div>
 
     <!-- Quick Actions -->
     <div class="b-card">
-      <h2 class="db-h font-bold text-white text-sm mb-3">Quick Actions</h2>
+      <h2 class="db-h font-bold text-sm mb-3" style="color: var(--text-1)">
+        Quick Actions
+      </h2>
       <div class="space-y-1.5">
-        <a href="{% url 'validation_home' %}" class="db-body flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900/60 hover:bg-purple-500/10 transition-all text-xs text-zinc-400 hover:text-purple-400 border border-transparent hover:border-purple-500/20">
-          <i class="fa-solid fa-upload text-purple-400 text-xs"></i> Upload Document for Verification
+        <a
+          href="{% url 'validation_home' %}"
+          class="db-body flex items-center gap-2 p-2.5 rounded-xl transition-all text-xs"
+          style="
+            background: var(--surface-2);
+            color: var(--text-3);
+            border: 1px solid transparent;
+          "
+          onmouseover="
+            this.style.borderColor = 'rgba(168,85,247,.2)';
+            this.style.color = '#c084fc';
+          "
+          onmouseout="
+            this.style.borderColor = 'transparent';
+            this.style.color = 'var(--text-3)';
+          "
+        >
+          <i class="fa-solid fa-upload text-xs text-purple-400"></i> Upload
+          Document for Verification
         </a>
-        <a href="{% url 'pitch_gallery' %}" class="db-body flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900/60 hover:bg-sky-500/10 transition-all text-xs text-zinc-400 hover:text-sky-400 border border-transparent hover:border-sky-500/20">
-          <i class="fa-solid fa-film text-sky-400 text-xs"></i> Browse Pitch Gallery
+        <a
+          href="{% url 'pitch_gallery' %}"
+          class="db-body flex items-center gap-2 p-2.5 rounded-xl transition-all text-xs"
+          style="
+            background: var(--surface-2);
+            color: var(--text-3);
+            border: 1px solid transparent;
+          "
+          onmouseover="
+            this.style.borderColor = 'var(--border-hi)';
+            this.style.color = 'var(--teal)';
+          "
+          onmouseout="
+            this.style.borderColor = 'transparent';
+            this.style.color = 'var(--text-3)';
+          "
+        >
+          <i class="fa-solid fa-film text-xs" style="color: var(--teal)"></i>
+          Browse Pitch Gallery
         </a>
-        <a href="{% url 'matching_home' %}" class="db-body flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900/60 hover:bg-pink-500/10 transition-all text-xs text-zinc-400 hover:text-pink-400 border border-transparent hover:border-pink-500/20">
-          <i class="fa-solid fa-users text-pink-400 text-xs"></i> Find Co-Founders / Investors
+        <a
+          href="{% url 'matching_home' %}"
+          class="db-body flex items-center gap-2 p-2.5 rounded-xl transition-all text-xs"
+          style="
+            background: var(--surface-2);
+            color: var(--text-3);
+            border: 1px solid transparent;
+          "
+          onmouseover="
+            this.style.borderColor = 'rgba(244,63,94,.2)';
+            this.style.color = '#fb7185';
+          "
+          onmouseout="
+            this.style.borderColor = 'transparent';
+            this.style.color = 'var(--text-3)';
+          "
+        >
+          <i class="fa-solid fa-users text-xs text-pink-400"></i> Find
+          Co-Founders / Investors
         </a>
       </div>
     </div>
-
   </div>
 </div>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script>
-// ── News auto-refresh ──────────────────────────
-const REFRESH_INTERVAL = 300;
-let secondsLeft = REFRESH_INTERVAL;
-let countdownTimer = null;
-const arc = document.getElementById('countdown-arc');
-const circumference = 50.3;
+  // ── News refresh ──────────────────────────────────
+  const REFRESH_INTERVAL = 300;
+  let secondsLeft = REFRESH_INTERVAL;
+  let countdownTimer = null;
+  const arcEl = document.getElementById("countdown-arc");
+  const circumference = 50.3;
 
-function updateArc() {
-  if (arc) arc.style.strokeDashoffset = circumference * (1 - secondsLeft / REFRESH_INTERVAL);
-}
-function formatTime(s) { return Math.floor(s/60)+':'+ String(s%60).padStart(2,'0'); }
+  function updateArc() {
+    if (arcEl)
+      arcEl.style.strokeDashoffset =
+        circumference * (1 - secondsLeft / REFRESH_INTERVAL);
+  }
+  function formatTime(s) {
+    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }
 
-function fetchNews(manual=false) {
-  const btn = document.getElementById('news-refresh-btn');
-  const icon = document.getElementById('refresh-icon');
-  icon.classList.add('spin-anim');
-  setTimeout(()=>icon.classList.remove('spin-anim'),650);
-  btn.disabled = true;
+  function fetchNews(manual = false) {
+    const btn = document.getElementById("news-refresh-btn");
+    const icon = document.getElementById("refresh-icon");
+    icon.classList.add("spin-anim");
+    setTimeout(() => icon.classList.remove("spin-anim"), 650);
+    btn.disabled = true;
+    fetch("/api/news/")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!data.news || !data.news.length) return;
+        renderNews(data.news);
+        document.getElementById("last-updated").textContent =
+          "Updated just now";
+        secondsLeft = REFRESH_INTERVAL;
+        updateArc();
+      })
+      .catch(() => {
+        document.getElementById("last-updated").textContent = "Retry soon";
+      })
+      .finally(() => {
+        btn.disabled = false;
+      });
+  }
 
-  fetch('/api/news/')
-    .then(r=>r.json())
-    .then(data=>{
-      if(!data.news||!data.news.length)return;
-      renderNews(data.news);
-      document.getElementById('last-updated').textContent='Updated just now';
-      secondsLeft=REFRESH_INTERVAL; updateArc();
-    })
-    .catch(()=>{ document.getElementById('last-updated').textContent='Retry soon'; })
-    .finally(()=>{ btn.disabled=false; });
-}
-
-function renderNews(items) {
-  document.getElementById('news-container').innerHTML = items.map((a,i)=>`
-    <a href="${a.link}" target="_blank" rel="noopener" class="news-item group">
-      <div class="flex items-start gap-2.5">
-        <div class="w-7 h-7 bg-amber-500/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-500/20 transition-colors">
-          <i class="fa-solid fa-newspaper text-amber-400" style="font-size:10px"></i>
-        </div>
-        <div class="flex-1 min-w-0">
-          <p class="db-body text-zinc-300 text-xs font-medium leading-snug group-hover:text-white line-clamp-2">${esc(a.title)}</p>
-          <div class="flex items-center gap-1.5 mt-0.5">
-            <span class="db-body text-zinc-700 text-xs">${esc(a.source)}</span>
-            <span class="text-zinc-800">&middot;</span>
-            <span class="db-body text-zinc-700 text-xs">${esc(a.date)}</span>
+  function renderNews(items) {
+    document.getElementById("news-container").innerHTML = items
+      .map(
+        (a, i) => `
+      <a href="${a.link}" target="_blank" rel="noopener" class="news-item group">
+        <div class="flex items-start gap-2.5">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors" style="background:var(--amber-dim)">
+            <i class="fa-solid fa-newspaper" style="color:var(--amber);font-size:10px"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="db-body text-xs font-medium leading-snug line-clamp-2" style="color:var(--text-2)">${esc(a.title)}</p>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="db-body text-xs" style="color:var(--text-3)">${esc(a.source)}</span>
+              <span>&middot;</span>
+              <span class="db-body text-xs" style="color:var(--text-3)">${esc(a.date)}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </a>
-    ${i<items.length-1?'<div class="border-t border-zinc-800/30 mx-1"></div>':''}
-  `).join('');
-}
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+      </a>
+      ${i < items.length - 1 ? `<div class="mx-1" style="border-top:1px solid var(--border)"></div>` : ""}
+    `,
+      )
+      .join("");
+  }
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
 
-function startCountdown() {
-  countdownTimer = setInterval(()=>{
-    secondsLeft--;
-    if(secondsLeft<=0){ secondsLeft=REFRESH_INTERVAL; fetchNews(); }
-    updateArc();
-    document.getElementById('next-refresh-text').textContent=formatTime(secondsLeft);
-  },1000);
-}
-updateArc(); startCountdown();
+  function startCountdown() {
+    countdownTimer = setInterval(() => {
+      secondsLeft--;
+      if (secondsLeft <= 0) {
+        secondsLeft = REFRESH_INTERVAL;
+        fetchNews();
+      }
+      updateArc();
+      document.getElementById("next-refresh-text").textContent =
+        formatTime(secondsLeft);
+    }, 1000);
+  }
+  updateArc();
+  startCountdown();
 
-// ── Health Score ──────────────────────────────
-(function(){
-  const ps = {{ avg_pitch_score }};
-  const rs = {% if latest_risk %}{{ latest_risk.overall_score }}{% else %}-1{% endif %};
-  const pc = {{ pitch_count }};
-  let score = 0;
-  if(ps>0) score += ps*0.4;
-  if(rs>=0) score += (100-rs)*0.4;
-  score += Math.min(pc*10,20);
-  const final = Math.min(Math.round(score),100);
-  setTimeout(()=>{
-    const a = document.getElementById('health-arc');
-    const n = document.getElementById('health-score-num');
-    const l = document.getElementById('health-label');
-    if(!a) return;
-    a.style.transition='stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)';
-    a.style.strokeDashoffset = 106.8 - (final/100)*106.8;
-    let cur=0; const step=Math.ceil(final/40);
-    const t=setInterval(()=>{ cur=Math.min(cur+step,final); n.textContent=cur; if(cur>=final)clearInterval(t); },30);
-    l.textContent = final>=75?'Looking strong':final>=50?'On track':final>=25?'Room to grow':'Get started';
-    l.style.color = final>=75?'#34d399':final>=50?'#f59e0b':'#f87171';
-  },400);
-})();
+  // ── Health Score gauge ────────────────────────────
+  (function () {
+    const ps = parseFloat("{{ avg_pitch_score|default:'0' }}") || 0;
+    const rs = parseFloat(
+      "{% if latest_risk %}{{ latest_risk.overall_score|default:'0' }}{% else %}-1{% endif %}",
+    );
+    const pc = parseInt("{{ pitch_count|default:'0' }}", 10) || 0;
+    let score = 0;
+    if (ps > 0) score += ps * 0.4;
+    if (rs >= 0) score += (100 - rs) * 0.4;
+    score += Math.min(pc * 10, 20);
+    const final = Math.min(Math.round(score), 100);
+    setTimeout(() => {
+      const a = document.getElementById("health-arc");
+      const n = document.getElementById("health-score-num");
+      const l = document.getElementById("health-label");
+      if (!a) return;
+      a.style.transition = "stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)";
+      a.style.strokeDashoffset = 106.8 - (final / 100) * 106.8;
+      let cur = 0;
+      const step = Math.ceil(final / 40);
+      const t = setInterval(() => {
+        cur = Math.min(cur + step, final);
+        n.textContent = cur;
+        if (cur >= final) clearInterval(t);
+      }, 30);
+      l.textContent =
+        final >= 75
+          ? "Looking strong"
+          : final >= 50
+            ? "On track"
+            : final >= 25
+              ? "Room to grow"
+              : "Get started";
+      l.style.color =
+        final >= 75 ? "#14b8a6" : final >= 50 ? "#f59e0b" : "#f87171";
+    }, 400);
+  })();
 
-// ── Founder Tips ─────────────────────────────
-const TIPS=[
-  "Your first 10 customers matter more than your first 1,000. Talk to each personally.",
-  "Revenue is the best fundraising strategy. Prove the model before raising equity.",
-  "A pitch deck is a story. Investors fund momentum, not features.",
-  "Validate assumptions cheaply before building. A landing page beats 3 months of code.",
-  "Know your CAC and LTV before spending on marketing. Growth without margin is a slow bleed.",
-  "Startup India Seed Fund offers non-dilutive capital. Always check eligibility first.",
-  "Your risk score reflects what investors see too. Address the top risks before pitching.",
-  "Speed is your advantage over big companies. Ship, learn, iterate.",
-  "DPIIT-recognised startups get 80IC tax exemption. File early.",
-  "Mudra loans are an underutilised resource for micro-businesses. Explore all three tiers.",
-  "Network with other founders, not just investors. The best intros come from peers.",
-  "Build in public. Sharing your journey builds trust and attracts customers.",
-];
-let ti=Math.floor(Math.random()*TIPS.length);
-function showTip(){ const e=document.getElementById('founder-tip'); if(e) e.textContent=TIPS[ti]; }
-function nextTip(){ ti=(ti+1)%TIPS.length; showTip(); }
-showTip();
+  // ── Founder Tips ──────────────────────────────────
+  const TIPS = [
+    "Your first 10 customers matter more than your first 1,000. Talk to each personally.",
+    "Revenue is the best fundraising strategy. Prove the model before raising equity.",
+    "A pitch deck is a story. Investors fund momentum, not features.",
+    "Validate assumptions cheaply before building. A landing page beats 3 months of code.",
+    "Know your CAC and LTV before spending on marketing. Growth without margin is a slow bleed.",
+    "Startup India Seed Fund offers non-dilutive capital. Always check eligibility first.",
+    "Your risk score reflects what investors see too. Address the top risks before pitching.",
+    "DPIIT-recognised startups get 80IC tax exemption. File early.",
+    "Mudra loans are an underutilised resource for micro-businesses. Explore all three tiers.",
+    "Network with other founders, not just investors. The best intros come from peers.",
+    "Build in public. Sharing your journey builds trust and attracts customers.",
+    "Speed is your advantage over big companies. Ship, learn, iterate.",
+  ];
+  let ti = Math.floor(Math.random() * TIPS.length);
+  function showTip() {
+    const e = document.getElementById("founder-tip");
+    if (e) e.textContent = TIPS[ti];
+  }
+  function nextTip() {
+    ti = (ti + 1) % TIPS.length;
+    showTip();
+  }
+  showTip();
 </script>
 {% endblock %}

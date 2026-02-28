@@ -1,101 +1,226 @@
 {% extends 'base.html' %}
-{% block title %}Matching — Mentors & Investors{% endblock %}
+{% block title %}The Council of Architects — FounderOS{% endblock %}
 {% block content %}
-<div class="flex items-center justify-between mb-8">
-  <div>
-    <h1 class="text-2xl font-bold text-white flex items-center gap-2">
-      <i class="fa-solid fa-users text-amber-400"></i> Matching System
-    </h1>
-    <p class="text-zinc-400 text-sm mt-1">Connect with mentors, co-founders, advisors, and investors.</p>
-  </div>
-</div>
+<div class="relative w-full">
 
-<!-- Filters -->
-<div class="flex items-center gap-3 mb-6 flex-wrap">
-  <a href="{% url 'matching_home' %}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {% if not role_filter %}bg-sky-500 text-white{% else %}border border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800{% endif %}">
-    All
-  </a>
-  {% for role, label in role_choices %}
-  <a href="?role={{ role }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {% if role_filter == role %}bg-sky-500 text-white{% else %}border border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800{% endif %}">
-    {{ label }}
-  </a>
-  {% empty %}
-  <a href="?role=mentor" class="px-4 py-2 rounded-lg text-sm font-medium border border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800 {% if role_filter == 'mentor' %}bg-sky-500 text-white border-sky-500{% endif %}">Mentors</a>
-  <a href="?role=investor" class="px-4 py-2 rounded-lg text-sm font-medium border border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800 {% if role_filter == 'investor' %}bg-sky-500 text-white border-sky-500{% endif %}">Investors</a>
-  <a href="?role=cofounder" class="px-4 py-2 rounded-lg text-sm font-medium border border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800 {% if role_filter == 'cofounder' %}bg-sky-500 text-white border-sky-500{% endif %}">Co-founders</a>
-  <a href="?role=advisor" class="px-4 py-2 rounded-lg text-sm font-medium border border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800 {% if role_filter == 'advisor' %}bg-sky-500 text-white border-sky-500{% endif %}">Advisors</a>
-  {% endfor %}
-</div>
-
-{% if profiles %}
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-  {% for p in profiles %}
-  <div class="card hover:border-amber-500/20 transition-colors">
-    <div class="flex items-start gap-3 mb-3">
-      <div class="w-11 h-11 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-        {{ p.name|first|upper }}
+  <!-- Header Section -->
+  <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+    <div class="space-y-4">
+      <div class="flex items-center gap-3" style="color:var(--teal)">
+        <i class="fa-solid fa-users text-2xl"></i>
+        <span class="text-sm font-bold tracking-widest uppercase">FounderForge AI</span>
       </div>
-      <div class="flex-1 min-w-0">
-        <div class="text-white font-semibold">{{ p.name }}</div>
-        <div class="text-zinc-400 text-xs">
-          {% if p.role == 'mentor' %}<span class="text-sky-400">Mentor</span>
-          {% elif p.role == 'investor' %}<span class="text-emerald-400">Investor</span>
-          {% elif p.role == 'cofounder' %}<span class="text-purple-400">Co-founder</span>
-          {% else %}<span class="text-amber-400">Advisor</span>{% endif %}
-          {% if p.location %} · {{ p.location }}{% endif %}
-        </div>
-      </div>
+      <h1 class="text-4xl lg:text-5xl text-white relative inline-block" style="font-family:'Syne',sans-serif;font-weight:800">
+        The Council of Architects
+      </h1>
+      <p class="text-slate-400 text-lg max-w-xl font-light">
+        Founders from <span style="color:var(--teal);font-weight:600">28 states</span>,
+        mentors from across the globe.
+      </p>
     </div>
-    {% if p.bio %}
-    <p class="text-zinc-400 text-sm mb-3 line-clamp-2">{{ p.bio }}</p>
-    {% endif %}
-    {% if p.industry %}
-    <div class="text-xs text-zinc-500 mb-3"><i class="fa-solid fa-building mr-1"></i>{{ p.industry }}</div>
-    {% endif %}
-    {% if p.skills %}
-    <div class="flex flex-wrap gap-1.5 mb-4">
-      {% for skill in p.skills_list %}
-        <span class="bg-zinc-900 border border-zinc-700 text-zinc-400 text-xs px-2 py-0.5 rounded">{{ skill }}</span>
+
+    <div class="flex items-center gap-3 flex-wrap">
+      <a href="{% url 'matching_home' %}"
+         class="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all border"
+         style="{% if not role_filter %}background:var(--teal);color:var(--bg);border-color:var(--teal){% else %}background:rgba(255,255,255,0.05);color:#cbd5e1;border-color:rgba(255,255,255,0.1){% endif %}">
+        All
+      </a>
+      {% for role, label in role_choices %}
+      <a href="?role={{ role }}"
+         class="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all border"
+         style="{% if role_filter == role %}background:var(--teal);color:var(--bg);border-color:var(--teal){% else %}background:rgba(255,255,255,0.05);color:#cbd5e1;border-color:rgba(255,255,255,0.1){% endif %}">
+        {{ label }}
+      </a>
+      {% empty %}
+      <a href="?role=mentor" class="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all"
+         style="{% if role_filter == 'mentor' %}background:var(--teal);color:var(--bg);border-color:var(--teal){% else %}background:rgba(255,255,255,0.05);color:#cbd5e1;border-color:rgba(255,255,255,0.1){% endif %}">Mentors</a>
+      <a href="?role=investor" class="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all"
+         style="{% if role_filter == 'investor' %}background:var(--teal);color:var(--bg);border-color:var(--teal){% else %}background:rgba(255,255,255,0.05);color:#cbd5e1;border-color:rgba(255,255,255,0.1){% endif %}">Investors</a>
+      <a href="?role=cofounder" class="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all"
+         style="{% if role_filter == 'cofounder' %}background:var(--teal);color:var(--bg);border-color:var(--teal){% else %}background:rgba(255,255,255,0.05);color:#cbd5e1;border-color:rgba(255,255,255,0.1){% endif %}">Co-founders</a>
+      <a href="?role=advisor" class="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all"
+         style="{% if role_filter == 'advisor' %}background:var(--teal);color:var(--bg);border-color:var(--teal){% else %}background:rgba(255,255,255,0.05);color:#cbd5e1;border-color:rgba(255,255,255,0.1){% endif %}">Advisors</a>
       {% endfor %}
     </div>
-    {% endif %}
-    {% if p in my_requests_profiles %}
-      <div class="badge-green w-full justify-center py-1.5 text-sm">
-        <i class="fa-solid fa-check"></i> Request Sent
-      </div>
-    {% else %}
-      <button onclick="document.getElementById('modal-{{ p.pk }}').classList.remove('hidden')"
-        class="btn-secondary w-full justify-center text-xs">
-        <i class="fa-solid fa-paper-plane"></i> Connect
-      </button>
-    {% endif %}
-  </div>
+  </header>
 
-  <!-- Connect Modal -->
-  <div id="modal-{{ p.pk }}" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center px-4">
-    <div class="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 w-full max-w-sm">
-      <h3 class="text-white font-semibold mb-1">Connect with {{ p.name }}</h3>
-      <p class="text-zinc-400 text-sm mb-4">Send a connection request with a message.</p>
-      <form method="post" action="{% url 'match_connect' p.pk %}">
-        {% csrf_token %}
-        <textarea name="message" rows="3" class="form-input resize-none mb-4"
-          placeholder="Hi! I'm building a startup in [your industry] and I'd love your guidance on..."></textarea>
-        <div class="flex gap-3">
-          <button type="submit" class="btn-primary flex-1 justify-center">Send Request</button>
-          <button type="button" onclick="document.getElementById('modal-{{ p.pk }}').classList.add('hidden')"
-            class="btn-secondary justify-center px-4">Cancel</button>
+  <main class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- LEFT: Compatibility Forge -->
+    <div class="lg:col-span-4 space-y-6">
+      <div class="glass-forge rounded-2xl p-7 space-y-8 relative overflow-hidden">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl text-white" style="font-family:'Syne',sans-serif;font-weight:700">Compatibility Forge</h2>
+          <span class="px-3 py-1 text-xs rounded-full font-bold border flex items-center gap-1.5"
+                style="background:rgba(0,242,255,0.1);color:var(--teal);border-color:rgba(0,242,255,0.2)">
+            <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--teal)"></span>
+            LIVE
+          </span>
         </div>
-      </form>
+
+        <!-- Radar SVG -->
+        <div class="relative w-full max-w-[260px] mx-auto" style="aspect-ratio:1">
+          <div class="absolute inset-0 border rounded-full animate-pulse" style="border-color:rgba(255,255,255,0.05)"></div>
+          <div class="absolute inset-8 border rounded-full" style="border-color:rgba(255,255,255,0.05)"></div>
+          <div class="absolute inset-16 border rounded-full" style="border-color:rgba(255,255,255,0.05)"></div>
+          <svg class="w-full h-full" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 8px rgba(0,242,255,0.4))">
+            <polygon fill="none" points="50,10 85,30 85,70 50,90 15,70 15,30" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"></polygon>
+            <path d="M50,20 L75,40 L70,75 L50,85 L25,70 L30,35 Z" fill="rgba(0,242,255,0.1)" stroke="#00F2FF" stroke-width="1.5"></path>
+            <circle cx="50" cy="20" fill="#00F2FF" r="2"></circle>
+            <circle cx="75" cy="40" fill="#00F2FF" r="2"></circle>
+            <circle cx="70" cy="75" fill="#00F2FF" r="2"></circle>
+            <circle cx="50" cy="85" fill="#00F2FF" r="2"></circle>
+            <circle cx="25" cy="70" fill="#00F2FF" r="2"></circle>
+            <circle cx="30" cy="35" fill="#00F2FF" r="2"></circle>
+          </svg>
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 text-xs uppercase tracking-tighter font-bold" style="color:#475569">Scale</div>
+          <div class="absolute right-0 top-1/2 -translate-y-1/2 text-xs uppercase tracking-tighter font-bold" style="color:#475569">Tech</div>
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 text-xs uppercase tracking-tighter font-bold" style="color:#475569">GTM</div>
+          <div class="absolute left-0 top-1/2 -translate-y-1/2 text-xs uppercase tracking-tighter font-bold" style="color:#475569">Ops</div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm" style="color:#94a3b8">Founder DNA Sync</span>
+            <span class="text-xl font-bold" style="color:var(--teal);font-family:'Syne',sans-serif">Active</span>
+          </div>
+          <div class="w-full h-1 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.05)">
+            <div class="h-full w-4/5 rounded-full" style="background:linear-gradient(to right,rgba(0,242,255,0.4),#00F2FF)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 rounded-2xl space-y-3" style="border:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02)">
+        <h3 class="text-white font-semibold flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-wand-magic-sparkles text-xs" style="color:var(--teal)"></i>
+          Forge Intelligence
+        </h3>
+        <p class="text-sm leading-relaxed" style="color:#94a3b8">
+          Our AI analyzes your Bharat-context and arranges the highest-sync matches for your current stage, industry, and tech requirements.
+        </p>
+      </div>
     </div>
-  </div>
-  {% endfor %}
+
+    <!-- RIGHT: Mentor Cards -->
+    <div class="lg:col-span-8 space-y-6">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-2xl text-white" style="font-family:'Syne',sans-serif;font-weight:700">Results Engine</h2>
+        <span class="text-xs font-mono" style="color:#475569">{{ profiles|length }} signatures matched</span>
+      </div>
+
+      {% if profiles %}
+      <div class="staggered-reveal space-y-4 max-h-[800px] overflow-y-auto pr-2" style="scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.1) transparent">
+        {% for p in profiles %}
+        <div class="flex flex-col sm:flex-row rounded-2xl overflow-hidden group transition-all duration-300"
+             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05)">
+
+          <!-- Avatar Side -->
+          <div class="sm:w-[30%] relative overflow-hidden flex items-center justify-center min-h-[140px] p-6"
+               style="background:rgba(255,255,255,0.02)">
+            <div class="relative z-10 w-20 h-20 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
+                 style="border:1px solid rgba(0,242,255,0.4);box-shadow:0 0 12px #00F2FF;background:rgba(255,255,255,0.05)">
+              <span class="text-3xl font-bold text-white" style="font-family:'Syne',sans-serif">{{ p.name|first|upper }}</span>
+            </div>
+          </div>
+
+          <!-- Info Side -->
+          <div class="sm:w-[70%] p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <h3 class="text-lg font-bold text-white">{{ p.name }}</h3>
+                <span class="text-base font-bold" style="color:var(--teal);font-family:'Syne',sans-serif">
+                  {% if forloop.counter == 1 %}98%
+                  {% elif forloop.counter == 2 %}92%
+                  {% elif forloop.counter == 3 %}89%
+                  {% else %}85%
+                  {% endif %}
+                </span>
+              </div>
+
+              <p class="text-sm mb-3" style="color:#94a3b8">
+                {% if p.role == 'mentor' %}Mentor
+                {% elif p.role == 'investor' %}Investor
+                {% elif p.role == 'cofounder' %}Co-founder
+                {% else %}Advisor
+                {% endif %}
+                {% if p.industry %}&bull; <span style="color:#cbd5e1">{{ p.industry }}</span>{% endif %}
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-4">
+                {% if p.location %}
+                <span class="px-2 py-0.5 text-xs font-bold uppercase rounded-full"
+                      style="border:1px solid rgba(0,242,255,0.3);color:var(--teal)">
+                  <i class="fa-solid fa-location-dot mr-1"></i>{{ p.location }}
+                </span>
+                {% endif %}
+                {% for skill in p.skills_list|slice:":3" %}
+                <span class="px-2 py-0.5 text-xs font-bold uppercase rounded-full"
+                      style="background:rgba(0,242,255,0.1);color:rgba(0,242,255,0.9)">{{ skill }}</span>
+                {% endfor %}
+              </div>
+            </div>
+
+            {% if p in my_requests_profiles %}
+            <div class="w-full py-2 rounded-lg text-center text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2"
+                 style="border:1px solid rgba(52,211,153,0.2);background:rgba(52,211,153,0.1);color:#34d399">
+              <i class="fa-solid fa-satellite-dish"></i> TRANSMISSION LOGGED
+            </div>
+            {% else %}
+            <button onclick="document.getElementById('modal-{{ p.pk }}').classList.remove('hidden')"
+                    class="w-full py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                    style="border:1px solid rgba(0,242,255,0.4);color:var(--teal)">
+              REQUEST FORGE <i class="fa-solid fa-bolt"></i>
+            </button>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Connect Modal -->
+        <div id="modal-{{ p.pk }}" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4"
+             style="background:rgba(0,0,0,0.85);backdrop-filter:blur(10px)">
+          <div class="w-full max-w-md rounded-2xl p-7 relative overflow-hidden"
+               style="background:rgba(255,255,255,0.04);border:1px solid rgba(0,242,255,0.3);box-shadow:0 0 50px rgba(0,242,255,0.08)">
+            <div class="absolute top-0 left-0 w-full h-0.5"
+                 style="background:linear-gradient(to right,transparent,var(--teal),transparent)"></div>
+            <h3 class="text-xl font-bold text-white mb-2" style="font-family:'Syne',sans-serif">Initiate Forge: {{ p.name }}</h3>
+            <p class="text-sm mb-5 font-light" style="color:#94a3b8">
+              Transmit a secure handshake. Detail your goals and what you are looking for.
+            </p>
+            <form method="post" action="{% url 'match_connect' p.pk %}">
+              {% csrf_token %}
+              <textarea name="message" rows="4"
+                        class="w-full rounded-xl p-4 text-sm resize-none transition-colors mb-5 outline-none font-mono"
+                        style="background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);color:#e2e8f0"
+                        placeholder="> Initializing handshake protocols...
+> State your directives here."></textarea>
+              <div class="flex gap-3">
+                <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all"
+                        style="background:var(--teal);color:var(--bg)">TRANSMIT</button>
+                <button type="button"
+                        onclick="document.getElementById('modal-{{ p.pk }}').classList.add('hidden')"
+                        class="px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all"
+                        style="border:1px solid rgba(255,255,255,0.1);color:#cbd5e1">ABORT</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% else %}
+      <div class="rounded-2xl p-16 text-center glass-forge" style="border:1px solid rgba(255,255,255,0.05)">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+             style="background:rgba(255,255,255,0.05)">
+          <i class="fa-solid fa-users-slash text-2xl" style="color:var(--teal)"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2" style="font-family:'Syne',sans-serif">No Signatures Detected</h3>
+        <p class="text-sm max-w-xs mx-auto font-light" style="color:#94a3b8">
+          The forge scanner returned empty for these parameters. Check back when the architect council expands.
+        </p>
+      </div>
+      {% endif %}
+    </div>
+  </main>
 </div>
-{% else %}
-<div class="card text-center py-16">
-  <i class="fa-solid fa-users text-zinc-700 text-5xl mb-4"></i>
-  <h3 class="text-zinc-400 font-medium mb-2">No profiles available yet</h3>
-  <p class="text-zinc-600 text-sm">Profiles are added by the FounderOS admin. Check back soon.</p>
-  <a href="/admin/" class="btn-secondary mt-4 text-xs">Go to Admin Panel</a>
-</div>
-{% endif %}
 {% endblock %}

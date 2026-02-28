@@ -1,44 +1,121 @@
-{% extends 'base.html' %}
-{% block title %}Create Account{% endblock %}
-{% block public_content %}
-<div class="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
-  <div class="w-full max-w-md">
+{% extends 'base.html' %} {% load static %} {% block title %}Create Account{%
+endblock %} {% block public_content %}
+<style>
+  /* ── Auth page specific animations ── */
+  @keyframes float-logo {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+  .auth-logo-float {
+    animation: float-logo 4s ease-in-out infinite;
+  }
+  @keyframes btn-glow-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.25);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(14, 165, 233, 0.5);
+    }
+  }
+  .btn-auth {
+    animation: btn-glow-pulse 3s ease-in-out infinite;
+  }
+  .btn-auth:hover {
+    animation: none;
+    box-shadow: 0 0 35px rgba(14, 165, 233, 0.6);
+    transform: translateY(-1px);
+  }
+  .btn-auth:active {
+    transform: scale(0.98) translateY(0);
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+  }
+  .form-input-auth {
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .form-input-auth:focus {
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+  }
+</style>
+
+<div
+  class="min-h-screen bg-zinc-950 flex items-center justify-center px-4 py-8"
+>
+  <!-- Background glow -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div
+      class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-sky-500/5 rounded-full blur-3xl"
+    ></div>
+  </div>
+
+  <div class="w-full max-w-md relative z-10">
     <!-- Logo -->
-    <div class="text-center mb-8">
-      <a href="/" class="inline-flex items-center gap-2.5">
-        <div class="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center">
-          <i class="fa-solid fa-rocket text-white"></i>
-        </div>
-        <span class="font-bold text-white text-xl">FounderOS</span>
+    <div class="text-center mb-8 anim-fade-up delay-100">
+      <a href="/" class="inline-block mx-auto auth-logo-float">
+        <img
+          src="{% static 'images/logo_white_icon.png' %}"
+          class="h-16 w-auto mx-auto drop-shadow-[0_0_20px_rgba(14,165,233,0.4)]"
+          alt="FounderOS"
+        />
       </a>
-      <p class="text-zinc-400 mt-3 text-sm">Create your founder account</p>
+      <p class="text-zinc-500 mt-4 text-sm font-medium tracking-wide">
+        Create your founder account
+      </p>
     </div>
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
-      {% if messages %}
-        {% for msg in messages %}
-          <div class="mb-4 px-3 py-2.5 rounded-lg bg-red-900/30 border border-red-800 text-red-300 text-sm">{{ msg }}</div>
-        {% endfor %}
-      {% endif %}
+    <div
+      class="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-8 shadow-2xl anim-fade-up delay-200"
+    >
+      {% if messages %} {% for msg in messages %}
+      <div
+        class="mb-4 px-3 py-2.5 rounded-lg bg-red-900/30 border border-red-800 text-red-300 text-sm"
+      >
+        {{ msg }}
+      </div>
+      {% endfor %} {% endif %}
 
       <form method="post" action="{% url 'signup' %}">
         {% csrf_token %}
         <div class="space-y-4">
           <div>
             <label class="form-label">Username *</label>
-            <input type="text" name="username" required class="form-input" placeholder="yourname" />
+            <input
+              type="text"
+              name="username"
+              required
+              class="form-input form-input-auth"
+              placeholder="yourname"
+            />
           </div>
           <div>
             <label class="form-label">Email *</label>
-            <input type="email" name="email" required class="form-input" placeholder="you@example.com" />
+            <input
+              type="email"
+              name="email"
+              required
+              class="form-input form-input-auth"
+              placeholder="you@example.com"
+            />
           </div>
           <div>
             <label class="form-label">Startup Name</label>
-            <input type="text" name="startup_name" class="form-input" placeholder="My Awesome Startup" />
+            <input
+              type="text"
+              name="startup_name"
+              class="form-input form-input-auth"
+              placeholder="My Awesome Startup"
+            />
           </div>
           <div>
             <label class="form-label">Industry</label>
-            <select name="industry" class="form-input">
+            <select name="industry" class="form-input form-input-auth">
               <option value="tech">Technology</option>
               <option value="agri">Agriculture</option>
               <option value="health">Healthcare</option>
@@ -51,24 +128,49 @@
           </div>
           <div>
             <label class="form-label">Location</label>
-            <input type="text" name="location" class="form-input" placeholder="City, State" />
+            <input
+              type="text"
+              name="location"
+              class="form-input form-input-auth"
+              placeholder="City, State"
+            />
           </div>
           <div>
             <label class="form-label">Password *</label>
-            <input type="password" name="password" required class="form-input" placeholder="••••••••" />
+            <input
+              type="password"
+              name="password"
+              required
+              class="form-input form-input-auth"
+              placeholder="••••••••"
+            />
           </div>
           <div>
             <label class="form-label">Confirm Password *</label>
-            <input type="password" name="password2" required class="form-input" placeholder="••••••••" />
+            <input
+              type="password"
+              name="password2"
+              required
+              class="form-input form-input-auth"
+              placeholder="••••••••"
+            />
           </div>
         </div>
-        <button type="submit" class="w-full mt-6 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+        <button
+          type="submit"
+          class="btn-auth w-full mt-6 bg-sky-500 hover:bg-sky-400 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-200"
+        >
           <i class="fa-solid fa-rocket text-sm"></i> Create Account
         </button>
       </form>
 
-      <p class="text-center text-zinc-500 text-sm mt-5">
-        Already have an account? <a href="{% url 'login' %}" class="text-sky-400 hover:text-sky-300">Sign in</a>
+      <p class="text-center text-zinc-500 text-sm mt-5 anim-fade-up delay-300">
+        Already have an account?
+        <a
+          href="{% url 'login' %}"
+          class="text-sky-400 hover:text-sky-300 font-medium transition-colors"
+          >Sign in</a
+        >
       </p>
     </div>
   </div>

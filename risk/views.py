@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from founderos.utils import ratelimit
 from .models import RiskReport
 from founderos.ai_service import generate_risk_analysis
 import json
@@ -14,6 +15,7 @@ def risk_home(request):
 
 
 @login_required
+@ratelimit(key='user', rate='5/h', block=True)
 def risk_analyze(request):
     if request.method == 'POST':
         startup_name = request.POST.get('startup_name', '').strip()

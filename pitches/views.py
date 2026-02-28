@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from founderos.utils import ratelimit
 from .models import Pitch
 from founderos.ai_service import generate_pitch_analysis
+import os
 import json
 
 
@@ -13,6 +15,7 @@ def pitch_lab(request):
 
 
 @login_required
+@ratelimit(key='user', rate='10/h', block=True)
 def pitch_create(request):
     if request.method == 'POST':
         title = request.POST.get('title', '').strip()
@@ -22,10 +25,19 @@ def pitch_create(request):
             return redirect('pitch_lab')
 
         pitch = Pitch(user=request.user, title=title, description=description)
+        
+        ALLOWED_EXTENSIONS = ['.pdf', '.doc', '.docx', '.jpg', '.png']
         if 'file' in request.FILES:
-            pitch.file = request.FILES['file']
+            uploaded_file = request.FILES['file']
+            ext = os.path.splitext(uploaded_file.name)[1].lower()
+            if ext not in ALLOWED_EXTENSIONS:
+                messages.error(request, f'Unsupported file type: {ext}. Allowed: PDF, Word, Image.')
+                return redirect('pitch_lab')
+            pitch.file = uploaded_file
+            
         if 'video' in request.FILES:
             pitch.video = request.FILES['video']
+            
         pitch.save()
 
         # Generate AI analysis

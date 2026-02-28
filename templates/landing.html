@@ -1,24 +1,47 @@
-{% extends 'base.html' %}
-{% block title %}FounderOS — Startup Validation Platform{% endblock %}
-
-{% block public_content %}
+{% extends 'base_landing.html' %} {% load static %} {% block title %}FounderOS —
+Startup Validation Platform{% endblock %} {% block public_content %}
 <!-- ==================== NAVBAR ==================== -->
-<nav class="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-xl border-b border-white/5">
+<nav
+  class="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-xl border-b border-white/5"
+>
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-3">
-      <div class="w-9 h-9 bg-gradient-to-br from-sky-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-sky-500/30">
-        <i class="fa-solid fa-rocket text-white text-sm"></i>
-      </div>
-      <span class="lp-brand font-bold text-white text-xl">Founder<span class="text-sky-400">OS</span></span>
+    <a href="/" class="flex items-center gap-3 group">
+      <img
+        src="{% static 'images/logo_white_icon.png' %}"
+        alt="FounderOS"
+        class="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+      />
+      <span class="lp-brand font-bold text-white text-xl"
+        >Founder<span class="text-sky-400">OS</span></span
+      >
     </a>
     <div class="hidden md:flex items-center gap-8">
-      <a href="#features" class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors">Features</a>
-      <a href="#how-it-works" class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors">How It Works</a>
-      <a href="#schemes" class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors">Funding</a>
+      <a
+        href="#features"
+        class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors"
+        >Features</a
+      >
+      <a
+        href="#how-it-works"
+        class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors"
+        >How It Works</a
+      >
+      <a
+        href="#schemes"
+        class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors"
+        >Funding</a
+      >
     </div>
     <div class="flex items-center gap-3">
-      <a href="{% url 'login' %}" class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors px-4 py-2">Login</a>
-      <a href="{% url 'signup' %}" class="lp-body bg-sky-500 hover:bg-sky-400 text-white font-semibold px-5 py-2.5 rounded-xl transition-all text-sm shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40">
+      <a
+        href="{% url 'login' %}"
+        class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors px-4 py-2"
+        >Login</a
+      >
+      <a
+        href="{% url 'signup' %}"
+        class="lp-body bg-sky-500 hover:bg-sky-400 text-white font-semibold px-5 py-2.5 rounded-xl transition-all text-sm shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40"
+      >
         Get Started Free
       </a>
     </div>
@@ -26,40 +49,70 @@
 </nav>
 
 <!-- ==================== HERO + GLOBE ==================== -->
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+<section
+  class="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+>
   <!-- Globe Canvas -->
-  <canvas id="globe-canvas" class="absolute inset-0 w-full h-full opacity-75"></canvas>
+  <canvas
+    id="globe-canvas"
+    class="absolute inset-0 w-full h-full opacity-75"
+  ></canvas>
 
   <!-- Radial gradient overlay to fade globe edges -->
   <div class="absolute inset-0 bg-radial-gradient pointer-events-none"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none"></div>
-  <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none"></div>
+  <div
+    class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none"
+  ></div>
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none"
+  ></div>
 
   <!-- Hero text -->
   <div class="relative z-10 max-w-5xl mx-auto text-center px-6 pt-20">
-    <div class="inline-flex items-center gap-2 bg-sky-500/10 border border-sky-500/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-sky-400 text-sm font-medium mb-8" style="font-family:'DM Sans',sans-serif;">
+    <div
+      class="inline-flex items-center gap-2 bg-sky-500/10 border border-sky-500/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-sky-400 text-sm font-medium mb-8"
+      style="font-family: &quot;DM Sans&quot;, sans-serif"
+    >
       <i class="fa-solid fa-circle-nodes text-xs animate-pulse"></i>
       AI-Powered Startup Intelligence for India
     </div>
 
-    <h1 class="lp-h1 text-6xl md:text-8xl font-black text-white leading-none mb-6">
-      Your Startup's<br>
+    <h1
+      class="lp-h1 text-6xl md:text-8xl font-black text-white leading-none mb-6"
+    >
+      Your Startup's<br />
       <span class="relative inline-block">
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-blue-400 to-indigo-400">Operating System</span>
-        <span class="absolute -inset-1 bg-sky-500/10 blur-2xl rounded-full"></span>
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-blue-400 to-indigo-400"
+          >Operating System</span
+        >
+        <span
+          class="absolute -inset-1 bg-sky-500/10 blur-2xl rounded-full"
+        ></span>
       </span>
     </h1>
 
-    <p class="lp-body text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-      Validate ideas, analyze risks, discover government funding, and connect with mentors — built specifically for Tier-2 and Tier-3 founders.
+    <p
+      class="lp-body text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+    >
+      Validate ideas, analyze risks, discover government funding, and connect
+      with mentors — built specifically for Tier-2 and Tier-3 founders.
     </p>
 
     <div class="flex items-center justify-center gap-4 flex-wrap">
-      <a href="{% url 'signup' %}" class="lp-body group relative bg-sky-500 hover:bg-sky-400 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 text-base inline-flex items-center gap-2.5 shadow-2xl shadow-sky-500/30 hover:shadow-sky-500/50 hover:scale-105">
-        <i class="fa-solid fa-rocket text-sm group-hover:rotate-12 transition-transform"></i>
+      <a
+        href="{% url 'signup' %}"
+        class="lp-body group relative bg-sky-500 hover:bg-sky-400 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 text-base inline-flex items-center gap-2.5 shadow-2xl shadow-sky-500/30 hover:shadow-sky-500/50 hover:scale-105"
+      >
+        <i
+          class="fa-solid fa-rocket text-sm group-hover:rotate-12 transition-transform"
+        ></i>
         Start Validating &mdash; Free
       </a>
-      <a href="{% url 'pitch_gallery' %}" class="lp-body group border border-white/10 bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 font-medium px-8 py-4 rounded-2xl transition-all duration-200 text-base inline-flex items-center gap-2.5 hover:border-white/20">
+      <a
+        href="{% url 'pitch_gallery' %}"
+        class="lp-body group border border-white/10 bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 font-medium px-8 py-4 rounded-2xl transition-all duration-200 text-base inline-flex items-center gap-2.5 hover:border-white/20"
+      >
         <i class="fa-solid fa-film text-sm text-sky-400"></i>
         Browse Pitch Gallery
       </a>
@@ -69,24 +122,38 @@
     <div class="mt-16 flex items-center justify-center gap-12 flex-wrap">
       <div class="text-center">
         <div class="lp-stat text-4xl font-black text-white">5+</div>
-        <div class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider">AI Modules</div>
+        <div
+          class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider"
+        >
+          AI Modules
+        </div>
       </div>
       <div class="w-px h-10 bg-zinc-800"></div>
       <div class="text-center">
         <div class="lp-stat text-4xl font-black text-white">8+</div>
-        <div class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider">Gov. Schemes</div>
+        <div
+          class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider"
+        >
+          Gov. Schemes
+        </div>
       </div>
       <div class="w-px h-10 bg-zinc-800"></div>
       <div class="text-center">
         <div class="lp-stat text-4xl font-black text-white">100%</div>
-        <div class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider">Free to Use</div>
+        <div
+          class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider"
+        >
+          Free to Use
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Scroll hint -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-    <div class="w-6 h-10 border-2 border-zinc-700 rounded-full flex items-start justify-center p-1.5">
+  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+    <div
+      class="w-6 h-10 border-2 border-zinc-700 rounded-full flex items-start justify-center p-1.5"
+    >
       <div class="w-1.5 h-3 bg-sky-400 rounded-full animate-scroll-dot"></div>
     </div>
   </div>
@@ -96,83 +163,145 @@
 <section id="features" class="py-32 px-6 bg-black">
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-20">
-      <div class="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-full px-4 py-1.5 text-zinc-400 text-xs font-medium mb-6 uppercase tracking-widest" style="font-family:'DM Sans',sans-serif;">
+      <div
+        class="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-full px-4 py-1.5 text-zinc-400 text-xs font-medium mb-6 uppercase tracking-widest"
+        style="font-family: &quot;DM Sans&quot;, sans-serif"
+      >
         <i class="fa-solid fa-layer-group text-sky-400"></i> Platform Features
       </div>
-      <h2 class="lp-h2 text-4xl md:text-5xl font-black text-white mb-5">Everything a First-Time Founder Needs</h2>
-      <p class="lp-body text-zinc-400 max-w-xl mx-auto text-lg">From idea to investor-ready in days, not months.</p>
+      <h2 class="lp-h2 text-4xl md:text-5xl font-black text-white mb-5">
+        Everything a First-Time Founder Needs
+      </h2>
+      <p class="lp-body text-zinc-400 max-w-xl mx-auto text-lg">
+        From idea to investor-ready in days, not months.
+      </p>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-900">
+    <div
+      class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-900"
+    >
       <!-- Feature 1 -->
       <div class="bg-black p-8 hover:bg-zinc-950 transition-colors group">
-        <div class="w-12 h-12 rounded-2xl bg-sky-500/10 flex items-center justify-center mb-5 group-hover:bg-sky-500/20 transition-colors">
+        <div
+          class="w-12 h-12 rounded-2xl bg-sky-500/10 flex items-center justify-center mb-5 group-hover:bg-sky-500/20 transition-colors"
+        >
           <i class="fa-solid fa-file-powerpoint text-sky-400 text-xl"></i>
         </div>
-        <h3 class="lp-h3 text-white font-bold text-xl mb-3">AI Pitch Generator</h3>
-        <p class="lp-body text-zinc-500 leading-relaxed">Upload your pitch and get instant scored feedback — clarity, engagement, investor readiness, strengths &amp; weaknesses.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-sky-400 text-sm font-medium lp-body">
-          <span>Gemini-powered</span><i class="fa-solid fa-arrow-right text-xs"></i>
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">
+          AI Pitch Generator
+        </h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">
+          Upload your pitch and get instant scored feedback — clarity,
+          engagement, investor readiness, strengths &amp; weaknesses.
+        </p>
+        <div
+          class="mt-5 flex items-center gap-1.5 text-sky-400 text-sm font-medium lp-body"
+        >
+          <span>Gemini-powered</span
+          ><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
 
       <!-- Feature 2 -->
       <div class="bg-black p-8 hover:bg-zinc-950 transition-colors group">
-        <div class="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center mb-5 group-hover:bg-red-500/20 transition-colors">
+        <div
+          class="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center mb-5 group-hover:bg-red-500/20 transition-colors"
+        >
           <i class="fa-solid fa-shield-halved text-red-400 text-xl"></i>
         </div>
-        <h3 class="lp-h3 text-white font-bold text-xl mb-3">Risk Intelligence</h3>
-        <p class="lp-body text-zinc-500 leading-relaxed">Full SWOT analysis + financial, market, and operational risk scores with AI-generated mitigation strategies.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-red-400 text-sm font-medium lp-body">
-          <span>SWOT + Risk Scores</span><i class="fa-solid fa-arrow-right text-xs"></i>
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">
+          Risk Intelligence
+        </h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">
+          Full SWOT analysis + financial, market, and operational risk scores
+          with AI-generated mitigation strategies.
+        </p>
+        <div
+          class="mt-5 flex items-center gap-1.5 text-red-400 text-sm font-medium lp-body"
+        >
+          <span>SWOT + Risk Scores</span
+          ><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
 
       <!-- Feature 3 -->
       <div class="bg-black p-8 hover:bg-zinc-950 transition-colors group">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5 group-hover:bg-emerald-500/20 transition-colors">
+        <div
+          class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5 group-hover:bg-emerald-500/20 transition-colors"
+        >
           <i class="fa-solid fa-landmark text-emerald-400 text-xl"></i>
         </div>
         <h3 class="lp-h3 text-white font-bold text-xl mb-3">Scheme Matching</h3>
-        <p class="lp-body text-zinc-500 leading-relaxed">Get matched with Startup India, Mudra, GENESIS, and 5+ other schemes based on your startup profile.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-emerald-400 text-sm font-medium lp-body">
+        <p class="lp-body text-zinc-500 leading-relaxed">
+          Get matched with Startup India, Mudra, GENESIS, and 5+ other schemes
+          based on your startup profile.
+        </p>
+        <div
+          class="mt-5 flex items-center gap-1.5 text-emerald-400 text-sm font-medium lp-body"
+        >
           <span>8+ schemes</span><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
 
       <!-- Feature 4 -->
       <div class="bg-black p-8 hover:bg-zinc-950 transition-colors group">
-        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-5 group-hover:bg-purple-500/20 transition-colors">
+        <div
+          class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-5 group-hover:bg-purple-500/20 transition-colors"
+        >
           <i class="fa-solid fa-film text-purple-400 text-xl"></i>
         </div>
         <h3 class="lp-h3 text-white font-bold text-xl mb-3">Pitch Gallery</h3>
-        <p class="lp-body text-zinc-500 leading-relaxed">Public pitch feed — share your video or text pitch with the community and get discovered by investors and mentors.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-purple-400 text-sm font-medium lp-body">
-          <span>Community powered</span><i class="fa-solid fa-arrow-right text-xs"></i>
+        <p class="lp-body text-zinc-500 leading-relaxed">
+          Public pitch feed — share your video or text pitch with the community
+          and get discovered by investors and mentors.
+        </p>
+        <div
+          class="mt-5 flex items-center gap-1.5 text-purple-400 text-sm font-medium lp-body"
+        >
+          <span>Community powered</span
+          ><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
 
       <!-- Feature 5 -->
       <div class="bg-black p-8 hover:bg-zinc-950 transition-colors group">
-        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5 group-hover:bg-amber-500/20 transition-colors">
+        <div
+          class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5 group-hover:bg-amber-500/20 transition-colors"
+        >
           <i class="fa-solid fa-users text-amber-400 text-xl"></i>
         </div>
         <h3 class="lp-h3 text-white font-bold text-xl mb-3">Smart Matching</h3>
-        <p class="lp-body text-zinc-500 leading-relaxed">Connect with mentors, co-founders, and investors matched by industry, stage, and location.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-amber-400 text-sm font-medium lp-body">
-          <span>6+ profiles ready</span><i class="fa-solid fa-arrow-right text-xs"></i>
+        <p class="lp-body text-zinc-500 leading-relaxed">
+          Connect with mentors, co-founders, and investors matched by industry,
+          stage, and location.
+        </p>
+        <div
+          class="mt-5 flex items-center gap-1.5 text-amber-400 text-sm font-medium lp-body"
+        >
+          <span>6+ profiles ready</span
+          ><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
 
       <!-- Feature 6 -->
       <div class="bg-black p-8 hover:bg-zinc-950 transition-colors group">
-        <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-5 group-hover:bg-cyan-500/20 transition-colors">
+        <div
+          class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-5 group-hover:bg-cyan-500/20 transition-colors"
+        >
           <i class="fa-solid fa-file-circle-check text-cyan-400 text-xl"></i>
         </div>
-        <h3 class="lp-h3 text-white font-bold text-xl mb-3">Doc Verification</h3>
-        <p class="lp-body text-zinc-500 leading-relaxed">Upload business documents for instant pass/fail validation with improvement suggestions.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-cyan-400 text-sm font-medium lp-body">
-          <span>Instant results</span><i class="fa-solid fa-arrow-right text-xs"></i>
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">
+          Doc Verification
+        </h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">
+          Upload business documents for instant pass/fail validation with
+          improvement suggestions.
+        </p>
+        <div
+          class="mt-5 flex items-center gap-1.5 text-cyan-400 text-sm font-medium lp-body"
+        >
+          <span>Instant results</span
+          ><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
     </div>
@@ -183,31 +312,52 @@
 <section id="how-it-works" class="py-32 px-6 bg-zinc-950">
   <div class="max-w-5xl mx-auto">
     <div class="text-center mb-20">
-      <h2 class="lp-h2 text-4xl md:text-5xl font-black text-white mb-4">From Idea to Validation in 3 Steps</h2>
+      <h2 class="lp-h2 text-4xl md:text-5xl font-black text-white mb-4">
+        From Idea to Validation in 3 Steps
+      </h2>
     </div>
     <div class="grid md:grid-cols-3 gap-8">
       <div class="relative text-center">
-        <div class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <div
+          class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+        >
           <span class="lp-stat text-sky-400 font-black text-2xl">1</span>
         </div>
         <h3 class="lp-h3 text-white font-bold text-lg mb-2">Create Profile</h3>
-        <p class="lp-body text-zinc-500 text-sm leading-relaxed">Sign up and set up your founder profile with startup details, industry, and stage.</p>
-        <div class="hidden md:block absolute top-8 left-3/4 w-full h-0.5 bg-gradient-to-r from-sky-500/50 to-transparent -translate-x-4"></div>
+        <p class="lp-body text-zinc-500 text-sm leading-relaxed">
+          Sign up and set up your founder profile with startup details,
+          industry, and stage.
+        </p>
+        <div
+          class="hidden md:block absolute top-8 left-3/4 w-full h-0.5 bg-gradient-to-r from-sky-500/50 to-transparent -translate-x-4"
+        ></div>
       </div>
       <div class="relative text-center">
-        <div class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <div
+          class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+        >
           <span class="lp-stat text-sky-400 font-black text-2xl">2</span>
         </div>
         <h3 class="lp-h3 text-white font-bold text-lg mb-2">Run AI Analysis</h3>
-        <p class="lp-body text-zinc-500 text-sm leading-relaxed">Submit your pitch and startup info. Get AI-powered risk scores, SWOT, and scheme matches instantly.</p>
-        <div class="hidden md:block absolute top-8 left-3/4 w-full h-0.5 bg-gradient-to-r from-sky-500/50 to-transparent -translate-x-4"></div>
+        <p class="lp-body text-zinc-500 text-sm leading-relaxed">
+          Submit your pitch and startup info. Get AI-powered risk scores, SWOT,
+          and scheme matches instantly.
+        </p>
+        <div
+          class="hidden md:block absolute top-8 left-3/4 w-full h-0.5 bg-gradient-to-r from-sky-500/50 to-transparent -translate-x-4"
+        ></div>
       </div>
       <div class="text-center">
-        <div class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <div
+          class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+        >
           <span class="lp-stat text-sky-400 font-black text-2xl">3</span>
         </div>
         <h3 class="lp-h3 text-white font-bold text-lg mb-2">Take Action</h3>
-        <p class="lp-body text-zinc-500 text-sm leading-relaxed">Apply for schemes, connect with mentors, and share your pitch in the community gallery.</p>
+        <p class="lp-body text-zinc-500 text-sm leading-relaxed">
+          Apply for schemes, connect with mentors, and share your pitch in the
+          community gallery.
+        </p>
       </div>
     </div>
   </div>
@@ -217,58 +367,67 @@
 <section id="schemes" class="py-20 px-6 bg-black border-t border-zinc-900">
   <div class="max-w-6xl mx-auto">
     <div class="text-center mb-12">
-      <h2 class="lp-h2 text-3xl font-black text-white mb-3">Government Schemes We Match You With</h2>
-      <p class="lp-body text-zinc-500">Real funding programs. Real eligibility matching.</p>
+      <h2 class="lp-h2 text-3xl font-black text-white mb-3">
+        Government Schemes We Match You With
+      </h2>
+      <p class="lp-body text-zinc-500">
+        Real funding programs. Real eligibility matching.
+      </p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       {% for scheme in landing_schemes %}
-      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 hover:border-emerald-500/30 transition-colors">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3">
-          <i class="fa-solid fa-landmark text-emerald-400 text-sm"></i>
-        </div>
-        <div class="lp-h3 text-white font-semibold text-sm mb-1">{{ scheme.name }}</div>
-        <div class="lp-body text-emerald-400 text-xs font-medium">{{ scheme.funding }}</div>
-        <div class="lp-body text-zinc-600 text-xs mt-1">{{ scheme.ministry }}</div>
-      </div>
-      {% empty %}
-      {% for s in "12345678" %}
-      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 hover:border-emerald-500/30 transition-colors">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3">
+      <div
+        class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 hover:border-emerald-500/30 transition-colors"
+      >
+        <div
+          class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"
+        >
           <i class="fa-solid fa-landmark text-emerald-400 text-sm"></i>
         </div>
         <div class="lp-h3 text-white font-semibold text-sm mb-1">
-          {% if forloop.counter == 1 %}Startup India Seed Fund
-          {% elif forloop.counter == 2 %}Mudra Yojana
-          {% elif forloop.counter == 3 %}GENESIS Scheme
-          {% elif forloop.counter == 4 %}Atal Innovation Mission
-          {% elif forloop.counter == 5 %}Stand Up India
-          {% elif forloop.counter == 6 %}SIDBI Startup Mitra
-          {% elif forloop.counter == 7 %}PM Vishwakarma
-          {% else %}Make in India{% endif %}
+          {{ scheme.name }}
         </div>
         <div class="lp-body text-emerald-400 text-xs font-medium">
-          {% if forloop.counter == 1 %}Up to &#8377;20 Lakhs
-          {% elif forloop.counter == 2 %}Up to &#8377;10 Lakhs
-          {% elif forloop.counter == 3 %}Up to &#8377;5 Crores
-          {% elif forloop.counter == 4 %}Up to &#8377;10 Lakhs
-          {% elif forloop.counter == 5 %}Up to &#8377;1 Crore
-          {% elif forloop.counter == 6 %}Up to &#8377;2 Crores
-          {% elif forloop.counter == 7 %}Up to &#8377;3 Lakhs
-          {% else %}Varies{% endif %}
+          {{ scheme.funding }}
         </div>
         <div class="lp-body text-zinc-600 text-xs mt-1">
-          {% if forloop.counter == 1 %}DPIIT
-          {% elif forloop.counter == 2 %}Min. of Finance
-          {% elif forloop.counter == 3 %}MeitY
-          {% elif forloop.counter == 4 %}NITI Aayog
-          {% elif forloop.counter == 5 %}Min. of Finance
-          {% elif forloop.counter == 6 %}SIDBI
-          {% elif forloop.counter == 7 %}MoMSME
-          {% else %}DIPP{% endif %}
+          {{ scheme.ministry }}
         </div>
       </div>
-      {% endfor %}
-      {% endfor %}
+      {% empty %} {% for s in "12345678" %}
+      <div
+        class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 hover:border-emerald-500/30 transition-colors"
+      >
+        <div
+          class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"
+        >
+          <i class="fa-solid fa-landmark text-emerald-400 text-sm"></i>
+        </div>
+        <div class="lp-h3 text-white font-semibold text-sm mb-1">
+          {% if forloop.counter == 1 %}Startup India Seed Fund{% elif
+          forloop.counter == 2 %}Mudra Yojana{% elif forloop.counter == 3
+          %}GENESIS Scheme{% elif forloop.counter == 4 %}Atal Innovation
+          Mission{% elif forloop.counter == 5 %}Stand Up India{% elif
+          forloop.counter == 6 %}SIDBI Startup Mitra{% elif forloop.counter == 7
+          %}PM Vishwakarma{% else %}Make in India{% endif %}
+        </div>
+        <div class="lp-body text-emerald-400 text-xs font-medium">
+          {% if forloop.counter == 1 %}Up to &#8377;20 Lakhs{% elif
+          forloop.counter == 2 %}Up to &#8377;10 Lakhs{% elif forloop.counter ==
+          3 %}Up to &#8377;5 Crores{% elif forloop.counter == 4 %}Up to
+          &#8377;10 Lakhs{% elif forloop.counter == 5 %}Up to &#8377;1 Crore{%
+          elif forloop.counter == 6 %}Up to &#8377;2 Crores{% elif
+          forloop.counter == 7 %}Up to &#8377;3 Lakhs{% else %}Varies{% endif %}
+        </div>
+        <div class="lp-body text-zinc-600 text-xs mt-1">
+          {% if forloop.counter == 1 %}DPIIT{% elif forloop.counter == 2 %}Min.
+          of Finance{% elif forloop.counter == 3 %}MeitY{% elif forloop.counter
+          == 4 %}NITI Aayog{% elif forloop.counter == 5 %}Min. of Finance{% elif
+          forloop.counter == 6 %}SIDBI{% elif forloop.counter == 7 %}MoMSME{%
+          else %}DIPP{% endif %}
+        </div>
+      </div>
+      {% endfor %} {% endfor %}
     </div>
   </div>
 </section>
@@ -276,205 +435,285 @@
 <!-- ==================== CTA ==================== -->
 <section class="py-32 px-6 bg-zinc-950 border-t border-zinc-900">
   <div class="max-w-3xl mx-auto text-center">
-    <div class="w-20 h-20 bg-sky-500/10 border border-sky-500/20 rounded-3xl flex items-center justify-center mx-auto mb-8">
+    <div
+      class="w-20 h-20 bg-sky-500/10 border border-sky-500/20 rounded-3xl flex items-center justify-center mx-auto mb-8"
+    >
       <i class="fa-solid fa-rocket text-sky-400 text-3xl"></i>
     </div>
-    <h2 class="lp-h2 text-5xl font-black text-white mb-5">Ready to Validate?</h2>
-    <p class="lp-body text-zinc-400 mb-10 text-lg">Join India's emerging founders building with clarity and confidence.</p>
-    <a href="{% url 'signup' %}" class="lp-body bg-sky-500 hover:bg-sky-400 text-white font-bold px-12 py-5 rounded-2xl transition-all inline-flex items-center gap-3 text-lg shadow-2xl shadow-sky-500/30 hover:shadow-sky-500/50 hover:scale-105">
+    <h2 class="lp-h2 text-5xl font-black text-white mb-5">
+      Ready to Validate?
+    </h2>
+    <p class="lp-body text-zinc-400 mb-10 text-lg">
+      Join India's emerging founders building with clarity and confidence.
+    </p>
+    <a
+      href="{% url 'signup' %}"
+      class="lp-body bg-sky-500 hover:bg-sky-400 text-white font-bold px-12 py-5 rounded-2xl transition-all inline-flex items-center gap-3 text-lg shadow-2xl shadow-sky-500/30 hover:shadow-sky-500/50 hover:scale-105"
+    >
       <i class="fa-solid fa-rocket"></i> Create Free Account
     </a>
   </div>
 </section>
 
 <!-- Footer -->
-<footer class="py-8 px-6 border-t border-zinc-900 bg-black text-center text-zinc-600 text-sm">
-  <p class="lp-body"><i class="fa-solid fa-rocket text-zinc-700 mr-2"></i> FounderOS &mdash; Built for India's Next Generation of Founders</p>
+<footer
+  class="py-8 px-6 border-t border-zinc-900 bg-black text-center text-zinc-600 text-sm"
+>
+  <p class="lp-body">
+    <i class="fa-solid fa-rocket text-zinc-700 mr-2"></i> FounderOS &mdash;
+    Built for India's Next Generation of Founders
+  </p>
 </footer>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <style>
   /* ── Landing-page exclusive fonts (Syne for display, DM Sans for body) ── */
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap");
 
-  .lp-h1, .lp-h2, .lp-h3, .lp-stat, .lp-brand {
-    font-family: 'Syne', system-ui, sans-serif;
+  .lp-h1,
+  .lp-h2,
+  .lp-h3,
+  .lp-stat,
+  .lp-brand {
+    font-family: "Syne", system-ui, sans-serif;
     letter-spacing: -0.025em;
   }
-  .lp-body, .lp-label {
-    font-family: 'DM Sans', system-ui, sans-serif;
+  .lp-body,
+  .lp-label {
+    font-family: "DM Sans", system-ui, sans-serif;
   }
 
-  @keyframes scroll-dot { 0%,100%{transform:translateY(0)}50%{transform:translateY(12px)} }
-  .animate-scroll-dot { animation: scroll-dot 1.5s ease-in-out infinite; }
-  #globe-canvas { display: block; }
+  @keyframes scroll-dot {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(12px);
+    }
+  }
+  .animate-scroll-dot {
+    animation: scroll-dot 1.5s ease-in-out infinite;
+  }
+  #globe-canvas {
+    display: block;
+  }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 <script>
-// ====== INTERACTIVE 3D GLOBE ======
-(function() {
-  const canvas = document.getElementById('globe-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 0);
+  // ====== INTERACTIVE 3D GLOBE ======
+  (function () {
+    const canvas = document.getElementById("globe-canvas");
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 0, 2.8);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      50,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000,
+    );
+    camera.position.set(0, 0, 2.8);
 
-  // Globe geometry
-  const globeGeo = new THREE.SphereGeometry(1, 64, 64);
+    // Globe geometry
+    const globeGeo = new THREE.SphereGeometry(1, 64, 64);
 
-  // Dotted texture for globe surface
-  function createGlobeTexture() {
-    const size = 2048;
-    const c = document.createElement('canvas');
-    c.width = size; c.height = size;
-    const ctx = c.getContext('2d');
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(0, 0, size, size);
+    // Dotted texture for globe surface
+    function createGlobeTexture() {
+      const size = 2048;
+      const c = document.createElement("canvas");
+      c.width = size;
+      c.height = size;
+      const ctx = c.getContext("2d");
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, size, size);
 
-    const dotSize = 2.2;
-    const spacing = 14;
-    for (let x = 0; x < size; x += spacing) {
-      for (let y = 0; y < size; y += spacing) {
-        const nx = x / size, ny = y / size;
-        const lat = (ny - 0.5) * Math.PI;
-        const cosLat = Math.cos(lat);
-        if (Math.random() > cosLat * 0.95) continue;
-        ctx.beginPath();
-        ctx.arc(x + (Math.random() - 0.5) * 3, y + (Math.random() - 0.5) * 3, dotSize, 0, Math.PI * 2);
-        const alpha = 0.25 + Math.random() * 0.35;
-        ctx.fillStyle = `rgba(56, 189, 248, ${alpha})`;
-        ctx.fill();
+      const dotSize = 2.2;
+      const spacing = 14;
+      for (let x = 0; x < size; x += spacing) {
+        for (let y = 0; y < size; y += spacing) {
+          const nx = x / size,
+            ny = y / size;
+          const lat = (ny - 0.5) * Math.PI;
+          const cosLat = Math.cos(lat);
+          if (Math.random() > cosLat * 0.95) continue;
+          ctx.beginPath();
+          ctx.arc(
+            x + (Math.random() - 0.5) * 3,
+            y + (Math.random() - 0.5) * 3,
+            dotSize,
+            0,
+            Math.PI * 2,
+          );
+          const alpha = 0.25 + Math.random() * 0.35;
+          ctx.fillStyle = `rgba(56, 189, 248, ${alpha})`;
+          ctx.fill();
+        }
       }
+      return new THREE.CanvasTexture(c);
     }
-    return new THREE.CanvasTexture(c);
-  }
 
-  const globeMat = new THREE.MeshPhongMaterial({
-    map: createGlobeTexture(),
-    transparent: true,
-    opacity: 0.85,
-  });
-  const globe = new THREE.Mesh(globeGeo, globeMat);
-  scene.add(globe);
+    const globeMat = new THREE.MeshPhongMaterial({
+      map: createGlobeTexture(),
+      transparent: true,
+      opacity: 0.85,
+    });
+    const globe = new THREE.Mesh(globeGeo, globeMat);
+    scene.add(globe);
 
-  // Atmosphere glow
-  const atmosGeo = new THREE.SphereGeometry(1.04, 64, 64);
-  const atmosMat = new THREE.ShaderMaterial({
-    uniforms: {},
-    vertexShader: `
+    // Atmosphere glow
+    const atmosGeo = new THREE.SphereGeometry(1.04, 64, 64);
+    const atmosMat = new THREE.ShaderMaterial({
+      uniforms: {},
+      vertexShader: `
       varying vec3 vNormal;
       void main() {
         vNormal = normalize(normalMatrix * normal);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,
-    fragmentShader: `
+      fragmentShader: `
       varying vec3 vNormal;
       void main() {
         float intensity = pow(0.65 - dot(vNormal, vec3(0,0,1)), 2.5);
         gl_FragColor = vec4(0.05, 0.45, 0.95, 1.0) * intensity * 1.2;
       }
     `,
-    side: THREE.FrontSide,
-    blending: THREE.AdditiveBlending,
-    transparent: true,
-  });
-  scene.add(new THREE.Mesh(atmosGeo, atmosMat));
+      side: THREE.FrontSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+    });
+    scene.add(new THREE.Mesh(atmosGeo, atmosMat));
 
-  // Outer glow ring
-  const ringGeo = new THREE.SphereGeometry(1.12, 64, 64);
-  const ringMat = new THREE.ShaderMaterial({
-    vertexShader: `varying vec3 vNormal; void main() { vNormal = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
-    fragmentShader: `varying vec3 vNormal; void main() { float i = pow(0.5 - dot(vNormal,vec3(0,0,1)),3.0); gl_FragColor = vec4(0.03, 0.3, 0.8, 0.15) * i; }`,
-    side: THREE.FrontSide,
-    blending: THREE.AdditiveBlending,
-    transparent: true,
-  });
-  scene.add(new THREE.Mesh(ringGeo, ringMat));
+    // Outer glow ring
+    const ringGeo = new THREE.SphereGeometry(1.12, 64, 64);
+    const ringMat = new THREE.ShaderMaterial({
+      vertexShader: `varying vec3 vNormal; void main() { vNormal = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+      fragmentShader: `varying vec3 vNormal; void main() { float i = pow(0.5 - dot(vNormal,vec3(0,0,1)),3.0); gl_FragColor = vec4(0.03, 0.3, 0.8, 0.15) * i; }`,
+      side: THREE.FrontSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+    });
+    scene.add(new THREE.Mesh(ringGeo, ringMat));
 
-  // Connection arcs
-  const arcGroup = new THREE.Group();
-  scene.add(arcGroup);
+    // Connection arcs
+    const arcGroup = new THREE.Group();
+    scene.add(arcGroup);
 
-  function latLongToVector3(lat, lon, r) {
-    const phi = (90 - lat) * (Math.PI / 180);
-    const theta = (lon + 180) * (Math.PI / 180);
-    return new THREE.Vector3(
-      -r * Math.sin(phi) * Math.cos(theta),
-       r * Math.cos(phi),
-       r * Math.sin(phi) * Math.sin(theta)
-    );
-  }
+    function latLongToVector3(lat, lon, r) {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lon + 180) * (Math.PI / 180);
+      return new THREE.Vector3(
+        -r * Math.sin(phi) * Math.cos(theta),
+        r * Math.cos(phi),
+        r * Math.sin(phi) * Math.sin(theta),
+      );
+    }
 
-  function createArc(p1, p2, color) {
-    const mid = p1.clone().add(p2).multiplyScalar(0.5).normalize().multiplyScalar(1.25);
-    const curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
-    const points = curve.getPoints(40);
-    const geo = new THREE.BufferGeometry().setFromPoints(points);
-    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.5, linewidth: 1 });
-    return new THREE.Line(geo, mat);
-  }
+    function createArc(p1, p2, color) {
+      const mid = p1
+        .clone()
+        .add(p2)
+        .multiplyScalar(0.5)
+        .normalize()
+        .multiplyScalar(1.25);
+      const curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
+      const points = curve.getPoints(40);
+      const geo = new THREE.BufferGeometry().setFromPoints(points);
+      const mat = new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.5,
+        linewidth: 1,
+      });
+      return new THREE.Line(geo, mat);
+    }
 
-  const cities = [
-    [28.6, 77.2], [19.1, 72.8], [12.9, 77.6], [22.6, 88.4], [17.4, 78.5],
-    [51.5, -0.1], [40.7, -74.0], [35.7, 139.7], [1.3, 103.8], [25.2, 55.3],
-    [55.8, 37.6], [23.1, 113.3], [-33.9, 151.2], [48.9, 2.4]
-  ];
-  const arcColors = [0x38bdf8, 0x6366f1, 0x34d399, 0xfbbf24, 0xa855f7];
+    const cities = [
+      [28.6, 77.2],
+      [19.1, 72.8],
+      [12.9, 77.6],
+      [22.6, 88.4],
+      [17.4, 78.5],
+      [51.5, -0.1],
+      [40.7, -74.0],
+      [35.7, 139.7],
+      [1.3, 103.8],
+      [25.2, 55.3],
+      [55.8, 37.6],
+      [23.1, 113.3],
+      [-33.9, 151.2],
+      [48.9, 2.4],
+    ];
+    const arcColors = [0x38bdf8, 0x6366f1, 0x34d399, 0xfbbf24, 0xa855f7];
 
-  for (let i = 0; i < 18; i++) {
-    const c1 = cities[Math.floor(Math.random() * cities.length)];
-    const c2 = cities[Math.floor(Math.random() * cities.length)];
-    const p1 = latLongToVector3(c1[0], c1[1], 1.01);
-    const p2 = latLongToVector3(c2[0], c2[1], 1.01);
-    arcGroup.add(createArc(p1, p2, arcColors[Math.floor(Math.random() * arcColors.length)]));
-  }
+    for (let i = 0; i < 18; i++) {
+      const c1 = cities[Math.floor(Math.random() * cities.length)];
+      const c2 = cities[Math.floor(Math.random() * cities.length)];
+      const p1 = latLongToVector3(c1[0], c1[1], 1.01);
+      const p2 = latLongToVector3(c2[0], c2[1], 1.01);
+      arcGroup.add(
+        createArc(
+          p1,
+          p2,
+          arcColors[Math.floor(Math.random() * arcColors.length)],
+        ),
+      );
+    }
 
-  // Stars
-  const starCount = 1200;
-  const starGeo = new THREE.BufferGeometry();
-  const starPos = new Float32Array(starCount * 3);
-  for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 20;
-  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-  const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.012, transparent: true, opacity: 0.5 });
-  scene.add(new THREE.Points(starGeo, starMat));
+    // Stars
+    const starCount = 1200;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount * 3; i++)
+      starPos[i] = (Math.random() - 0.5) * 20;
+    starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.012,
+      transparent: true,
+      opacity: 0.5,
+    });
+    scene.add(new THREE.Points(starGeo, starMat));
 
-  // Lighting
-  scene.add(new THREE.AmbientLight(0x112244, 2));
-  const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.5);
-  dirLight.position.set(5, 3, 5);
-  scene.add(dirLight);
+    // Lighting
+    scene.add(new THREE.AmbientLight(0x112244, 2));
+    const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.5);
+    dirLight.position.set(5, 3, 5);
+    scene.add(dirLight);
 
-  // Mouse interaction
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
+    // Mouse interaction
+    let mouseX = 0,
+      mouseY = 0;
+    document.addEventListener("mousemove", (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
 
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 
-  const clock = new THREE.Clock();
-  function animate() {
-    requestAnimationFrame(animate);
-    const t = clock.getElapsedTime();
-    globe.rotation.y = t * 0.08 + mouseX * 0.3;
-    globe.rotation.x = mouseY * 0.15;
-    arcGroup.rotation.y = globe.rotation.y;
-    arcGroup.rotation.x = globe.rotation.x;
-    renderer.render(scene, camera);
-  }
-  animate();
-})();
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      globe.rotation.y = t * 0.08 + mouseX * 0.3;
+      globe.rotation.x = mouseY * 0.15;
+      arcGroup.rotation.y = globe.rotation.y;
+      arcGroup.rotation.x = globe.rotation.x;
+      renderer.render(scene, camera);
+    }
+    animate();
+  })();
 </script>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from founderos.utils import ratelimit
 from .models import Document
 
 
@@ -11,6 +12,7 @@ def validation_home(request):
 
 
 @login_required
+@ratelimit(key='user', rate='15/h', block=True)
 def upload_document(request):
     if request.method == 'POST':
         title = request.POST.get('title', '').strip()

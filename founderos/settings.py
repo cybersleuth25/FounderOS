@@ -105,8 +105,10 @@ REST_FRAMEWORK = {
 
 # ── Security Headers ──────────────────────────────────────────
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = not DEBUG    # Transmit over HTTPS only (if not in debug mode)
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = True          # JS cannot read the CSRF cookie
+CSRF_COOKIE_SECURE = not DEBUG       # Transmit over HTTPS only
 CSRF_COOKIE_SAMESITE = 'Lax'
 X_FRAME_OPTIONS = 'DENY'            # Prevent clickjacking
 SECURE_BROWSER_XSS_FILTER = True    # Legacy IE XSS protection header
