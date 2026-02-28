@@ -1,95 +1,254 @@
-# FounderOS — Startup Validation & Risk Intelligence Platform
+# 🚀 FounderOS  
+### AI-Powered Startup Validation & Risk Intelligence Platform
 
-A Django 5+ MVP for early-stage founders to validate ideas, analyze risks, and discover government funding.
+FounderOS is an integrated startup validation platform designed to help **first-time entrepreneurs — especially from Tier-2 and Tier-3 regions in India — evaluate, refine, and de-risk their startup ideas** before seeking funding.
 
-## Quick Start
+The platform combines AI analysis, risk intelligence, government scheme discovery, and startup progress tracking into a single operating system for founders.
 
-### 1. Set Up Environment
+---
 
+## 🧠 Problem Statement
+
+Early-stage founders often fail because they lack:
+
+- Structured startup validation
+- Risk awareness
+- Investor-ready pitch clarity
+- Knowledge of government schemes & funding opportunities
+- Data-driven decision support
+
+Most tools target experienced founders — not beginners.
+
+**FounderOS bridges this gap using AI-driven guidance.**
+
+---
+
+## ✨ Core Features (MVP)
+
+### 📊 Founder Dashboard
+- Central workspace for startup progress
+- View generated insights and analysis
+- Track validation status and risk scores
+
+---
+
+### 🎤 AI Pitch Analyzer
+- Upload pitch decks (PDF)
+- AI evaluates:
+  - Clarity
+  - Engagement
+  - Structure quality
+- Generates improvement feedback
+
+**API Endpoint**
+```
+/api/pitch/generate/
+```
+
+---
+
+### ⚠️ Risk Intelligence Engine
+AI-powered startup risk analysis including:
+- SWOT analysis
+- Market & execution risk indicators
+- Decision-support insights
+
+**API Endpoint**
+```
+/api/risk/analyze/
+```
+
+---
+
+### 🏛 Government Scheme Matching
+Matches founders with relevant Indian startup schemes such as:
+- Startup India Seed Fund
+- Early-stage funding programs
+
+**API Endpoint**
+```
+/api/schemes/match/
+```
+
+---
+
+### 🔐 Authentication System
+- Signup & Login flow
+- Minimal TailwindCSS UI
+- Secure user accounts
+
+Routes:
+```
+/accounts/signup/
+/accounts/login/
+```
+
+---
+
+## 🏗️ Tech Stack
+
+### Backend
+- Python
+- Django
+- Django REST Framework
+
+### AI & Processing
+- Google Generative AI (Gemini API)
+- HuggingFace Transformers
+- PyTesseract (document parsing)
+
+### Async & Processing
+- Celery
+- Redis
+
+### Frontend
+- Django Templates
+- HTML + TailwindCSS
+
+---
+
+## 📂 Project Structure
+
+```
+FounderOS/
+│
+├── accounts/        # Authentication & user management
+├── founderos/       # Core Django project config
+├── matching/        # Scheme matching logic
+├── pitches/         # AI pitch analysis
+├── risk/            # Risk intelligence engine
+├── schemes/         # Government schemes module
+├── validation/      # Startup validation logic
+├── templates/       # Frontend templates
+│
+├── manage.py
+└── db.sqlite3
+```
+
+---
+
+## ⚙️ Local Setup
+
+### 1️⃣ Clone Repository
+```bash
+git clone https://github.com/cybersleuth25/FounderOS.git
+cd FounderOS
+```
+
+---
+
+### 2️⃣ Create Virtual Environment
 ```bash
 python -m venv venv
-.\venv\Scripts\activate        # Windows
-pip install -r requirements.txt
 ```
 
-### 2. Configure Environment
+Activate:
 
-Copy `.env.example` to `.env` and fill in your values:
-
-```
-SECRET_KEY=your-secret-key
-DEBUG=True
-GEMINI_API_KEY=your-gemini-api-key   # Optional — works without it
-```
-
-### 3. Run Migrations & Setup
-
+**Windows**
 ```bash
-python manage.py migrate
-python setup.py         # Creates admin user + seeds sample data
+venv\Scripts\activate
 ```
 
-### 4. Start the Server
+**Mac/Linux**
+```bash
+source venv/bin/activate
+```
 
+---
+
+### 3️⃣ Install Dependencies
+```bash
+pip install django djangorestframework celery redis \
+google-generativeai pytesseract huggingface_hub \
+transformers python-dotenv
+```
+
+---
+
+### 4️⃣ Run Database Migrations
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+---
+
+### 5️⃣ Start Development Server
 ```bash
 python manage.py runserver
 ```
 
-Visit **http://127.0.0.1:8000**
-
-## Login Credentials
-
-- **Admin Panel**: http://127.0.0.1:8000/admin — `admin` / `admin123`
-
-## Features
-
-| Feature       | URL            | Description                 |
-| ------------- | -------------- | --------------------------- |
-| Landing Page  | `/`            | Public intro & CTA          |
-| Dashboard     | `/dashboard/`  | Central control panel       |
-| Pitch Lab     | `/pitches/`    | AI pitch analysis           |
-| Risk Analysis | `/risk/`       | SWOT + risk scores          |
-| Gov Schemes   | `/schemes/`    | Scheme eligibility matching |
-| Doc Verify    | `/validation/` | Document validation         |
-| Matching      | `/matching/`   | Mentor/Investor matches     |
-| Profile       | `/profile/`    | Founder profile             |
-
-## REST API
-
-| Endpoint               | Method | Description       |
-| ---------------------- | ------ | ----------------- |
-| `/api/pitch/generate/` | POST   | AI pitch analysis |
-| `/api/risk/analyze/`   | POST   | Risk assessment   |
-| `/api/schemes/match/`  | POST   | Scheme matching   |
-
-## Architecture
-
+Open:
 ```
-founderos/
-├── accounts/     # Auth + FounderProfile
-├── pitches/      # AI pitch analysis
-├── risk/         # Risk scoring + SWOT
-├── schemes/      # Gov scheme matching
-├── matching/     # Mentor/investor matching
-├── validation/   # Document verification
-├── templates/    # Django HTML templates
-├── static/       # CSS/JS assets
-├── founderos/
-│   ├── settings.py
-│   ├── urls.py
-│   └── ai_service.py  # Gemini AI wrapper
-└── manage.py
+http://127.0.0.1:8000/
 ```
 
-## AI Integration
+---
 
-Powered by **Google Gemini 1.5 Flash**. Set `GEMINI_API_KEY` in `.env`.
+## 🔌 Available Routes
 
-Without an API key, all AI features return realistic **demo/placeholder** data so the app is fully functional for testing.
+| Feature | Route |
+|---|---|
+| Signup | `/accounts/signup/` |
+| Dashboard | `/dashboard/` |
+| Pitch API | `/api/pitch/generate/` |
+| Risk API | `/api/risk/analyze/` |
+| Scheme Matching | `/api/schemes/match/` |
 
-## Tech Stack
+---
 
-- **Backend**: Django 5+, Django REST Framework
-- **Database**: SQLite (dev)
-- **Frontend**: Django Templates + Tailwind CSS (CDN)
-- **AI**: Google Gemini API (`google-generativeai`)
+## 🎯 Target Users
+
+- First-time founders
+- Student entrepreneurs
+- Hackathon participants
+- Early-stage startup builders
+- Tier-2 & Tier-3 ecosystem innovators
+
+---
+
+## 🚧 MVP Status
+
+✅ Authentication  
+✅ AI Pitch Analysis API  
+✅ Risk Evaluation API  
+✅ Scheme Matching  
+✅ Founder Dashboard  
+
+Planned:
+- Investor matching
+- Market intelligence feeds
+- Live startup & finance news
+- Social founder profiles
+- AI startup mentor
+
+---
+
+## 🤝 Contribution
+
+Contributions, ideas, and improvements are welcome.
+
+```bash
+fork → create branch → commit → pull request
+```
+
+---
+
+## 📜 License
+MIT License
+
+---
+
+## 👨‍💻 Author
+
+**Mihir Misran**  
+Computer Science Engineering Student  
+Builder of FounderOS
+
+GitHub: https://github.com/cybersleuth25
+
+---
+
+## ⭐ Vision
+
+> FounderOS aims to become the **operating system for building startups**, helping founders move from idea → validation → funding with clarity and reduced risk.
