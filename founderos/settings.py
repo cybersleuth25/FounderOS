@@ -102,3 +102,12 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+# ── Security Headers ──────────────────────────────────────────
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = True          # JS cannot read the CSRF cookie
+CSRF_COOKIE_SAMESITE = 'Lax'
+X_FRAME_OPTIONS = 'DENY'            # Prevent clickjacking
+SECURE_BROWSER_XSS_FILTER = True    # Legacy IE XSS protection header
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME-type sniffing

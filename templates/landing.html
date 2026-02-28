@@ -9,16 +9,16 @@
       <div class="w-9 h-9 bg-gradient-to-br from-sky-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-sky-500/30">
         <i class="fa-solid fa-rocket text-white text-sm"></i>
       </div>
-      <span class="font-bold text-white text-xl tracking-tight">Founder<span class="text-sky-400">OS</span></span>
+      <span class="lp-brand font-bold text-white text-xl">Founder<span class="text-sky-400">OS</span></span>
     </a>
     <div class="hidden md:flex items-center gap-8">
-      <a href="#features" class="text-zinc-400 hover:text-white text-sm font-medium transition-colors">Features</a>
-      <a href="#how-it-works" class="text-zinc-400 hover:text-white text-sm font-medium transition-colors">How It Works</a>
-      <a href="#schemes" class="text-zinc-400 hover:text-white text-sm font-medium transition-colors">Funding</a>
+      <a href="#features" class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors">Features</a>
+      <a href="#how-it-works" class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors">How It Works</a>
+      <a href="#schemes" class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors">Funding</a>
     </div>
     <div class="flex items-center gap-3">
-      <a href="{% url 'login' %}" class="text-zinc-400 hover:text-white text-sm font-medium transition-colors px-4 py-2">Login</a>
-      <a href="{% url 'signup' %}" class="bg-sky-500 hover:bg-sky-400 text-white font-semibold px-5 py-2.5 rounded-xl transition-all text-sm shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40">
+      <a href="{% url 'login' %}" class="lp-body text-zinc-400 hover:text-white text-sm font-medium transition-colors px-4 py-2">Login</a>
+      <a href="{% url 'signup' %}" class="lp-body bg-sky-500 hover:bg-sky-400 text-white font-semibold px-5 py-2.5 rounded-xl transition-all text-sm shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40">
         Get Started Free
       </a>
     </div>
@@ -29,7 +29,7 @@
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
   <!-- Globe Canvas -->
   <canvas id="globe-canvas" class="absolute inset-0 w-full h-full opacity-75"></canvas>
-  
+
   <!-- Radial gradient overlay to fade globe edges -->
   <div class="absolute inset-0 bg-radial-gradient pointer-events-none"></div>
   <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none"></div>
@@ -37,29 +37,29 @@
 
   <!-- Hero text -->
   <div class="relative z-10 max-w-5xl mx-auto text-center px-6 pt-20">
-    <div class="inline-flex items-center gap-2 bg-sky-500/10 border border-sky-500/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-sky-400 text-sm font-medium mb-8">
+    <div class="inline-flex items-center gap-2 bg-sky-500/10 border border-sky-500/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-sky-400 text-sm font-medium mb-8" style="font-family:'DM Sans',sans-serif;">
       <i class="fa-solid fa-circle-nodes text-xs animate-pulse"></i>
       AI-Powered Startup Intelligence for India
     </div>
-    
-    <h1 class="text-6xl md:text-8xl font-black text-white leading-none tracking-tight mb-6">
+
+    <h1 class="lp-h1 text-6xl md:text-8xl font-black text-white leading-none mb-6">
       Your Startup's<br>
       <span class="relative inline-block">
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-blue-400 to-indigo-400">Operating System</span>
         <span class="absolute -inset-1 bg-sky-500/10 blur-2xl rounded-full"></span>
       </span>
     </h1>
-    
-    <p class="text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+
+    <p class="lp-body text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
       Validate ideas, analyze risks, discover government funding, and connect with mentors — built specifically for Tier-2 and Tier-3 founders.
     </p>
-    
+
     <div class="flex items-center justify-center gap-4 flex-wrap">
-      <a href="{% url 'signup' %}" class="group relative bg-sky-500 hover:bg-sky-400 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 text-base inline-flex items-center gap-2.5 shadow-2xl shadow-sky-500/30 hover:shadow-sky-500/50 hover:scale-105">
+      <a href="{% url 'signup' %}" class="lp-body group relative bg-sky-500 hover:bg-sky-400 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 text-base inline-flex items-center gap-2.5 shadow-2xl shadow-sky-500/30 hover:shadow-sky-500/50 hover:scale-105">
         <i class="fa-solid fa-rocket text-sm group-hover:rotate-12 transition-transform"></i>
-        Start Validating — Free
+        Start Validating &mdash; Free
       </a>
-      <a href="{% url 'pitch_gallery' %}" class="group border border-white/10 bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 font-medium px-8 py-4 rounded-2xl transition-all duration-200 text-base inline-flex items-center gap-2.5 hover:border-white/20">
+      <a href="{% url 'pitch_gallery' %}" class="lp-body group border border-white/10 bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 font-medium px-8 py-4 rounded-2xl transition-all duration-200 text-base inline-flex items-center gap-2.5 hover:border-white/20">
         <i class="fa-solid fa-film text-sm text-sky-400"></i>
         Browse Pitch Gallery
       </a>
@@ -68,18 +68,18 @@
     <!-- Live stats -->
     <div class="mt-16 flex items-center justify-center gap-12 flex-wrap">
       <div class="text-center">
-        <div class="text-4xl font-black text-white">5+</div>
-        <div class="text-xs text-zinc-500 mt-1 uppercase tracking-wider">AI Modules</div>
+        <div class="lp-stat text-4xl font-black text-white">5+</div>
+        <div class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider">AI Modules</div>
       </div>
       <div class="w-px h-10 bg-zinc-800"></div>
       <div class="text-center">
-        <div class="text-4xl font-black text-white">8+</div>
-        <div class="text-xs text-zinc-500 mt-1 uppercase tracking-wider">Gov. Schemes</div>
+        <div class="lp-stat text-4xl font-black text-white">8+</div>
+        <div class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider">Gov. Schemes</div>
       </div>
       <div class="w-px h-10 bg-zinc-800"></div>
       <div class="text-center">
-        <div class="text-4xl font-black text-white">100%</div>
-        <div class="text-xs text-zinc-500 mt-1 uppercase tracking-wider">Free to Use</div>
+        <div class="lp-stat text-4xl font-black text-white">100%</div>
+        <div class="lp-label text-xs text-zinc-500 mt-1 uppercase tracking-wider">Free to Use</div>
       </div>
     </div>
   </div>
@@ -96,11 +96,11 @@
 <section id="features" class="py-32 px-6 bg-black">
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-20">
-      <div class="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-full px-4 py-1.5 text-zinc-400 text-xs font-medium mb-6 uppercase tracking-widest">
+      <div class="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-full px-4 py-1.5 text-zinc-400 text-xs font-medium mb-6 uppercase tracking-widest" style="font-family:'DM Sans',sans-serif;">
         <i class="fa-solid fa-layer-group text-sky-400"></i> Platform Features
       </div>
-      <h2 class="text-4xl md:text-5xl font-black text-white mb-5">Everything a First-Time Founder Needs</h2>
-      <p class="text-zinc-400 max-w-xl mx-auto text-lg">From idea to investor-ready in days, not months.</p>
+      <h2 class="lp-h2 text-4xl md:text-5xl font-black text-white mb-5">Everything a First-Time Founder Needs</h2>
+      <p class="lp-body text-zinc-400 max-w-xl mx-auto text-lg">From idea to investor-ready in days, not months.</p>
     </div>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-900">
@@ -109,9 +109,9 @@
         <div class="w-12 h-12 rounded-2xl bg-sky-500/10 flex items-center justify-center mb-5 group-hover:bg-sky-500/20 transition-colors">
           <i class="fa-solid fa-file-powerpoint text-sky-400 text-xl"></i>
         </div>
-        <h3 class="text-white font-bold text-xl mb-3">AI Pitch Generator</h3>
-        <p class="text-zinc-500 leading-relaxed">Upload your pitch and get instant scored feedback — clarity, engagement, investor readiness, strengths &amp; weaknesses.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-sky-400 text-sm font-medium">
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">AI Pitch Generator</h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">Upload your pitch and get instant scored feedback — clarity, engagement, investor readiness, strengths &amp; weaknesses.</p>
+        <div class="mt-5 flex items-center gap-1.5 text-sky-400 text-sm font-medium lp-body">
           <span>Gemini-powered</span><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
@@ -121,9 +121,9 @@
         <div class="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center mb-5 group-hover:bg-red-500/20 transition-colors">
           <i class="fa-solid fa-shield-halved text-red-400 text-xl"></i>
         </div>
-        <h3 class="text-white font-bold text-xl mb-3">Risk Intelligence</h3>
-        <p class="text-zinc-500 leading-relaxed">Full SWOT analysis + financial, market, and operational risk scores with AI-generated mitigation strategies.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-red-400 text-sm font-medium">
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">Risk Intelligence</h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">Full SWOT analysis + financial, market, and operational risk scores with AI-generated mitigation strategies.</p>
+        <div class="mt-5 flex items-center gap-1.5 text-red-400 text-sm font-medium lp-body">
           <span>SWOT + Risk Scores</span><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
@@ -133,9 +133,9 @@
         <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5 group-hover:bg-emerald-500/20 transition-colors">
           <i class="fa-solid fa-landmark text-emerald-400 text-xl"></i>
         </div>
-        <h3 class="text-white font-bold text-xl mb-3">Scheme Matching</h3>
-        <p class="text-zinc-500 leading-relaxed">Get matched with Startup India, Mudra, GENESIS, and 5+ other schemes based on your startup profile.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-emerald-400 text-sm font-medium">
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">Scheme Matching</h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">Get matched with Startup India, Mudra, GENESIS, and 5+ other schemes based on your startup profile.</p>
+        <div class="mt-5 flex items-center gap-1.5 text-emerald-400 text-sm font-medium lp-body">
           <span>8+ schemes</span><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
@@ -145,9 +145,9 @@
         <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-5 group-hover:bg-purple-500/20 transition-colors">
           <i class="fa-solid fa-film text-purple-400 text-xl"></i>
         </div>
-        <h3 class="text-white font-bold text-xl mb-3">Pitch Gallery</h3>
-        <p class="text-zinc-500 leading-relaxed">Public pitch feed — share your video or text pitch with the community and get discovered by investors and mentors.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-purple-400 text-sm font-medium">
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">Pitch Gallery</h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">Public pitch feed — share your video or text pitch with the community and get discovered by investors and mentors.</p>
+        <div class="mt-5 flex items-center gap-1.5 text-purple-400 text-sm font-medium lp-body">
           <span>Community powered</span><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
@@ -157,9 +157,9 @@
         <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5 group-hover:bg-amber-500/20 transition-colors">
           <i class="fa-solid fa-users text-amber-400 text-xl"></i>
         </div>
-        <h3 class="text-white font-bold text-xl mb-3">Smart Matching</h3>
-        <p class="text-zinc-500 leading-relaxed">Connect with mentors, co-founders, and investors matched by industry, stage, and location.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-amber-400 text-sm font-medium">
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">Smart Matching</h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">Connect with mentors, co-founders, and investors matched by industry, stage, and location.</p>
+        <div class="mt-5 flex items-center gap-1.5 text-amber-400 text-sm font-medium lp-body">
           <span>6+ profiles ready</span><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
@@ -169,9 +169,9 @@
         <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-5 group-hover:bg-cyan-500/20 transition-colors">
           <i class="fa-solid fa-file-circle-check text-cyan-400 text-xl"></i>
         </div>
-        <h3 class="text-white font-bold text-xl mb-3">Doc Verification</h3>
-        <p class="text-zinc-500 leading-relaxed">Upload business documents for instant pass/fail validation with improvement suggestions.</p>
-        <div class="mt-5 flex items-center gap-1.5 text-cyan-400 text-sm font-medium">
+        <h3 class="lp-h3 text-white font-bold text-xl mb-3">Doc Verification</h3>
+        <p class="lp-body text-zinc-500 leading-relaxed">Upload business documents for instant pass/fail validation with improvement suggestions.</p>
+        <div class="mt-5 flex items-center gap-1.5 text-cyan-400 text-sm font-medium lp-body">
           <span>Instant results</span><i class="fa-solid fa-arrow-right text-xs"></i>
         </div>
       </div>
@@ -183,31 +183,31 @@
 <section id="how-it-works" class="py-32 px-6 bg-zinc-950">
   <div class="max-w-5xl mx-auto">
     <div class="text-center mb-20">
-      <h2 class="text-4xl md:text-5xl font-black text-white mb-4">From Idea to Validation in 3 Steps</h2>
+      <h2 class="lp-h2 text-4xl md:text-5xl font-black text-white mb-4">From Idea to Validation in 3 Steps</h2>
     </div>
     <div class="grid md:grid-cols-3 gap-8">
       <div class="relative text-center">
         <div class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <span class="text-sky-400 font-black text-2xl">1</span>
+          <span class="lp-stat text-sky-400 font-black text-2xl">1</span>
         </div>
-        <h3 class="text-white font-bold text-lg mb-2">Create Profile</h3>
-        <p class="text-zinc-500 text-sm leading-relaxed">Sign up and set up your founder profile with startup details, industry, and stage.</p>
+        <h3 class="lp-h3 text-white font-bold text-lg mb-2">Create Profile</h3>
+        <p class="lp-body text-zinc-500 text-sm leading-relaxed">Sign up and set up your founder profile with startup details, industry, and stage.</p>
         <div class="hidden md:block absolute top-8 left-3/4 w-full h-0.5 bg-gradient-to-r from-sky-500/50 to-transparent -translate-x-4"></div>
       </div>
       <div class="relative text-center">
         <div class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <span class="text-sky-400 font-black text-2xl">2</span>
+          <span class="lp-stat text-sky-400 font-black text-2xl">2</span>
         </div>
-        <h3 class="text-white font-bold text-lg mb-2">Run AI Analysis</h3>
-        <p class="text-zinc-500 text-sm leading-relaxed">Submit your pitch and startup info. Get AI-powered risk scores, SWOT, and scheme matches instantly.</p>
+        <h3 class="lp-h3 text-white font-bold text-lg mb-2">Run AI Analysis</h3>
+        <p class="lp-body text-zinc-500 text-sm leading-relaxed">Submit your pitch and startup info. Get AI-powered risk scores, SWOT, and scheme matches instantly.</p>
         <div class="hidden md:block absolute top-8 left-3/4 w-full h-0.5 bg-gradient-to-r from-sky-500/50 to-transparent -translate-x-4"></div>
       </div>
       <div class="text-center">
         <div class="w-16 h-16 bg-sky-500/10 border border-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <span class="text-sky-400 font-black text-2xl">3</span>
+          <span class="lp-stat text-sky-400 font-black text-2xl">3</span>
         </div>
-        <h3 class="text-white font-bold text-lg mb-2">Take Action</h3>
-        <p class="text-zinc-500 text-sm leading-relaxed">Apply for schemes, connect with mentors, and share your pitch in the community gallery.</p>
+        <h3 class="lp-h3 text-white font-bold text-lg mb-2">Take Action</h3>
+        <p class="lp-body text-zinc-500 text-sm leading-relaxed">Apply for schemes, connect with mentors, and share your pitch in the community gallery.</p>
       </div>
     </div>
   </div>
@@ -217,8 +217,8 @@
 <section id="schemes" class="py-20 px-6 bg-black border-t border-zinc-900">
   <div class="max-w-6xl mx-auto">
     <div class="text-center mb-12">
-      <h2 class="text-3xl font-black text-white mb-3">Government Schemes We Match You With</h2>
-      <p class="text-zinc-500">Real funding programs. Real eligibility matching.</p>
+      <h2 class="lp-h2 text-3xl font-black text-white mb-3">Government Schemes We Match You With</h2>
+      <p class="lp-body text-zinc-500">Real funding programs. Real eligibility matching.</p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       {% for scheme in landing_schemes %}
@@ -226,9 +226,9 @@
         <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3">
           <i class="fa-solid fa-landmark text-emerald-400 text-sm"></i>
         </div>
-        <div class="text-white font-semibold text-sm mb-1">{{ scheme.name }}</div>
-        <div class="text-emerald-400 text-xs font-medium">{{ scheme.funding }}</div>
-        <div class="text-zinc-600 text-xs mt-1">{{ scheme.ministry }}</div>
+        <div class="lp-h3 text-white font-semibold text-sm mb-1">{{ scheme.name }}</div>
+        <div class="lp-body text-emerald-400 text-xs font-medium">{{ scheme.funding }}</div>
+        <div class="lp-body text-zinc-600 text-xs mt-1">{{ scheme.ministry }}</div>
       </div>
       {% empty %}
       {% for s in "12345678" %}
@@ -236,7 +236,7 @@
         <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3">
           <i class="fa-solid fa-landmark text-emerald-400 text-sm"></i>
         </div>
-        <div class="text-white font-semibold text-sm mb-1">
+        <div class="lp-h3 text-white font-semibold text-sm mb-1">
           {% if forloop.counter == 1 %}Startup India Seed Fund
           {% elif forloop.counter == 2 %}Mudra Yojana
           {% elif forloop.counter == 3 %}GENESIS Scheme
@@ -246,17 +246,17 @@
           {% elif forloop.counter == 7 %}PM Vishwakarma
           {% else %}Make in India{% endif %}
         </div>
-        <div class="text-emerald-400 text-xs font-medium">
-          {% if forloop.counter == 1 %}Up to ₹20 Lakhs
-          {% elif forloop.counter == 2 %}Up to ₹10 Lakhs
-          {% elif forloop.counter == 3 %}Up to ₹5 Crores
-          {% elif forloop.counter == 4 %}Up to ₹10 Lakhs
-          {% elif forloop.counter == 5 %}Up to ₹1 Crore
-          {% elif forloop.counter == 6 %}Up to ₹2 Crores
-          {% elif forloop.counter == 7 %}Up to ₹3 Lakhs
+        <div class="lp-body text-emerald-400 text-xs font-medium">
+          {% if forloop.counter == 1 %}Up to &#8377;20 Lakhs
+          {% elif forloop.counter == 2 %}Up to &#8377;10 Lakhs
+          {% elif forloop.counter == 3 %}Up to &#8377;5 Crores
+          {% elif forloop.counter == 4 %}Up to &#8377;10 Lakhs
+          {% elif forloop.counter == 5 %}Up to &#8377;1 Crore
+          {% elif forloop.counter == 6 %}Up to &#8377;2 Crores
+          {% elif forloop.counter == 7 %}Up to &#8377;3 Lakhs
           {% else %}Varies{% endif %}
         </div>
-        <div class="text-zinc-600 text-xs mt-1">
+        <div class="lp-body text-zinc-600 text-xs mt-1">
           {% if forloop.counter == 1 %}DPIIT
           {% elif forloop.counter == 2 %}Min. of Finance
           {% elif forloop.counter == 3 %}MeitY
@@ -279,9 +279,9 @@
     <div class="w-20 h-20 bg-sky-500/10 border border-sky-500/20 rounded-3xl flex items-center justify-center mx-auto mb-8">
       <i class="fa-solid fa-rocket text-sky-400 text-3xl"></i>
     </div>
-    <h2 class="text-5xl font-black text-white mb-5">Ready to Validate?</h2>
-    <p class="text-zinc-400 mb-10 text-lg">Join India's emerging founders building with clarity and confidence.</p>
-    <a href="{% url 'signup' %}" class="bg-sky-500 hover:bg-sky-400 text-white font-bold px-12 py-5 rounded-2xl transition-all inline-flex items-center gap-3 text-lg shadow-2xl shadow-sky-500/30 hover:shadow-sky-500/50 hover:scale-105">
+    <h2 class="lp-h2 text-5xl font-black text-white mb-5">Ready to Validate?</h2>
+    <p class="lp-body text-zinc-400 mb-10 text-lg">Join India's emerging founders building with clarity and confidence.</p>
+    <a href="{% url 'signup' %}" class="lp-body bg-sky-500 hover:bg-sky-400 text-white font-bold px-12 py-5 rounded-2xl transition-all inline-flex items-center gap-3 text-lg shadow-2xl shadow-sky-500/30 hover:shadow-sky-500/50 hover:scale-105">
       <i class="fa-solid fa-rocket"></i> Create Free Account
     </a>
   </div>
@@ -289,13 +289,24 @@
 
 <!-- Footer -->
 <footer class="py-8 px-6 border-t border-zinc-900 bg-black text-center text-zinc-600 text-sm">
-  <p><i class="fa-solid fa-rocket text-zinc-700 mr-2"></i> FounderOS — Built for India's Next Generation of Founders</p>
+  <p class="lp-body"><i class="fa-solid fa-rocket text-zinc-700 mr-2"></i> FounderOS &mdash; Built for India's Next Generation of Founders</p>
 </footer>
 
 {% endblock %}
 
 {% block extra_scripts %}
 <style>
+  /* ── Landing-page exclusive fonts (Syne for display, DM Sans for body) ── */
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+  .lp-h1, .lp-h2, .lp-h3, .lp-stat, .lp-brand {
+    font-family: 'Syne', system-ui, sans-serif;
+    letter-spacing: -0.025em;
+  }
+  .lp-body, .lp-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
   @keyframes scroll-dot { 0%,100%{transform:translateY(0)}50%{transform:translateY(12px)} }
   .animate-scroll-dot { animation: scroll-dot 1.5s ease-in-out infinite; }
   #globe-canvas { display: block; }
@@ -326,16 +337,13 @@
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, size, size);
 
-    // Dot grid
     const dotSize = 2.2;
     const spacing = 14;
     for (let x = 0; x < size; x += spacing) {
       for (let y = 0; y < size; y += spacing) {
-        // latitude-longitude jitter
         const nx = x / size, ny = y / size;
         const lat = (ny - 0.5) * Math.PI;
         const cosLat = Math.cos(lat);
-        // fewer dots near poles
         if (Math.random() > cosLat * 0.95) continue;
         ctx.beginPath();
         ctx.arc(x + (Math.random() - 0.5) * 3, y + (Math.random() - 0.5) * 3, dotSize, 0, Math.PI * 2);
@@ -390,7 +398,7 @@
   });
   scene.add(new THREE.Mesh(ringGeo, ringMat));
 
-  // Animated connection arcs on globe surface
+  // Connection arcs
   const arcGroup = new THREE.Group();
   scene.add(arcGroup);
 
@@ -428,7 +436,7 @@
     arcGroup.add(createArc(p1, p2, arcColors[Math.floor(Math.random() * arcColors.length)]));
   }
 
-  // Particles / stars
+  // Stars
   const starCount = 1200;
   const starGeo = new THREE.BufferGeometry();
   const starPos = new Float32Array(starCount * 3);
@@ -450,14 +458,12 @@
     mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
   });
 
-  // Resize handler
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // Animation
   const clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);

@@ -18,20 +18,18 @@
           extend: {
             fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
             colors: {
-              brand: {
-                50: "#f0f9ff",
-                100: "#e0f2fe",
-                500: "#0ea5e9",
-                600: "#0284c7",
-                700: "#0369a1",
-                900: "#0c4a6e",
+              teal: {
+                300: "#5eead4",
+                400: "#2dd4bf",
+                500: "#14b8a6",
+                600: "#0d9488",
+                700: "#0f766e",
+                900: "#042f2e",
               },
-              surface: {
-                900: "#09090b",
-                800: "#18181b",
-                700: "#27272a",
-                600: "#3f3f46",
-                500: "#52525b",
+              amber: {
+                300: "#fcd34d",
+                400: "#fbbf24",
+                500: "#f59e0b",
               },
             },
           },
@@ -40,7 +38,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap"
       rel="stylesheet"
     />
     <link
@@ -48,38 +46,162 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
+      /* ═══════════════════════════════════════════
+         DESIGN TOKENS — Teal + Amber palette
+      ════════════════════════════════════════════ */
+      :root {
+        --bg: #060d0e;
+        --surface-1: #0c1a1c;
+        --surface-2: #112426;
+        --surface-3: #163032;
+        --border: rgba(20, 184, 166, 0.12);
+        --border-hi: rgba(20, 184, 166, 0.28);
+        --teal: #14b8a6;
+        --teal-dim: rgba(20, 184, 166, 0.15);
+        --amber: #f59e0b;
+        --amber-dim: rgba(245, 158, 11, 0.12);
+        --text-1: #f1f5f9;
+        --text-2: #94a3b8;
+        --text-3: #475569;
+        --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --dur-fast: 150ms;
+        --dur-med: 280ms;
+        --dur-slow: 500ms;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
       body {
         font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text-1);
       }
-      /* .nav-link */
-      .nav-link {
+
+      /* ── Page-wipe transition ── */
+      #page-transition {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: var(--bg);
+        transform-origin: top;
+        animation: page-reveal var(--dur-slow) var(--ease-out) forwards;
+        pointer-events: none;
+      }
+      @keyframes page-reveal {
+        0% {
+          transform: scaleY(1);
+        }
+        100% {
+          transform: scaleY(0);
+        }
+      }
+
+      /* ── Top Nav ── */
+      .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(6, 13, 14, 0.82);
+        -webkit-backdrop-filter: saturate(160%) blur(20px);
+        backdrop-filter: saturate(160%) blur(20px);
+        border-bottom: 1px solid var(--border);
+        transition:
+          background var(--dur-med) ease,
+          border-color var(--dur-med) ease;
+      }
+      .top-nav.scrolled {
+        background: rgba(6, 13, 14, 0.96);
+        border-color: var(--border-hi);
+      }
+
+      /* Nav pills */
+      .nav-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.42rem;
+        padding: 0.36rem 0.82rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text-3);
+        text-decoration: none;
+        white-space: nowrap;
+        transition:
+          color var(--dur-fast) ease,
+          background var(--dur-fast) ease;
+      }
+      .nav-pill:hover {
+        color: var(--text-1);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .nav-pill.active {
+        color: var(--teal);
+        background: var(--teal-dim);
+        box-shadow: 0 0 0 1px rgba(20, 184, 166, 0.15);
+      }
+      .nav-pill i {
+        font-size: 0.7rem;
+        transition: transform var(--dur-fast) var(--ease-spring);
+      }
+      .nav-pill:hover i {
+        transform: scale(1.15);
+      }
+
+      /* User btn */
+      .user-btn {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        padding: 0.625rem 0.75rem;
-        border-radius: 0.5rem;
-        color: #a1a1aa; /* zinc-400 */
-        transition: all 0.15s;
-        font-size: 0.875rem;
-        font-weight: 500;
+        gap: 0.45rem;
+        padding: 0.28rem 0.65rem 0.28rem 0.28rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
         text-decoration: none;
+        transition:
+          background var(--dur-fast) ease,
+          border-color var(--dur-fast) ease,
+          transform var(--dur-fast) var(--ease-spring);
       }
-      .nav-link:hover {
-        color: #ffffff;
-        background-color: #27272a; /* zinc-800 */
+      .user-btn:hover {
+        background: var(--teal-dim);
+        border-color: var(--border-hi);
+        transform: scale(1.02);
       }
-      .nav-link.active {
-        background-color: #27272a; /* zinc-800 */
-        color: #ffffff;
+
+      .logout-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        color: var(--text-3);
+        text-decoration: none;
+        transition:
+          all var(--dur-fast) ease,
+          transform var(--dur-fast) var(--ease-spring);
       }
-      /* .btn-primary */
+      .logout-btn:hover {
+        background: rgba(239, 68, 68, 0.08);
+        border-color: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+        transform: scale(1.08) rotate(8deg);
+      }
+
+      /* ── Common Buttons ── */
       .btn-primary {
-        background-color: #0ea5e9; /* sky-500 */
-        color: #ffffff;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--teal), #0d9488);
+        color: #fff;
         font-weight: 600;
-        padding: 0.625rem 1.25rem;
-        border-radius: 0.5rem;
-        transition: all 0.15s;
+        padding: 0.5rem 1.1rem;
+        border-radius: 0.625rem;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
@@ -87,65 +209,110 @@
         border: none;
         cursor: pointer;
         text-decoration: none;
+        transition:
+          opacity var(--dur-fast) ease,
+          transform var(--dur-fast) var(--ease-spring),
+          box-shadow var(--dur-fast) ease;
+        box-shadow: 0 2px 12px rgba(20, 184, 166, 0.25);
       }
       .btn-primary:hover {
-        background-color: #0284c7; /* sky-600 */
+        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(20, 184, 166, 0.35);
       }
-      /* .btn-secondary */
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
       .btn-secondary {
-        border: 1px solid #3f3f46; /* zinc-700 */
-        color: #d4d4d8; /* zinc-300 */
+        border: 1px solid var(--border);
+        color: var(--text-2);
         font-weight: 500;
-        padding: 0.625rem 1.25rem;
-        border-radius: 0.5rem;
-        transition: all 0.15s;
+        padding: 0.5rem 1.1rem;
+        border-radius: 0.625rem;
+        background: transparent;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         font-size: 0.875rem;
-        background: transparent;
         cursor: pointer;
         text-decoration: none;
+        transition:
+          all var(--dur-fast) ease,
+          transform var(--dur-fast) var(--ease-spring);
       }
       .btn-secondary:hover {
-        background-color: #27272a; /* zinc-800 */
-        color: #ffffff;
+        background: var(--surface-2);
+        color: var(--text-1);
+        border-color: var(--border-hi);
+        transform: translateY(-1px);
       }
-      /* .card */
+
+      /* Ripple */
+      .ripple-effect {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        background: rgba(255, 255, 255, 0.22);
+        animation: ripple 500ms linear;
+        pointer-events: none;
+      }
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+
+      /* ── Cards ── */
       .card {
-        background-color: rgba(39, 39, 42, 0.5); /* zinc-800/50 */
-        border: 1px solid rgba(63, 63, 70, 0.5); /* zinc-700/50 */
-        border-radius: 0.75rem;
+        background: var(--surface-1);
+        border: 1px solid var(--border);
+        border-radius: 0.875rem;
         padding: 1.25rem;
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+        transition:
+          border-color var(--dur-med) ease,
+          box-shadow var(--dur-med) ease,
+          transform var(--dur-med) var(--ease-out);
       }
-      /* .form-input */
+      .card:hover {
+        border-color: var(--border-hi);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        transform: translateY(-2px);
+      }
+
+      /* ── Form ── */
       .form-input {
         width: 100%;
-        background-color: #09090b; /* zinc-900 */
-        border: 1px solid #3f3f46; /* zinc-700 */
+        background: var(--bg);
+        border: 1px solid var(--border);
         border-radius: 0.5rem;
         padding: 0.625rem 1rem;
-        color: #ffffff;
+        color: var(--text-1);
         font-size: 0.875rem;
-        transition: border-color 0.15s, box-shadow 0.15s;
         outline: none;
+        transition:
+          border-color var(--dur-fast) ease,
+          box-shadow var(--dur-fast) ease;
       }
       .form-input::placeholder {
-        color: #71717a; /* zinc-500 */
+        color: var(--text-3);
       }
       .form-input:focus {
-        border-color: #0ea5e9; /* sky-500 */
-        box-shadow: 0 0 0 1px #0ea5e9;
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
       }
-      /* .form-label */
       .form-label {
         display: block;
         font-size: 0.875rem;
         font-weight: 500;
-        color: #d4d4d8; /* zinc-300 */
+        color: var(--text-2);
         margin-bottom: 0.375rem;
       }
-      /* badges */
+
+      /* ── Badges ── */
       .badge-green {
         display: inline-flex;
         align-items: center;
@@ -154,9 +321,9 @@
         border-radius: 9999px;
         font-size: 0.75rem;
         font-weight: 500;
-        background-color: rgba(6, 78, 59, 0.5); /* emerald-900/50 */
-        color: #34d399; /* emerald-400 */
-        border: 1px solid rgba(6, 95, 70, 0.5); /* emerald-800/50 */
+        background: rgba(20, 184, 166, 0.12);
+        color: #2dd4bf;
+        border: 1px solid rgba(20, 184, 166, 0.2);
       }
       .badge-yellow {
         display: inline-flex;
@@ -166,9 +333,9 @@
         border-radius: 9999px;
         font-size: 0.75rem;
         font-weight: 500;
-        background-color: rgba(120, 53, 15, 0.5); /* amber-900/50 */
-        color: #fbbf24; /* amber-400 */
-        border: 1px solid rgba(146, 64, 14, 0.5); /* amber-800/50 */
+        background: rgba(245, 158, 11, 0.12);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.2);
       }
       .badge-red {
         display: inline-flex;
@@ -178,137 +345,781 @@
         border-radius: 9999px;
         font-size: 0.75rem;
         font-weight: 500;
-        background-color: rgba(127, 29, 29, 0.5); /* red-900/50 */
-        color: #f87171; /* red-400 */
-        border: 1px solid rgba(153, 27, 27, 0.5); /* red-800/50 */
+        background: rgba(239, 68, 68, 0.12);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      }
+
+      /* ── Entrance Animations ── */
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .anim-fade-up {
+        animation: fade-up var(--dur-slow) var(--ease-out) both;
+      }
+      .anim-fade-in {
+        animation: fade-in var(--dur-slow) var(--ease-out) both;
+      }
+      .delay-0 {
+        animation-delay: 0ms;
+      }
+      .delay-100 {
+        animation-delay: 100ms;
+      }
+      .delay-150 {
+        animation-delay: 150ms;
+      }
+      .delay-200 {
+        animation-delay: 200ms;
+      }
+      .delay-250 {
+        animation-delay: 250ms;
+      }
+      .delay-300 {
+        animation-delay: 300ms;
+      }
+      .delay-350 {
+        animation-delay: 350ms;
+      }
+
+      /* ── Scroll reveal ── */
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.55s var(--ease-out),
+          transform 0.55s var(--ease-out);
+      }
+      .scroll-reveal.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ── Toast ── */
+      #toast-container {
+        position: fixed;
+        bottom: 5.5rem;
+        right: 1.5rem;
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+        z-index: 8888;
+        pointer-events: none;
+      }
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 1.1rem;
+        border-radius: 0.875rem;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        pointer-events: auto;
+        max-width: 320px;
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        animation: toast-in 350ms var(--ease-spring) both;
+      }
+      .toast.removing {
+        animation: toast-out 280ms var(--ease-out) both;
+      }
+      .toast-success {
+        background: rgba(4, 47, 46, 0.9);
+        border: 1px solid rgba(20, 184, 166, 0.25);
+        color: #2dd4bf;
+      }
+      .toast-error {
+        background: rgba(69, 10, 10, 0.9);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        color: #f87171;
+      }
+      .toast-info {
+        background: rgba(12, 26, 28, 0.9);
+        border: 1px solid rgba(20, 184, 166, 0.2);
+        color: var(--teal);
+      }
+      @keyframes toast-in {
+        from {
+          opacity: 0;
+          transform: translateX(20px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+        }
+      }
+      @keyframes toast-out {
+        from {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: translateX(20px) scale(0.95);
+        }
+      }
+
+      /* ════════════════════════════════════════════
+         ARIA CHATBOT WIDGET
+      ════════════════════════════════════════════ */
+      #aria-trigger {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 8000;
+        width: 52px;
+        height: 52px;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+      }
+      #aria-trigger svg {
+        filter: drop-shadow(0 4px 16px rgba(20, 184, 166, 0.5));
+        transition:
+          transform 0.3s var(--ease-spring),
+          filter 0.3s ease;
+      }
+      #aria-trigger:hover svg {
+        transform: scale(1.1) rotate(-4deg);
+        filter: drop-shadow(0 6px 24px rgba(20, 184, 166, 0.7));
+      }
+      #aria-trigger .pulse-ring {
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        border: 2px solid rgba(20, 184, 166, 0.35);
+        animation: aria-pulse 2.5s ease infinite;
+      }
+      @keyframes aria-pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        70% {
+          transform: scale(1.4);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1.4);
+          opacity: 0;
+        }
+      }
+
+      #aria-panel {
+        position: fixed;
+        bottom: 5.5rem;
+        right: 1.5rem;
+        z-index: 8001;
+        width: min(380px, calc(100vw - 2rem));
+        background: var(--surface-1);
+        border: 1px solid var(--border-hi);
+        border-radius: 1.25rem;
+        box-shadow:
+          0 24px 64px rgba(0, 0, 0, 0.7),
+          0 0 0 1px rgba(20, 184, 166, 0.08);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transform: scale(0.9) translateY(12px);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          transform 0.3s var(--ease-spring),
+          opacity 0.25s ease;
+        transform-origin: bottom right;
+        max-height: 520px;
+      }
+      #aria-panel.open {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .aria-header {
+        padding: 0.875rem 1rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(135deg, var(--surface-2), var(--surface-1));
+      }
+      .aria-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--teal), #0d9488);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 13px;
+        color: #fff;
+        box-shadow: 0 0 12px rgba(20, 184, 166, 0.4);
+        flex-shrink: 0;
+      }
+      .aria-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0.875rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+        scroll-behavior: smooth;
+      }
+      .aria-messages::-webkit-scrollbar {
+        width: 3px;
+      }
+      .aria-messages::-webkit-scrollbar-thumb {
+        background: var(--border-hi);
+        border-radius: 9999px;
+      }
+
+      .msg-user,
+      .msg-aria {
+        max-width: 88%;
+        padding: 0.6rem 0.875rem;
+        border-radius: 1rem;
+        font-size: 0.8rem;
+        line-height: 1.55;
+        animation: fade-up 0.2s ease both;
+      }
+      .msg-user {
+        align-self: flex-end;
+        background: linear-gradient(135deg, var(--teal), #0d9488);
+        color: #fff;
+        border-bottom-right-radius: 0.25rem;
+      }
+      .msg-aria {
+        align-self: flex-start;
+        background: var(--surface-2);
+        color: var(--text-2);
+        border: 1px solid var(--border);
+        border-bottom-left-radius: 0.25rem;
+      }
+      .msg-aria strong {
+        color: var(--teal);
+      }
+      .msg-aria code {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.1em 0.35em;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+      }
+
+      .aria-typing {
+        align-self: flex-start;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 1rem;
+        border-bottom-left-radius: 0.25rem;
+        padding: 0.6rem 0.875rem;
+        display: flex;
+        gap: 0.28rem;
+        align-items: center;
+      }
+      .aria-typing span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--teal);
+        animation: typing-dot 1.2s infinite;
+        display: inline-block;
+      }
+      .aria-typing span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .aria-typing span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes typing-dot {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.5;
+        }
+        30% {
+          transform: translateY(-4px);
+          opacity: 1;
+        }
+      }
+
+      .aria-input-row {
+        padding: 0.75rem 1rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        background: var(--surface-1);
+      }
+      #aria-input {
+        flex: 1;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        padding: 0.5rem 0.85rem;
+        color: var(--text-1);
+        font-size: 0.8rem;
+        outline: none;
+        resize: none;
+        max-height: 80px;
+        transition: border-color var(--dur-fast) ease;
+        font-family: inherit;
+      }
+      #aria-input::placeholder {
+        color: var(--text-3);
+      }
+      #aria-input:focus {
+        border-color: var(--teal);
+      }
+      #aria-send {
+        width: 34px;
+        height: 34px;
+        border-radius: 0.75rem;
+        flex-shrink: 0;
+        background: var(--teal);
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          opacity 0.15s ease,
+          transform 0.15s var(--ease-spring);
+      }
+      #aria-send:hover {
+        opacity: 0.85;
+        transform: scale(1.08);
+      }
+      #aria-send:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
       }
     </style>
     {% block extra_head %}{% endblock %}
   </head>
-  <body class="bg-zinc-950 text-white min-h-screen">
+
+  <body class="min-h-screen">
+    <!-- Page transition overlay -->
+    <div id="page-transition"></div>
+    <!-- Toast container -->
+    <div id="toast-container"></div>
+
     {% if user.is_authenticated %}
-    <!-- App Layout with sidebar -->
-    <div class="flex min-h-screen">
-      <!-- Sidebar -->
-      <aside
-        class="w-60 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-10"
-      >
+    <!-- ════════════════ TOP NAV ════════════════ -->
+    <header class="top-nav" id="main-nav">
+      <div class="max-w-screen-xl mx-auto px-5 h-14 flex items-center gap-3">
         <!-- Logo -->
-        <div class="px-5 py-5 border-b border-zinc-800">
-          <a href="{% url 'dashboard' %}" class="flex items-center gap-2.5">
-            <div
-              class="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center"
-            >
-              <i class="fa-solid fa-rocket text-white text-sm"></i>
-            </div>
-            <span class="font-bold text-white text-lg">FounderOS</span>
-          </a>
-        </div>
-        <!-- Nav -->
-        <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <a
+          href="{% url 'dashboard' %}"
+          class="flex items-center gap-2 flex-shrink-0 mr-3 group"
+        >
+          <div
+            class="w-7 h-7 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110"
+            style="background: linear-gradient(135deg, var(--teal), #0d9488)"
+          >
+            <i class="fa-solid fa-rocket text-white text-xs"></i>
+          </div>
+          <span
+            style="
+              font-family: &quot;Syne&quot;, sans-serif;
+              font-weight: 800;
+              letter-spacing: -0.03em;
+              color: var(--text-1);
+            "
+            class="text-[15px] hidden sm:block"
+            >FounderOS</span
+          >
+        </a>
+
+        <!-- Nav Pills -->
+        <nav
+          class="flex items-center gap-0.5 overflow-x-auto flex-1"
+          style="scrollbar-width: none"
+        >
           <a
             href="{% url 'dashboard' %}"
-            class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+            class="nav-pill {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+            ><i class="fa-solid fa-gauge-high"></i
+            ><span class="hidden md:inline">Dashboard</span></a
           >
-            <i class="fa-solid fa-gauge-high w-4"></i> Dashboard
-          </a>
           <a
             href="{% url 'pitch_lab' %}"
-            class="nav-link {% if 'pitch' in request.resolver_match.url_name and 'gallery' not in request.resolver_match.url_name %}active{% endif %}"
+            class="nav-pill {% if 'pitch' in request.resolver_match.url_name and 'gallery' not in request.resolver_match.url_name %}active{% endif %}"
+            ><i class="fa-solid fa-file-powerpoint"></i
+            ><span class="hidden md:inline">Pitch Lab</span></a
           >
-            <i class="fa-solid fa-file-powerpoint w-4"></i> Pitch Lab
-          </a>
           <a
             href="{% url 'pitch_gallery' %}"
-            class="nav-link {% if request.resolver_match.url_name == 'pitch_gallery' %}active{% endif %}"
+            class="nav-pill {% if request.resolver_match.url_name == 'pitch_gallery' %}active{% endif %}"
+            ><i class="fa-solid fa-film"></i
+            ><span class="hidden md:inline">Gallery</span></a
           >
-            <i class="fa-solid fa-film w-4"></i> Pitch Gallery
-          </a>
           <a
             href="{% url 'risk_home' %}"
-            class="nav-link {% if 'risk' in request.resolver_match.url_name %}active{% endif %}"
+            class="nav-pill {% if 'risk' in request.resolver_match.url_name %}active{% endif %}"
+            ><i class="fa-solid fa-shield-halved"></i
+            ><span class="hidden md:inline">Risk</span></a
           >
-            <i class="fa-solid fa-shield-halved w-4"></i> Risk Analysis
-          </a>
           <a
             href="{% url 'schemes_home' %}"
-            class="nav-link {% if 'scheme' in request.resolver_match.url_name %}active{% endif %}"
+            class="nav-pill {% if 'scheme' in request.resolver_match.url_name %}active{% endif %}"
+            ><i class="fa-solid fa-landmark"></i
+            ><span class="hidden md:inline">Schemes</span></a
           >
-            <i class="fa-solid fa-landmark w-4"></i> Gov. Schemes
-          </a>
           <a
             href="{% url 'validation_home' %}"
-            class="nav-link {% if 'validation' in request.resolver_match.url_name %}active{% endif %}"
+            class="nav-pill {% if 'validation' in request.resolver_match.url_name %}active{% endif %}"
+            ><i class="fa-solid fa-file-circle-check"></i
+            ><span class="hidden md:inline">Doc Verify</span></a
           >
-            <i class="fa-solid fa-file-circle-check w-4"></i> Doc Verify
-          </a>
           <a
             href="{% url 'matching_home' %}"
-            class="nav-link {% if 'match' in request.resolver_match.url_name %}active{% endif %}"
+            class="nav-pill {% if 'match' in request.resolver_match.url_name %}active{% endif %}"
+            ><i class="fa-solid fa-users"></i
+            ><span class="hidden md:inline">Matching</span></a
           >
-            <i class="fa-solid fa-users w-4"></i> Matching
-          </a>
         </nav>
-        <!-- User Footer -->
-        <div class="px-3 py-4 border-t border-zinc-800">
-          <a
-            href="{% url 'profile' %}"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-zinc-800 transition-colors group"
-          >
+
+        <!-- Right: profile + logout -->
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          <a href="{% url 'profile' %}" class="user-btn">
             <div
-              class="w-8 h-8 rounded-full bg-sky-600 flex items-center justify-center text-xs font-bold flex-shrink-0"
+              class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+              style="background: linear-gradient(135deg, var(--teal), #0d9488)"
             >
               {{ user.username|first|upper }}
             </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-white truncate">
-                {{ user.username }}
-              </p>
-              <p class="text-xs text-zinc-500 truncate">{{ user.email }}</p>
-            </div>
+            <span
+              class="text-xs font-medium hidden sm:block"
+              style="color: var(--text-2)"
+              >{{ user.username }}</span
+            >
+          </a>
+          <a href="{% url 'logout' %}" class="logout-btn" title="Sign out">
             <i
-              class="fa-solid fa-cog text-zinc-600 group-hover:text-zinc-400 text-xs"
+              class="fa-solid fa-right-from-bracket"
+              style="font-size: 11px"
             ></i>
           </a>
-          <a
-            href="{% url 'logout' %}"
-            class="nav-link mt-1 text-red-400 hover:text-red-300 hover:bg-red-900/20"
-          >
-            <i class="fa-solid fa-right-from-bracket w-4"></i> Sign Out
-          </a>
         </div>
-      </aside>
+      </div>
+    </header>
 
-      <!-- Main Content -->
-      <main class="ml-60 flex-1 min-h-screen">
-        <div class="max-w-6xl mx-auto px-6 py-8">
-          {% if messages %} {% for msg in messages %}
+    <!-- ════════════════ MAIN CONTENT ════════════════ -->
+    <main class="max-w-screen-xl mx-auto px-5 py-7">
+      {% if messages %} {% for msg in messages %}
+      <span
+        class="hidden"
+        data-toast-msg="{{ msg }}"
+        data-toast-type="{% if msg.tags == 'error' %}error{% elif msg.tags == 'success' %}success{% else %}info{% endif %}"
+      ></span>
+      {% endfor %} {% endif %} {% block content %}{% endblock %}
+    </main>
+
+    <!-- ════════════════ ARIA CHATBOT ════════════════ -->
+    <!-- Trigger button -->
+    <button id="aria-trigger" onclick="toggleAria()" title="Ask Aria">
+      <div class="pulse-ring"></div>
+      <svg
+        width="52"
+        height="52"
+        viewBox="0 0 52 52"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <!-- Hexagon shape -->
+        <path
+          d="M26 4 L46 15 L46 37 L26 48 L6 37 L6 15 Z"
+          fill="#0c1a1c"
+          stroke="#14b8a6"
+          stroke-width="1.5"
+        />
+        <!-- Inner glow ring -->
+        <path
+          d="M26 9 L42 18.5 L42 33.5 L26 43 L10 33.5 L10 18.5 Z"
+          fill="none"
+          stroke="rgba(20,184,166,0.3)"
+          stroke-width="1"
+        />
+        <!-- A letter -->
+        <text
+          x="26"
+          y="31"
+          text-anchor="middle"
+          fill="#14b8a6"
+          font-family="Syne, sans-serif"
+          font-weight="800"
+          font-size="16"
+        >
+          A
+        </text>
+        <!-- Dot accent -->
+        <circle cx="38" cy="13" r="3" fill="#f59e0b" />
+      </svg>
+    </button>
+
+    <!-- Chat panel -->
+    <div id="aria-panel">
+      <!-- Header -->
+      <div class="aria-header">
+        <div class="aria-avatar">A</div>
+        <div>
           <div
-            class="mb-4 px-4 py-3 rounded-lg border {% if msg.tags == 'error' %}bg-red-900/30 border-red-800 text-red-300{% elif msg.tags == 'success' %}bg-emerald-900/30 border-emerald-800 text-emerald-300{% else %}bg-blue-900/30 border-blue-800 text-blue-300{% endif %} text-sm flex items-center gap-2"
-            id="flash-msg"
+            style="
+              font-family: &quot;Syne&quot;, sans-serif;
+              font-weight: 800;
+              font-size: 0.85rem;
+              color: var(--text-1);
+            "
           >
-            <i
-              class="fa-solid {% if msg.tags == 'error' %}fa-triangle-exclamation{% elif msg.tags == 'success' %}fa-circle-check{% else %}fa-circle-info{% endif %}"
-            ></i>
-            {{ msg }}
+            Aria
           </div>
-          {% endfor %}
-          <script>
-            setTimeout(() => {
-              document
-                .querySelectorAll("#flash-msg")
-                .forEach((el) => el.remove());
-            }, 4000);
-          </script>
-          {% endif %} {% block content %}{% endblock %}
+          <div style="font-size: 0.7rem; color: var(--text-3)">
+            FounderOS AI · Startup &amp; Finance
+          </div>
         </div>
-      </main>
+        <button
+          onclick="toggleAria()"
+          style="
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--text-3);
+            cursor: pointer;
+            font-size: 14px;
+          "
+          title="Close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Messages -->
+      <div class="aria-messages" id="aria-messages">
+        <div class="msg-aria">
+          Hey! I'm <strong>Aria</strong> — your startup and finance
+          assistant.<br /><br />
+          Ask me anything: CAC, LTV, burn rate, Mudra Yojana, pitch tips,
+          valuation, govt schemes… I'm here to help!
+        </div>
+      </div>
+
+      <!-- Input row -->
+      <div class="aria-input-row">
+        <textarea
+          id="aria-input"
+          placeholder="Ask Aria anything…"
+          rows="1"
+          onkeydown="ariaKeydown(event)"
+        ></textarea>
+        <button id="aria-send" onclick="ariaSend()">
+          <i class="fa-solid fa-paper-plane" style="font-size: 12px"></i>
+        </button>
+      </div>
     </div>
 
-    {% else %}
-    <!-- Public layout -->
-    {% block public_content %}{% endblock %}
-    {% endif %}
+    {% else %} {% block public_content %}{% endblock %} {% endif %}
+
+    <!-- ════════════════ GLOBAL SCRIPTS ════════════════ -->
+    <script>
+      // ── Nav scroll-shadow ────────────────────────────
+      const navEl = document.getElementById("main-nav");
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (navEl) navEl.classList.toggle("scrolled", window.scrollY > 8);
+        },
+        { passive: true },
+      );
+
+      // ── Page leave transition ────────────────────────
+      document.querySelectorAll("a[href]").forEach((a) => {
+        if (a.target === "_blank" || !a.href.startsWith(location.origin))
+          return;
+        a.addEventListener("click", (e) => {
+          const href = a.href;
+          if (href === location.href || a.getAttribute("onclick")) return;
+          e.preventDefault();
+          const o = document.createElement("div");
+          o.style.cssText =
+            "position:fixed;inset:0;z-index:9999;background:var(--bg);transform:scaleY(0);transform-origin:bottom;animation:page-leave 260ms cubic-bezier(0.16,1,0.3,1) forwards";
+          document.head.insertAdjacentHTML(
+            "beforeend",
+            "<style>@keyframes page-leave{to{transform:scaleY(1)}}</style>",
+          );
+          document.body.appendChild(o);
+          setTimeout(() => (location.href = href), 250);
+        });
+      });
+
+      // ── Button ripple ────────────────────────────────
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".btn-primary,.btn-secondary");
+        if (!btn) return;
+        const r = document.createElement("span");
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        r.className = "ripple-effect";
+        r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size / 2}px;top:${e.clientY - rect.top - size / 2}px`;
+        btn.appendChild(r);
+        setTimeout(() => r.remove(), 500);
+      });
+
+      // ── Toast system ─────────────────────────────────
+      function showToast(msg, type = "info") {
+        const icons = {
+          success: "fa-circle-check",
+          error: "fa-triangle-exclamation",
+          info: "fa-circle-info",
+        };
+        const tc = document.getElementById("toast-container");
+        const t = document.createElement("div");
+        t.className = `toast toast-${type}`;
+        t.innerHTML = `<i class="fa-solid ${icons[type]} flex-shrink-0"></i><span>${msg}</span>`;
+        tc.appendChild(t);
+        const dismiss = () => {
+          t.classList.add("removing");
+          setTimeout(() => t.remove(), 280);
+        };
+        t.addEventListener("click", dismiss);
+        setTimeout(dismiss, 4500);
+      }
+      document.querySelectorAll("[data-toast-msg]").forEach((el) => {
+        showToast(el.dataset.toastMsg, el.dataset.toastType || "info");
+      });
+
+      // ── Scroll-reveal ────────────────────────────────
+      const revealObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("revealed");
+              revealObs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08 },
+      );
+      document
+        .querySelectorAll(".scroll-reveal")
+        .forEach((el) => revealObs.observe(el));
+
+      // ════════════════════════════════════════════
+      //  ARIA CHATBOT
+      // ════════════════════════════════════════════
+      let ariaOpen = false;
+      let ariaHistory = [];
+
+      function toggleAria() {
+        ariaOpen = !ariaOpen;
+        document
+          .getElementById("aria-panel")
+          .classList.toggle("open", ariaOpen);
+        if (ariaOpen) document.getElementById("aria-input").focus();
+      }
+
+      function ariaKeydown(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          ariaSend();
+        }
+      }
+
+      async function ariaSend() {
+        const input = document.getElementById("aria-input");
+        const sendBtn = document.getElementById("aria-send");
+        const msg = input.value.trim();
+        if (!msg) return;
+        input.value = "";
+        input.style.height = "";
+
+        appendAriaMsg(msg, "user");
+        ariaHistory.push({ role: "user", text: msg });
+
+        // typing indicator
+        const typing = document.createElement("div");
+        typing.className = "aria-typing";
+        typing.id = "aria-typing";
+        typing.innerHTML = "<span></span><span></span><span></span>";
+        document.getElementById("aria-messages").appendChild(typing);
+        scrollAriaToBottom();
+        sendBtn.disabled = true;
+
+        try {
+          const csrfToken = "{{ csrf_token }}";
+          const res = await fetch("/api/aria/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify({ message: msg, history: ariaHistory }),
+          });
+          const data = await res.json();
+          const reply =
+            data.reply || data.error || "Sorry, something went wrong.";
+
+          // Convert basic markdown to HTML
+          const html = reply
+            .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+            .replace(/`([^`]+)`/g, "<code>$1</code>")
+            .replace(/\n/g, "<br>");
+
+          document.getElementById("aria-typing")?.remove();
+          appendAriaMsg(html, "aria");
+          ariaHistory.push({ role: "model", text: reply });
+          if (ariaHistory.length > 20) ariaHistory = ariaHistory.slice(-20);
+        } catch (err) {
+          document.getElementById("aria-typing")?.remove();
+          appendAriaMsg("Connection error — please try again.", "aria");
+        } finally {
+          sendBtn.disabled = false;
+          input.focus();
+        }
+      }
+
+      function appendAriaMsg(content, role) {
+        const div = document.createElement("div");
+        div.className = role === "user" ? "msg-user" : "msg-aria";
+        div.innerHTML = content;
+        document.getElementById("aria-messages").appendChild(div);
+        scrollAriaToBottom();
+      }
+
+      function scrollAriaToBottom() {
+        const m = document.getElementById("aria-messages");
+        if (m) m.scrollTop = m.scrollHeight;
+      }
+
+      // Auto-resize textarea
+      document
+        .getElementById("aria-input")
+        ?.addEventListener("input", function () {
+          this.style.height = "auto";
+          this.style.height = Math.min(this.scrollHeight, 80) + "px";
+        });
+    </script>
+
     {% block extra_scripts %}{% endblock %}
   </body>
 </html>

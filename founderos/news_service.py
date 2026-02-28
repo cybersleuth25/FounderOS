@@ -1,25 +1,45 @@
 """
 Startup news service for FounderOS dashboard.
 Fetches startup/tech news from a public RSS feed (no API key needed).
+Caches results in memory for 5 minutes to avoid blocking page loads.
 """
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime
+from datetime import datetime, timedelta
+
+# Simple in-memory cache: {key: (data, expires_at)}
+_cache = {}
+_CACHE_TTL = timedelta(minutes=5)
 
 
 def fetch_startup_news(limit=6):
-    """Fetch startup/India tech news from Google News RSS."""
+    """Fetch startup/India tech news, cached for 5 minutes."""
+    cache_key = f'news_{limit}'
+    now = datetime.utcnow()
+
+    if cache_key in _cache:
+        data, expires = _cache[cache_key]
+        if now < expires:
+            return data
+
+    result = _fetch_live(limit)
+    _cache[cache_key] = (result, now + _CACHE_TTL)
+    return result
+
+
+def _fetch_live(limit=6):
+    """Actually fetch news from external sources."""
     queries = [
         'https://news.google.com/rss/search?q=india+startup+funding+2025&hl=en-IN&gl=IN&ceid=IN:en',
         'https://feeds.feedburner.com/entrackr',
     ]
-    
+
     news_items = []
-    
+
     for url in queries:
         try:
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=5) as resp:
+            with urllib.request.urlopen(req, timeout=4) as resp:
                 xml_data = resp.read()
             root = ET.fromstring(xml_data)
             channel = root.find('channel')
@@ -30,11 +50,9 @@ def fetch_startup_news(limit=6):
                 link = item.findtext('link', '').strip()
                 pub_date = item.findtext('pubDate', '').strip()
                 description = item.findtext('description', '').strip()
-                # Clean HTML from description
                 import re
                 description = re.sub('<[^<]+?>', '', description)[:120] + '...'
-                
-                # Format date
+
                 try:
                     dt = datetime.strptime(pub_date[:25], '%a, %d %b %Y %H:%M:%S')
                     pub_date = dt.strftime('%b %d')
@@ -54,7 +72,6 @@ def fetch_startup_news(limit=6):
         except Exception:
             continue
 
-    # Fallback static news if feeds fail
     return _fallback_news()
 
 
@@ -64,11 +81,11 @@ def _fallback_news():
             'title': 'Startup India Seed Fund to Disburse ₹945 Crore This Year',
             'link': 'https://startupindia.gov.in',
             'date': 'Feb 27',
-            'description': 'DPIIT announces expanded seed fund allocation for Tier-2 and Tier-3 startup ecosystems across India.',
+            'description': 'DPIIT announces expanded seed fund allocation for Tier-2 and Tier-3 startup ecosystems.',
             'source': 'Startup India',
         },
         {
-            'title': 'SIDBI Launches New Startup Mentorship Programme for Emerging Cities',
+            'title': 'SIDBI Launches New Startup Mentorship Programme',
             'link': 'https://sidbi.in',
             'date': 'Feb 26',
             'description': 'Small Industries Development Bank of India launches initiative targeting founders outside metro cities.',
@@ -85,7 +102,7 @@ def _fallback_news():
             'title': 'Mudra Yojana Disbursements Cross ₹25 Lakh Crore Milestone',
             'link': 'https://mudra.org.in',
             'date': 'Feb 23',
-            'description': 'PM Mudra Yojana has supported over 40 crore beneficiaries since its launch, with major growth in micro-enterprises.',
+            'description': 'PM Mudra Yojana has supported over 40 crore beneficiaries since its launch.',
             'source': 'Mudra',
         },
         {

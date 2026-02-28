@@ -1,250 +1,338 @@
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
+
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<style>
+  .db-h    { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
+  .db-body { font-family: 'DM Sans', sans-serif; }
+
+  /* ── Hero panel ── */
+  .hero-panel {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #08101e 0%, #0a0e1a 60%, #060812 100%);
+    border: 1px solid rgba(56,189,248,0.1);
+    border-radius: 1.125rem;
+    padding: 2.25rem 2.5rem;
+    min-height: 220px;
+  }
+  .hero-panel::before {
+    content: '';
+    position: absolute; top: -80px; right: -80px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(56,189,248,0.12) 0%, transparent 70%);
+  }
+  .hero-panel::after {
+    content: '';
+    position: absolute; bottom: -60px; left: 40%;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+  }
+
+  /* ── Stat chips (hero row) ── */
+  .stat-chip {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 0.875rem;
+    padding: 0.875rem 1.1rem;
+    text-align: center;
+    min-width: 80px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .stat-chip:hover { background: rgba(56,189,248,0.06); border-color: rgba(56,189,248,0.18); }
+
+  /* ── Quick filter pills ── */
+  .qf-pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.35rem 0.9rem; border-radius: 9999px;
+    font-size: 0.75rem; font-weight: 600; text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  /* ── Bottom cards ── */
+  .b-card {
+    background: rgba(14,14,18,0.8);
+    border: 1px solid rgba(63,63,70,0.4);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    height: 100%;
+  }
+
+  /* news */
+  .news-item {
+    display: block; padding: 0.75rem 0.625rem;
+    border-radius: 0.625rem;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .news-item:hover { background: rgba(56,189,248,0.04); }
+
+  @keyframes spin-once { to { transform: rotate(360deg); } }
+  .spin-anim { animation: spin-once 0.6s linear; }
+
+  @keyframes pulse-live {
+    0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+    50% { opacity:0.7; box-shadow: 0 0 0 4px rgba(52,211,153,0); }
+  }
+  .live-dot { width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse-live 2s infinite;display:inline-block; }
+
+  .pitch-row {
+    display:flex;align-items:center;gap:.625rem;padding:.5rem .625rem;
+    border-radius:.625rem;background:rgba(9,9,11,0.6);
+    border:1px solid rgba(63,63,70,0.3);text-decoration:none;
+    transition:border-color .2s,background .2s;
+  }
+  .pitch-row:hover { border-color:rgba(56,189,248,.2);background:rgba(56,189,248,.04); }
+
+  .stage-dot {
+    width:26px;height:26px;border-radius:50%;
+    border:2px solid #3f3f46;background:#09090b;
+    display:flex;align-items:center;justify-content:center;
+    font-size:10px;font-weight:700;color:#52525b;
+    position:relative;z-index:1;transition:all .3s;
+  }
+  .stage-dot.active { border-color:#38bdf8;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;box-shadow:0 0 14px rgba(56,189,248,.4); }
+  .stage-dot.done   { border-color:#34d399;background:#064e3b;color:#34d399; }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<!-- Page Header -->
-<div class="mb-8">
-  <h1 class="text-2xl font-bold text-white flex items-center gap-2">
-    <i class="fa-solid fa-gauge-high text-sky-400"></i>
-    Welcome back, {{ user.username }}
-  </h1>
-  <p class="text-zinc-400 text-sm mt-1">
-    {% if profile.startup_name %}<span class="text-zinc-300">{{ profile.startup_name }}</span> — {% endif %}
-    Your startup validation dashboard
-  </p>
+<!-- ════════════════════════════════════════════
+     HERO PANEL  (top — full width)
+════════════════════════════════════════════ -->
+<div class="hero-panel mb-5 anim-fade-up delay-0">
+  <div class="relative z-10 flex flex-col lg:flex-row lg:items-center gap-6">
+
+    <!-- Left: greeting + stats chips -->
+    <div class="flex-1">
+      <p class="db-body text-sky-400 text-xs font-semibold uppercase tracking-widest mb-1">Command Centre</p>
+      <h1 class="db-h text-3xl font-black text-white mb-1">
+        Hey, <span class="text-sky-400">{{ user.username }}</span>
+      </h1>
+      {% if profile.startup_name %}
+        <p class="db-body text-zinc-400 text-sm mb-4">
+          <span class="text-zinc-200 font-medium">{{ profile.startup_name }}</span>
+          &nbsp;&middot;&nbsp;{{ profile.get_stage_display }}&nbsp;&middot;&nbsp;{{ profile.get_industry_display }}
+        </p>
+      {% else %}
+        <p class="db-body text-zinc-500 text-sm mb-4">Set up your profile to personalise insights.</p>
+      {% endif %}
+
+      <!-- Stat chips row -->
+      <div class="flex flex-wrap gap-3">
+        <div class="stat-chip">
+          <div class="db-h text-xl font-black text-sky-400">{{ pitch_count }}</div>
+          <div class="db-body text-zinc-600 text-xs mt-0.5">Pitches</div>
+        </div>
+        <div class="stat-chip">
+          <div class="db-h text-xl font-black {% if latest_risk %}{% if latest_risk.overall_score >= 70 %}text-red-400{% elif latest_risk.overall_score >= 45 %}text-amber-400{% else %}text-emerald-400{% endif %}{% else %}text-zinc-700{% endif %}">
+            {% if latest_risk %}{{ latest_risk.overall_score }}{% else %}&mdash;{% endif %}
+          </div>
+          <div class="db-body text-zinc-600 text-xs mt-0.5">Risk</div>
+        </div>
+        <div class="stat-chip">
+          <div class="db-h text-xl font-black text-emerald-400">{{ scheme_matches|length }}</div>
+          <div class="db-body text-zinc-600 text-xs mt-0.5">Schemes</div>
+        </div>
+        <div class="stat-chip">
+          <div class="db-h text-xl font-black text-purple-400">{{ avg_pitch_score }}</div>
+          <div class="db-body text-zinc-600 text-xs mt-0.5">Avg Score</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: quick actions + stage tracker -->
+    <div class="flex flex-col gap-4 lg:items-end">
+      <!-- Quick action pills -->
+      <div class="flex flex-wrap gap-2">
+        <a href="{% url 'pitch_lab' %}" class="qf-pill bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500/20 anim-fade-up delay-100">
+          <i class="fa-solid fa-plus-circle text-xs"></i> New Pitch
+        </a>
+        <a href="{% url 'risk_home' %}" class="qf-pill bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 anim-fade-up delay-150">
+          <i class="fa-solid fa-shield-halved text-xs"></i> Run Risk
+        </a>
+        <a href="{% url 'schemes_home' %}" class="qf-pill bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 anim-fade-up delay-200">
+          <i class="fa-solid fa-landmark text-xs"></i> Find Schemes
+        </a>
+      </div>
+
+      <!-- Stage progress mini-tracker -->
+      <div class="bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3">
+        <p class="db-body text-zinc-600 text-xs mb-2.5 text-center">Startup Stage</p>
+        <div class="relative flex items-start justify-between gap-3" style="min-width:220px">
+          <div class="absolute top-3 left-3.5 right-3.5 h-px bg-zinc-800 z-0"></div>
+          {% for s,label,icon in stage_steps %}
+          <div class="flex flex-col items-center gap-1.5 z-10">
+            <div class="stage-dot {% if profile.stage == s %}active{% elif profile.stage == 'mvp' and s == 'idea' %}done{% elif profile.stage == 'early' and s in 'idea,mvp' %}done{% elif profile.stage == 'growth' and s != 'growth' %}done{% endif %}">
+              <i class="fa-solid {{ icon }}" style="font-size:9px"></i>
+            </div>
+            <span class="db-body text-zinc-600 text-center" style="font-size:10px">{{ label }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
-<!-- Stats Row -->
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-  <div class="card text-center">
-    <div class="w-8 h-8 bg-sky-500/10 rounded-lg flex items-center justify-center mx-auto mb-2">
-      <i class="fa-solid fa-file-powerpoint text-sky-400 text-sm"></i>
-    </div>
-    <div class="text-3xl font-bold text-sky-400">{{ pitch_count }}</div>
-    <div class="text-zinc-400 text-xs mt-1">Pitches Analyzed</div>
-  </div>
-  <div class="card text-center">
-    <div class="w-8 h-8 bg-red-500/10 rounded-lg flex items-center justify-center mx-auto mb-2">
-      <i class="fa-solid fa-shield-halved text-red-400 text-sm"></i>
-    </div>
-    <div class="text-3xl font-bold {% if latest_risk %}{% if latest_risk.overall_score >= 70 %}text-red-400{% elif latest_risk.overall_score >= 45 %}text-amber-400{% else %}text-emerald-400{% endif %}{% else %}text-zinc-500{% endif %}">
-      {% if latest_risk %}{{ latest_risk.overall_score }}{% else %}—{% endif %}
-    </div>
-    <div class="text-zinc-400 text-xs mt-1">Risk Score</div>
-  </div>
-  <div class="card text-center">
-    <div class="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center mx-auto mb-2">
-      <i class="fa-solid fa-landmark text-emerald-400 text-sm"></i>
-    </div>
-    <div class="text-3xl font-bold text-emerald-400">{{ scheme_matches|length }}</div>
-    <div class="text-zinc-400 text-xs mt-1">Scheme Matches</div>
-  </div>
-  <div class="card text-center">
-    <div class="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center mx-auto mb-2">
-      <i class="fa-solid fa-chart-bar text-purple-400 text-sm"></i>
-    </div>
-    <div class="text-3xl font-bold text-purple-400">{{ avg_pitch_score }}</div>
-    <div class="text-zinc-400 text-xs mt-1">Avg Pitch Score</div>
-  </div>
-</div>
+<!-- ════════════════════════════════════════════
+     BOTTOM 3-COLUMN GRID
+════════════════════════════════════════════ -->
+<div class="grid lg:grid-cols-3 gap-5">
 
-<!-- Main 3-column Grid -->
-<div class="grid lg:grid-cols-12 gap-6">
-
-  <!-- Left: Recent Pitches + Risk -->
-  <div class="lg:col-span-5 space-y-5">
+  <!-- ── COL 1: Recent Pitches + Health Score ── -->
+  <div class="flex flex-col gap-5 anim-fade-up delay-150">
 
     <!-- Recent Pitches -->
-    <div class="card">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="font-semibold text-white flex items-center gap-2 text-sm">
-          <i class="fa-solid fa-file-powerpoint text-sky-400"></i> Recent Pitches
+    <div class="b-card">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="db-h font-bold text-white text-sm flex items-center gap-2">
+          <i class="fa-solid fa-file-powerpoint text-sky-400 text-xs"></i> Recent Pitches
         </h2>
-        <a href="{% url 'pitch_lab' %}" class="text-sky-400 hover:text-sky-300 text-xs">View All</a>
+        <a href="{% url 'pitch_lab' %}" class="db-body text-sky-400 hover:text-sky-300 text-xs flex items-center gap-1">
+          All <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
       </div>
       {% if pitches %}
-        <div class="space-y-2">
+        <div class="space-y-1.5">
           {% for pitch in pitches %}
-            <a href="{% url 'pitch_detail' pitch.pk %}" class="flex items-center justify-between p-3 bg-zinc-900 rounded-lg hover:bg-zinc-800/80 transition-colors">
+            <a href="{% url 'pitch_detail' pitch.pk %}" class="pitch-row">
               <div class="flex-1 min-w-0">
-                <div class="text-white text-sm font-medium truncate">{{ pitch.title }}</div>
-                <div class="text-zinc-500 text-xs mt-0.5">{{ pitch.created_at|date:"M d, Y" }}</div>
+                <div class="db-body text-white text-xs font-medium truncate">{{ pitch.title }}</div>
+                <div class="db-body text-zinc-600 text-xs">{{ pitch.created_at|date:"M d" }}</div>
               </div>
               {% if pitch.overall_score %}
-                <div class="text-lg font-bold ml-3 {% if pitch.overall_score >= 75 %}text-emerald-400{% elif pitch.overall_score >= 50 %}text-amber-400{% else %}text-red-400{% endif %}">
-                  {{ pitch.overall_score }}<span class="text-xs text-zinc-600">/100</span>
-                </div>
+                <span class="db-h text-sm font-black {% if pitch.overall_score >= 75 %}text-emerald-400{% elif pitch.overall_score >= 50 %}text-amber-400{% else %}text-red-400{% endif %}">{{ pitch.overall_score }}</span>
               {% else %}
-                <i class="fa-solid fa-chevron-right text-zinc-700 text-xs ml-3"></i>
+                <i class="fa-solid fa-chevron-right text-zinc-700 text-xs"></i>
               {% endif %}
             </a>
           {% endfor %}
         </div>
       {% else %}
         <div class="text-center py-6">
-          <i class="fa-solid fa-file-powerpoint text-zinc-700 text-3xl mb-2"></i>
-          <p class="text-zinc-500 text-xs">No pitches yet.</p>
-          <a href="{% url 'pitch_lab' %}" class="btn-primary mt-3 text-xs px-3 py-1.5">
+          <i class="fa-solid fa-file-powerpoint text-zinc-800 text-3xl mb-2"></i>
+          <p class="db-body text-zinc-600 text-xs mb-3">No pitches yet.</p>
+          <a href="{% url 'pitch_lab' %}" class="btn-primary text-xs px-3 py-1.5">
             <i class="fa-solid fa-plus text-xs"></i> Add Pitch
           </a>
         </div>
       {% endif %}
     </div>
 
-    <!-- Risk Summary -->
-    {% if latest_risk %}
-    <div class="card">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="font-semibold text-white flex items-center gap-2 text-sm">
-          <i class="fa-solid fa-shield-halved text-red-400"></i> Last Risk Analysis
-        </h2>
-        <a href="{% url 'risk_home' %}" class="text-sky-400 hover:text-sky-300 text-xs">View All</a>
-      </div>
-      <div class="text-zinc-300 text-sm font-medium mb-3">{{ latest_risk.startup_name }}</div>
-      <div class="space-y-2">
-        <div>
-          <div class="flex justify-between text-xs text-zinc-500 mb-1"><span>Financial Risk</span><span class="text-zinc-300">{{ latest_risk.financial_risk }}/100</span></div>
-          <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-red-500 rounded-full" style="width:{{ latest_risk.financial_risk }}%"></div></div>
-        </div>
-        <div>
-          <div class="flex justify-between text-xs text-zinc-500 mb-1"><span>Market Risk</span><span class="text-zinc-300">{{ latest_risk.market_risk }}/100</span></div>
-          <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-amber-500 rounded-full" style="width:{{ latest_risk.market_risk }}%"></div></div>
-        </div>
-        <div>
-          <div class="flex justify-between text-xs text-zinc-500 mb-1"><span>Operational Risk</span><span class="text-zinc-300">{{ latest_risk.operational_risk }}/100</span></div>
-          <div class="h-1.5 bg-zinc-700 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width:{{ latest_risk.operational_risk }}%"></div></div>
-        </div>
-      </div>
-      <a href="{% url 'risk_report' latest_risk.pk %}" class="btn-secondary w-full mt-4 justify-center text-xs">
-        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Full Report
-      </a>
-    </div>
-    {% else %}
-    <div class="card">
-      <h2 class="font-semibold text-white flex items-center gap-2 text-sm mb-3">
-        <i class="fa-solid fa-shield-halved text-red-400"></i> Risk Analysis
+    <!-- Startup Health Score -->
+    <div class="b-card" style="border-color:rgba(99,102,241,0.15)">
+      <h2 class="db-h font-bold text-white text-sm flex items-center gap-2 mb-3">
+        <i class="fa-solid fa-heart-pulse text-pink-400 text-xs"></i> Health Score
       </h2>
-      <div class="text-center py-5">
-        <i class="fa-solid fa-shield-halved text-zinc-700 text-3xl mb-2"></i>
-        <p class="text-zinc-500 text-xs mb-3">No risk analysis run yet.</p>
-        <a href="{% url 'risk_home' %}" class="btn-primary text-xs px-3 py-1.5">
-          <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> Run Analysis
-        </a>
+      <div class="flex items-center gap-4">
+        <div class="relative flex-shrink-0" style="width:80px;height:52px;overflow:hidden">
+          <svg width="80" height="80" viewBox="0 0 80 80" style="margin-top:-2px">
+            <path d="M 6 58 A 34 34 0 0 1 74 58" fill="none" stroke="#27272a" stroke-width="8" stroke-linecap="round"/>
+            <path id="health-arc" d="M 6 58 A 34 34 0 0 1 74 58" fill="none" stroke="url(#hg)" stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="106.8" stroke-dashoffset="106.8"/>
+            <defs>
+              <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f43f5e"/>
+                <stop offset="50%" stop-color="#f59e0b"/>
+                <stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center" style="padding-top:12px">
+            <span id="health-score-num" class="db-h text-lg font-black text-white">&mdash;</span>
+          </div>
+        </div>
+        <div class="flex-1 space-y-1.5 text-xs">
+          <div class="flex justify-between">
+            <span class="db-body text-zinc-500 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 inline-block"></span> Pitch</span>
+            <span class="db-body text-zinc-300">{{ avg_pitch_score }}/100</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="db-body text-zinc-500 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-400 inline-block"></span> Risk</span>
+            <span class="db-body text-zinc-300">{% if latest_risk %}{{ latest_risk.overall_score }}/100{% else %}N/A{% endif %}</span>
+          </div>
+          <div id="health-label" class="db-body text-zinc-600 text-xs mt-1">Calculating...</div>
+        </div>
       </div>
     </div>
-    {% endif %}
 
-    <!-- Quick Actions -->
-    <div class="card">
-      <h2 class="font-semibold text-white mb-3 text-sm">Quick Actions</h2>
-      <div class="grid grid-cols-2 gap-2">
-        <a href="{% url 'pitch_lab' %}" class="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 hover:bg-sky-500/10 transition-colors text-xs text-zinc-300 hover:text-sky-400 border border-transparent hover:border-sky-500/20">
-          <i class="fa-solid fa-plus-circle text-sky-400"></i> New Pitch
-        </a>
-        <a href="{% url 'risk_home' %}" class="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 hover:bg-red-500/10 transition-colors text-xs text-zinc-300 hover:text-red-400 border border-transparent hover:border-red-500/20">
-          <i class="fa-solid fa-chart-bar text-red-400"></i> Analyze Risk
-        </a>
-        <a href="{% url 'schemes_home' %}" class="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 hover:bg-emerald-500/10 transition-colors text-xs text-zinc-300 hover:text-emerald-400 border border-transparent hover:border-emerald-500/20">
-          <i class="fa-solid fa-magnifying-glass text-emerald-400"></i> Find Schemes
-        </a>
-        <a href="{% url 'pitch_gallery' %}" class="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 hover:bg-purple-500/10 transition-colors text-xs text-zinc-300 hover:text-purple-400 border border-transparent hover:border-purple-500/20">
-          <i class="fa-solid fa-film text-purple-400"></i> Pitch Gallery
-        </a>
-      </div>
-    </div>
   </div>
 
-  <!-- Middle: News Feed -->
-  <div class="lg:col-span-4">
-    <div class="card h-full">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="font-semibold text-white flex items-center gap-2 text-sm">
-          <i class="fa-solid fa-newspaper text-amber-400"></i> Startup News
-        </h2>
-        <span class="text-zinc-600 text-xs flex items-center gap-1">
-          <i class="fa-solid fa-circle text-emerald-400 text-xs animate-pulse"></i> Live
+  <!-- ── COL 2: Live News Feed ── -->
+  <div class="b-card flex flex-col anim-fade-up delay-250" style="border-color:rgba(63,63,70,0.3)">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="db-h font-bold text-white text-sm flex items-center gap-2">
+        <i class="fa-solid fa-newspaper text-amber-400 text-xs"></i> Startup News
+      </h2>
+      <div class="flex items-center gap-2">
+        <!-- Countdown arc -->
+        <svg width="22" height="22" viewBox="0 0 22 22" style="transform:rotate(-90deg)">
+          <circle cx="11" cy="11" r="8" fill="none" stroke="#27272a" stroke-width="2"/>
+          <circle id="countdown-arc" cx="11" cy="11" r="8" fill="none" stroke="#38bdf8" stroke-width="2"
+            stroke-dasharray="50.3" stroke-dashoffset="0" stroke-linecap="round"/>
+        </svg>
+        <span class="db-body flex items-center gap-1 text-xs text-zinc-600">
+          <span class="live-dot"></span> Live
         </span>
+        <button id="news-refresh-btn" onclick="fetchNews(true)"
+          class="w-6 h-6 flex items-center justify-center rounded-lg bg-zinc-900 hover:bg-amber-500/10 border border-zinc-800 hover:border-amber-500/30 text-zinc-600 hover:text-amber-400 transition-all"
+          title="Refresh now">
+          <i id="refresh-icon" class="fa-solid fa-rotate-right" style="font-size:10px"></i>
+        </button>
       </div>
+    </div>
 
+    <!-- News items -->
+    <div id="news-container" class="flex-1 space-y-0.5 overflow-y-auto" style="max-height:360px">
       {% if news %}
-        <div class="space-y-4">
-          {% for article in news %}
-          <a href="{{ article.link }}" target="_blank" rel="noopener"
-            class="group block p-3 rounded-xl hover:bg-zinc-800/60 transition-colors -mx-1">
-            <div class="flex items-start gap-3">
-              <div class="w-8 h-8 bg-amber-500/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-500/20 transition-colors">
-                <i class="fa-solid fa-newspaper text-amber-400 text-xs"></i>
-              </div>
-              <div class="flex-1 min-w-0">
-                <h3 class="text-zinc-200 text-xs font-medium leading-snug group-hover:text-white transition-colors line-clamp-2">
-                  {{ article.title }}
-                </h3>
-                {% if article.description %}
-                  <p class="text-zinc-600 text-xs mt-1 line-clamp-2 leading-snug">{{ article.description }}</p>
-                {% endif %}
-                <div class="flex items-center gap-2 mt-1.5">
-                  <span class="text-zinc-600 text-xs">{{ article.source }}</span>
-                  <span class="text-zinc-700 text-xs">·</span>
-                  <span class="text-zinc-600 text-xs">{{ article.date }}</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square text-zinc-700 text-xs ml-auto group-hover:text-sky-400 transition-colors"></i>
-                </div>
+        {% for article in news %}
+        <a href="{{ article.link }}" target="_blank" rel="noopener" class="news-item group">
+          <div class="flex items-start gap-2.5">
+            <div class="w-7 h-7 bg-amber-500/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-500/20 transition-colors">
+              <i class="fa-solid fa-newspaper text-amber-400" style="font-size:10px"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="db-body text-zinc-300 text-xs font-medium leading-snug group-hover:text-white line-clamp-2">{{ article.title }}</p>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <span class="db-body text-zinc-700 text-xs">{{ article.source }}</span>
+                <span class="text-zinc-800">&middot;</span>
+                <span class="db-body text-zinc-700 text-xs">{{ article.date }}</span>
               </div>
             </div>
-          </a>
-          {% if not forloop.last %}
-          <div class="border-t border-zinc-800/50 -mx-1"></div>
-          {% endif %}
-          {% endfor %}
-        </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-zinc-800 group-hover:text-sky-500 transition-colors flex-shrink-0 mt-1" style="font-size:9px"></i>
+          </div>
+        </a>
+        {% if not forloop.last %}<div class="border-t border-zinc-800/30 mx-1"></div>{% endif %}
+        {% endfor %}
       {% else %}
         <div class="text-center py-8">
-          <i class="fa-solid fa-newspaper text-zinc-700 text-3xl mb-2"></i>
-          <p class="text-zinc-500 text-xs">News unavailable right now.</p>
+          <i class="fa-solid fa-newspaper text-zinc-800 text-2xl mb-2"></i>
+          <p class="db-body text-zinc-600 text-xs">Click refresh to load news.</p>
         </div>
       {% endif %}
     </div>
+
+    <!-- Footer -->
+    <div class="mt-3 pt-3 border-t border-zinc-800/40 flex items-center justify-between">
+      <span class="db-body text-zinc-700 text-xs" id="last-updated">Updated just now</span>
+      <span class="db-body text-zinc-700 text-xs" id="next-refresh-text">5:00</span>
+    </div>
   </div>
 
-  <!-- Right: Profile + Schemes -->
-  <div class="lg:col-span-3 space-y-5">
-
-    <!-- Profile Card -->
-    <div class="card">
-      <div class="text-center mb-4">
-        <div class="w-12 h-12 bg-gradient-to-br from-sky-500 to-indigo-600 rounded-full flex items-center justify-center text-xl font-bold text-white mx-auto mb-2">
-          {{ user.username|first|upper }}
-        </div>
-        <div class="text-white font-semibold text-sm">{{ user.username }}</div>
-        {% if profile.startup_name %}
-          <div class="text-sky-400 text-xs mt-0.5">{{ profile.startup_name }}</div>
-        {% endif %}
-      </div>
-      <div class="space-y-2 text-xs">
-        <div class="flex justify-between">
-          <span class="text-zinc-500">Stage</span>
-          <span class="text-zinc-300">{{ profile.get_stage_display }}</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-zinc-500">Industry</span>
-          <span class="text-zinc-300">{{ profile.get_industry_display }}</span>
-        </div>
-        {% if profile.location %}
-        <div class="flex justify-between">
-          <span class="text-zinc-500">Location</span>
-          <span class="text-zinc-300">{{ profile.location }}</span>
-        </div>
-        {% endif %}
-      </div>
-      <a href="{% url 'profile' %}" class="btn-secondary w-full mt-4 justify-center text-xs">
-        <i class="fa-solid fa-pencil text-xs"></i> Edit Profile
-      </a>
-    </div>
+  <!-- ── COL 3: Schemes + Founder Tip ── -->
+  <div class="flex flex-col gap-5 anim-fade-up delay-350">
 
     <!-- Scheme Matches -->
-    <div class="card">
+    <div class="b-card">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="font-semibold text-white flex items-center gap-2 text-sm">
-          <i class="fa-solid fa-landmark text-emerald-400"></i> Schemes
+        <h2 class="db-h font-bold text-white text-sm flex items-center gap-2">
+          <i class="fa-solid fa-landmark text-emerald-400 text-xs"></i> Scheme Matches
         </h2>
         <a href="{% url 'schemes_home' %}" class="text-sky-400 hover:text-sky-300 text-xs">
           <i class="fa-solid fa-arrow-right text-xs"></i>
@@ -253,36 +341,182 @@
       {% if scheme_matches %}
         <div class="space-y-2">
           {% for match in scheme_matches %}
-            <div class="p-2.5 bg-zinc-900 rounded-lg">
-              <div class="text-zinc-200 text-xs font-medium truncate">{{ match.scheme_name }}</div>
+            <div class="p-2.5 bg-zinc-900/60 rounded-xl border border-zinc-800/40">
+              <div class="db-body text-zinc-200 text-xs font-medium truncate">{{ match.scheme_name }}</div>
               <div class="flex items-center gap-2 mt-1.5">
-                <div class="flex-1 h-1 bg-zinc-700 rounded-full overflow-hidden">
+                <div class="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
                   <div class="h-full bg-emerald-500 rounded-full" style="width:{{ match.eligibility_score }}%"></div>
                 </div>
-                <span class="text-emerald-400 text-xs font-semibold">{{ match.eligibility_score }}%</span>
+                <span class="db-body text-emerald-400 text-xs font-semibold">{{ match.eligibility_score }}%</span>
               </div>
             </div>
           {% endfor %}
         </div>
       {% else %}
         <div class="text-center py-4">
-          <p class="text-zinc-600 text-xs mb-2">Find schemes you qualify for.</p>
+          <p class="db-body text-zinc-600 text-xs mb-2">No matches yet.</p>
           <a href="{% url 'schemes_home' %}" class="btn-primary text-xs px-3 py-1.5">Match Now</a>
         </div>
       {% endif %}
+
+      {% if latest_risk %}
+      <!-- Risk mini bars -->
+      <div class="mt-4 pt-3 border-t border-zinc-800/40 space-y-2">
+        <p class="db-body text-zinc-600 text-xs mb-2">Latest Risk Breakdown</p>
+        {% for label, val, color in risk_bars %}
+        <div>
+          <div class="flex justify-between text-xs mb-0.5">
+            <span class="db-body text-zinc-600">{{ label }}</span>
+            <span class="db-body text-zinc-400">{{ val }}</span>
+          </div>
+          <div class="h-1 bg-zinc-800 rounded-full overflow-hidden">
+            <div class="h-full {{ color }} rounded-full" style="width:{{ val }}%"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
 
-    <!-- Validation Quick Upload -->
-    <div class="card">
-      <h2 class="font-semibold text-white flex items-center gap-2 text-sm mb-3">
-        <i class="fa-solid fa-file-circle-check text-purple-400"></i> Doc Verify
+    <!-- Founder Tip -->
+    <div class="b-card" style="border-color:rgba(168,85,247,0.15);background:linear-gradient(135deg,rgba(20,10,40,0.7),rgba(10,8,28,0.7))">
+      <h2 class="db-h font-bold text-white text-sm flex items-center gap-2 mb-2">
+        <i class="fa-solid fa-lightbulb text-amber-400 text-xs"></i> Founder Tip
       </h2>
-      <p class="text-zinc-500 text-xs mb-3">Upload business documents for instant validation.</p>
-      <a href="{% url 'validation_home' %}" class="btn-secondary w-full justify-center text-xs">
-        <i class="fa-solid fa-upload text-xs"></i> Upload Document
-      </a>
+      <p id="founder-tip" class="db-body text-zinc-400 text-xs leading-relaxed"></p>
+      <button onclick="nextTip()" class="db-body mt-3 text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1.5 transition-colors">
+        <i class="fa-solid fa-shuffle text-xs"></i> New tip
+      </button>
     </div>
-  </div>
 
+    <!-- Quick Actions -->
+    <div class="b-card">
+      <h2 class="db-h font-bold text-white text-sm mb-3">Quick Actions</h2>
+      <div class="space-y-1.5">
+        <a href="{% url 'validation_home' %}" class="db-body flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900/60 hover:bg-purple-500/10 transition-all text-xs text-zinc-400 hover:text-purple-400 border border-transparent hover:border-purple-500/20">
+          <i class="fa-solid fa-upload text-purple-400 text-xs"></i> Upload Document for Verification
+        </a>
+        <a href="{% url 'pitch_gallery' %}" class="db-body flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900/60 hover:bg-sky-500/10 transition-all text-xs text-zinc-400 hover:text-sky-400 border border-transparent hover:border-sky-500/20">
+          <i class="fa-solid fa-film text-sky-400 text-xs"></i> Browse Pitch Gallery
+        </a>
+        <a href="{% url 'matching_home' %}" class="db-body flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900/60 hover:bg-pink-500/10 transition-all text-xs text-zinc-400 hover:text-pink-400 border border-transparent hover:border-pink-500/20">
+          <i class="fa-solid fa-users text-pink-400 text-xs"></i> Find Co-Founders / Investors
+        </a>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// ── News auto-refresh ──────────────────────────
+const REFRESH_INTERVAL = 300;
+let secondsLeft = REFRESH_INTERVAL;
+let countdownTimer = null;
+const arc = document.getElementById('countdown-arc');
+const circumference = 50.3;
+
+function updateArc() {
+  if (arc) arc.style.strokeDashoffset = circumference * (1 - secondsLeft / REFRESH_INTERVAL);
+}
+function formatTime(s) { return Math.floor(s/60)+':'+ String(s%60).padStart(2,'0'); }
+
+function fetchNews(manual=false) {
+  const btn = document.getElementById('news-refresh-btn');
+  const icon = document.getElementById('refresh-icon');
+  icon.classList.add('spin-anim');
+  setTimeout(()=>icon.classList.remove('spin-anim'),650);
+  btn.disabled = true;
+
+  fetch('/api/news/')
+    .then(r=>r.json())
+    .then(data=>{
+      if(!data.news||!data.news.length)return;
+      renderNews(data.news);
+      document.getElementById('last-updated').textContent='Updated just now';
+      secondsLeft=REFRESH_INTERVAL; updateArc();
+    })
+    .catch(()=>{ document.getElementById('last-updated').textContent='Retry soon'; })
+    .finally(()=>{ btn.disabled=false; });
+}
+
+function renderNews(items) {
+  document.getElementById('news-container').innerHTML = items.map((a,i)=>`
+    <a href="${a.link}" target="_blank" rel="noopener" class="news-item group">
+      <div class="flex items-start gap-2.5">
+        <div class="w-7 h-7 bg-amber-500/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-500/20 transition-colors">
+          <i class="fa-solid fa-newspaper text-amber-400" style="font-size:10px"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="db-body text-zinc-300 text-xs font-medium leading-snug group-hover:text-white line-clamp-2">${esc(a.title)}</p>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="db-body text-zinc-700 text-xs">${esc(a.source)}</span>
+            <span class="text-zinc-800">&middot;</span>
+            <span class="db-body text-zinc-700 text-xs">${esc(a.date)}</span>
+          </div>
+        </div>
+      </div>
+    </a>
+    ${i<items.length-1?'<div class="border-t border-zinc-800/30 mx-1"></div>':''}
+  `).join('');
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function startCountdown() {
+  countdownTimer = setInterval(()=>{
+    secondsLeft--;
+    if(secondsLeft<=0){ secondsLeft=REFRESH_INTERVAL; fetchNews(); }
+    updateArc();
+    document.getElementById('next-refresh-text').textContent=formatTime(secondsLeft);
+  },1000);
+}
+updateArc(); startCountdown();
+
+// ── Health Score ──────────────────────────────
+(function(){
+  const ps = {{ avg_pitch_score }};
+  const rs = {% if latest_risk %}{{ latest_risk.overall_score }}{% else %}-1{% endif %};
+  const pc = {{ pitch_count }};
+  let score = 0;
+  if(ps>0) score += ps*0.4;
+  if(rs>=0) score += (100-rs)*0.4;
+  score += Math.min(pc*10,20);
+  const final = Math.min(Math.round(score),100);
+  setTimeout(()=>{
+    const a = document.getElementById('health-arc');
+    const n = document.getElementById('health-score-num');
+    const l = document.getElementById('health-label');
+    if(!a) return;
+    a.style.transition='stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)';
+    a.style.strokeDashoffset = 106.8 - (final/100)*106.8;
+    let cur=0; const step=Math.ceil(final/40);
+    const t=setInterval(()=>{ cur=Math.min(cur+step,final); n.textContent=cur; if(cur>=final)clearInterval(t); },30);
+    l.textContent = final>=75?'Looking strong':final>=50?'On track':final>=25?'Room to grow':'Get started';
+    l.style.color = final>=75?'#34d399':final>=50?'#f59e0b':'#f87171';
+  },400);
+})();
+
+// ── Founder Tips ─────────────────────────────
+const TIPS=[
+  "Your first 10 customers matter more than your first 1,000. Talk to each personally.",
+  "Revenue is the best fundraising strategy. Prove the model before raising equity.",
+  "A pitch deck is a story. Investors fund momentum, not features.",
+  "Validate assumptions cheaply before building. A landing page beats 3 months of code.",
+  "Know your CAC and LTV before spending on marketing. Growth without margin is a slow bleed.",
+  "Startup India Seed Fund offers non-dilutive capital. Always check eligibility first.",
+  "Your risk score reflects what investors see too. Address the top risks before pitching.",
+  "Speed is your advantage over big companies. Ship, learn, iterate.",
+  "DPIIT-recognised startups get 80IC tax exemption. File early.",
+  "Mudra loans are an underutilised resource for micro-businesses. Explore all three tiers.",
+  "Network with other founders, not just investors. The best intros come from peers.",
+  "Build in public. Sharing your journey builds trust and attracts customers.",
+];
+let ti=Math.floor(Math.random()*TIPS.length);
+function showTip(){ const e=document.getElementById('founder-tip'); if(e) e.textContent=TIPS[ti]; }
+function nextTip(){ ti=(ti+1)%TIPS.length; showTip(); }
+showTip();
+</script>
 {% endblock %}

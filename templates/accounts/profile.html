@@ -1,92 +1,378 @@
 {% extends 'base.html' %}
 {% block title %}My Profile{% endblock %}
+
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<style>
+  .profile-font { font-family: 'Syne', sans-serif; }
+  .profile-body { font-family: 'DM Sans', sans-serif; }
+
+  /* Hero banner glassmorphism */
+  .profile-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0c1424 0%, #0a1628 40%, #060d1a 100%);
+    border: 1px solid rgba(56,189,248,0.12);
+    border-radius: 1.25rem;
+    padding: 2.5rem;
+  }
+  .profile-hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .profile-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .avatar-ring {
+    background: linear-gradient(135deg, #38bdf8, #6366f1, #a855f7);
+    border-radius: 9999px;
+    padding: 3px;
+    display: inline-block;
+  }
+  .avatar-inner {
+    width: 100px; height: 100px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #0ea5e9, #4f46e5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; font-weight: 800; color: white;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .stat-pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    text-align: center;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .stat-pill:hover {
+    background: rgba(56,189,248,0.06);
+    border-color: rgba(56,189,248,0.2);
+  }
+
+  /* Stage progress track */
+  .stage-track { position: relative; }
+  .stage-track::before {
+    content: '';
+    position: absolute;
+    top: 14px; left: 14px; right: 14px;
+    height: 2px;
+    background: rgba(255,255,255,0.08);
+  }
+  .stage-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid #3f3f46;
+    background: #09090b;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #52525b;
+    position: relative; z-index: 1;
+    transition: all 0.3s;
+  }
+  .stage-dot.active {
+    border-color: #38bdf8;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: white;
+    box-shadow: 0 0 16px rgba(56,189,248,0.4);
+  }
+  .stage-dot.done {
+    border-color: #34d399;
+    background: #064e3b;
+    color: #34d399;
+  }
+
+  /* Input glow on focus */
+  .pro-input {
+    width: 100%;
+    background: rgba(9,9,11,0.8);
+    border: 1px solid rgba(63,63,70,0.6);
+    border-radius: 0.625rem;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-size: 0.875rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .pro-input::placeholder { color: #52525b; }
+  .pro-input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.1);
+  }
+
+  .section-card {
+    background: rgba(24,24,27,0.6);
+    border: 1px solid rgba(63,63,70,0.4);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .save-btn {
+    background: linear-gradient(135deg, #0ea5e9, #4f46e5);
+    color: white; font-weight: 700;
+    padding: 0.75rem 2rem;
+    border-radius: 0.75rem;
+    border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    letter-spacing: -0.01em;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: opacity 0.2s, transform 0.2s;
+    box-shadow: 0 4px 20px rgba(14,165,233,0.25);
+  }
+  .save-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="mb-8">
-  <h1 class="text-2xl font-bold text-white flex items-center gap-2">
-    <i class="fa-solid fa-user-circle text-zinc-400"></i> Founder Profile
-  </h1>
-  <p class="text-zinc-400 text-sm mt-1">Keep your profile up to date to get better AI recommendations.</p>
+<!-- Page header -->
+<div class="mb-7 flex items-center gap-3">
+  <div class="w-9 h-9 bg-sky-500/10 rounded-xl flex items-center justify-center">
+    <i class="fa-solid fa-id-badge text-sky-400"></i>
+  </div>
+  <div>
+    <h1 class="profile-font text-xl font-bold text-white tracking-tight">Founder Profile</h1>
+    <p class="profile-body text-zinc-500 text-xs mt-0.5">Your identity on FounderOS — keep it sharp.</p>
+  </div>
 </div>
 
-<div class="grid lg:grid-cols-3 gap-6">
-  <!-- Avatar Card -->
-  <div class="lg:col-span-1">
-    <div class="card text-center">
-      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-sky-500 to-blue-700 flex items-center justify-center text-3xl font-bold text-white mx-auto mb-4">
-        {{ user.username|first|upper }}
-      </div>
-      <div class="text-white font-semibold text-lg">{{ user.username }}</div>
-      <div class="text-zinc-400 text-sm">{{ user.email }}</div>
+<!-- Hero Banner -->
+<div class="profile-hero mb-6">
+  <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
+    <!-- Avatar -->
+    <div class="avatar-ring flex-shrink-0">
+      <div class="avatar-inner">{{ user.username|first|upper }}</div>
+    </div>
+
+    <!-- Name + badges -->
+    <div class="flex-1 text-center md:text-left">
+      <div class="profile-font text-2xl font-black text-white tracking-tight">{{ user.username }}</div>
       {% if profile.startup_name %}
-        <div class="mt-2 text-sky-400 text-sm font-medium">{{ profile.startup_name }}</div>
+        <div class="profile-body text-sky-400 font-semibold mt-0.5">{{ profile.startup_name }}</div>
       {% endif %}
-      {% if profile.location %}
-        <div class="text-zinc-500 text-xs mt-1"><i class="fa-solid fa-location-dot mr-1"></i>{{ profile.location }}</div>
-      {% endif %}
-      <div class="mt-4 pt-4 border-t border-zinc-700 text-xs text-zinc-500">
-        Member since {{ user.date_joined|date:"M Y" }}
+      <div class="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
+        {% if profile.location %}
+        <span class="profile-body inline-flex items-center gap-1.5 bg-white/5 border border-white/10 text-zinc-400 text-xs px-3 py-1 rounded-full">
+          <i class="fa-solid fa-location-dot text-sky-400 text-xs"></i> {{ profile.location }}
+        </span>
+        {% endif %}
+        <span class="profile-body inline-flex items-center gap-1.5 bg-white/5 border border-white/10 text-zinc-400 text-xs px-3 py-1 rounded-full">
+          <i class="fa-solid fa-calendar text-indigo-400 text-xs"></i> Joined {{ user.date_joined|date:"M Y" }}
+        </span>
+        <span class="profile-body inline-flex items-center gap-1.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs px-3 py-1 rounded-full">
+          <i class="fa-solid fa-industry text-xs"></i> {{ profile.get_industry_display }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Mini stats -->
+    <div class="flex gap-3 flex-shrink-0">
+      <div class="stat-pill">
+        <div class="profile-font text-2xl font-black text-sky-400">{{ pitch_count }}</div>
+        <div class="profile-body text-zinc-500 text-xs mt-0.5">Pitches</div>
+      </div>
+      <div class="stat-pill">
+        <div class="profile-font text-2xl font-black text-red-400">{{ risk_count }}</div>
+        <div class="profile-body text-zinc-500 text-xs mt-0.5">Risk Runs</div>
+      </div>
+      <div class="stat-pill">
+        <div class="profile-font text-2xl font-black text-emerald-400">{{ scheme_count }}</div>
+        <div class="profile-body text-zinc-500 text-xs mt-0.5">Schemes</div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Edit Form -->
-  <div class="lg:col-span-2">
-    <div class="card">
-      <h2 class="font-semibold text-white mb-5">Edit Profile</h2>
-      <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="form-label">Startup Name</label>
-            <input type="text" name="startup_name" value="{{ profile.startup_name }}" class="form-input" placeholder="My Startup" />
-          </div>
-          <div>
-            <label class="form-label">Location</label>
-            <input type="text" name="location" value="{{ profile.location }}" class="form-input" placeholder="Pune, Maharashtra" />
-          </div>
-          <div>
-            <label class="form-label">Stage</label>
-            <select name="stage" class="form-input">
-              <option value="idea" {% if profile.stage == 'idea' %}selected{% endif %}>Idea Stage</option>
-              <option value="mvp" {% if profile.stage == 'mvp' %}selected{% endif %}>MVP Stage</option>
-              <option value="early" {% if profile.stage == 'early' %}selected{% endif %}>Early Traction</option>
-              <option value="growth" {% if profile.stage == 'growth' %}selected{% endif %}>Growth Stage</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Industry</label>
-            <select name="industry" class="form-input">
-              <option value="tech" {% if profile.industry == 'tech' %}selected{% endif %}>Technology</option>
-              <option value="agri" {% if profile.industry == 'agri' %}selected{% endif %}>Agriculture</option>
-              <option value="health" {% if profile.industry == 'health' %}selected{% endif %}>Healthcare</option>
-              <option value="edu" {% if profile.industry == 'edu' %}selected{% endif %}>Education</option>
-              <option value="finance" {% if profile.industry == 'finance' %}selected{% endif %}>FinTech</option>
-              <option value="retail" {% if profile.industry == 'retail' %}selected{% endif %}>Retail/E-commerce</option>
-              <option value="logistics" {% if profile.industry == 'logistics' %}selected{% endif %}>Logistics</option>
-              <option value="other" {% if profile.industry == 'other' %}selected{% endif %}>Other</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Phone</label>
-            <input type="text" name="phone" value="{{ profile.phone }}" class="form-input" placeholder="+91 98765 43210" />
-          </div>
-          <div>
-            <label class="form-label">LinkedIn</label>
-            <input type="url" name="linkedin" value="{{ profile.linkedin }}" class="form-input" placeholder="https://linkedin.com/in/..." />
-          </div>
-          <div class="md:col-span-2">
-            <label class="form-label">Bio</label>
-            <textarea name="bio" rows="3" class="form-input resize-none" placeholder="Tell us about yourself and your startup journey...">{{ profile.bio }}</textarea>
-          </div>
-        </div>
-        <div class="flex gap-3 mt-5">
-          <button type="submit" class="btn-primary">
-            <i class="fa-solid fa-save"></i> Save Changes
-          </button>
-          <a href="{% url 'dashboard' %}" class="btn-secondary">Cancel</a>
-        </div>
-      </form>
+<!-- Stage Progress -->
+<div class="section-card mb-6">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="profile-font font-bold text-white text-sm">Startup Stage</h2>
+    <span class="profile-body text-xs text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2.5 py-0.5 rounded-full">{{ profile.get_stage_display }}</span>
+  </div>
+  <div class="stage-track flex items-start justify-between gap-2">
+    {% with stages="idea,mvp,early,growth" %}
+    <div class="flex flex-col items-center gap-2 flex-1">
+      <div class="stage-dot {% if profile.stage == 'idea' %}active{% elif profile.stage != 'idea' %}done{% endif %}">
+        {% if profile.stage == 'idea' %}<i class="fa-solid fa-lightbulb" style="font-size:10px"></i>{% else %}<i class="fa-solid fa-check" style="font-size:10px"></i>{% endif %}
+      </div>
+      <span class="profile-body text-zinc-500 text-xs text-center">Idea</span>
     </div>
+    <div class="flex flex-col items-center gap-2 flex-1">
+      <div class="stage-dot {% if profile.stage == 'mvp' %}active{% elif profile.stage in 'early,growth' %}done{% endif %}">
+        {% if profile.stage == 'mvp' %}<i class="fa-solid fa-code" style="font-size:10px"></i>{% elif profile.stage in 'early,growth' %}<i class="fa-solid fa-check" style="font-size:10px"></i>{% else %}2{% endif %}
+      </div>
+      <span class="profile-body text-zinc-500 text-xs text-center">MVP</span>
+    </div>
+    <div class="flex flex-col items-center gap-2 flex-1">
+      <div class="stage-dot {% if profile.stage == 'early' %}active{% elif profile.stage == 'growth' %}done{% endif %}">
+        {% if profile.stage == 'early' %}<i class="fa-solid fa-chart-line" style="font-size:10px"></i>{% elif profile.stage == 'growth' %}<i class="fa-solid fa-check" style="font-size:10px"></i>{% else %}3{% endif %}
+      </div>
+      <span class="profile-body text-zinc-500 text-xs text-center">Early Traction</span>
+    </div>
+    <div class="flex flex-col items-center gap-2 flex-1">
+      <div class="stage-dot {% if profile.stage == 'growth' %}active{% endif %}">
+        {% if profile.stage == 'growth' %}<i class="fa-solid fa-rocket" style="font-size:10px"></i>{% else %}4{% endif %}
+      </div>
+      <span class="profile-body text-zinc-500 text-xs text-center">Growth</span>
+    </div>
+    {% endwith %}
   </div>
 </div>
+
+<!-- Edit Form -->
+<form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="grid lg:grid-cols-3 gap-5">
+
+    <!-- Left: Personal Info -->
+    <div class="section-card space-y-4">
+      <h2 class="profile-font font-bold text-white text-sm mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-user text-sky-400 text-xs"></i> Founder Info
+      </h2>
+      <div>
+        <label class="profile-body block text-xs font-medium text-zinc-400 mb-1.5">Phone</label>
+        <div class="relative">
+          <i class="fa-solid fa-phone text-zinc-600 absolute left-3 top-1/2 -translate-y-1/2 text-xs"></i>
+          <input type="text" name="phone" value="{{ profile.phone }}" class="pro-input pl-9" placeholder="+91 98765 43210" />
+        </div>
+      </div>
+      <div>
+        <label class="profile-body block text-xs font-medium text-zinc-400 mb-1.5">Location</label>
+        <div class="relative">
+          <i class="fa-solid fa-location-dot text-zinc-600 absolute left-3 top-1/2 -translate-y-1/2 text-xs"></i>
+          <input type="text" name="location" value="{{ profile.location }}" class="pro-input pl-9" placeholder="Pune, Maharashtra" />
+        </div>
+      </div>
+      <div>
+        <label class="profile-body block text-xs font-medium text-zinc-400 mb-1.5">LinkedIn</label>
+        <div class="relative">
+          <i class="fa-brands fa-linkedin text-zinc-600 absolute left-3 top-1/2 -translate-y-1/2 text-xs"></i>
+          <input type="url" name="linkedin" value="{{ profile.linkedin }}" class="pro-input pl-9" placeholder="linkedin.com/in/..." />
+        </div>
+      </div>
+      <div>
+        <label class="profile-body block text-xs font-medium text-zinc-400 mb-1.5">Bio</label>
+        <textarea name="bio" rows="4" class="pro-input resize-none" placeholder="Your story as a founder...">{{ profile.bio }}</textarea>
+      </div>
+    </div>
+
+    <!-- Middle: Startup Details -->
+    <div class="section-card space-y-4">
+      <h2 class="profile-font font-bold text-white text-sm mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-building text-indigo-400 text-xs"></i> Startup Details
+      </h2>
+      <div>
+        <label class="profile-body block text-xs font-medium text-zinc-400 mb-1.5">Startup Name</label>
+        <div class="relative">
+          <i class="fa-solid fa-rocket text-zinc-600 absolute left-3 top-1/2 -translate-y-1/2 text-xs"></i>
+          <input type="text" name="startup_name" value="{{ profile.startup_name }}" class="pro-input pl-9" placeholder="My Startup Inc." />
+        </div>
+      </div>
+      <div>
+        <label class="profile-body block text-xs font-medium text-zinc-400 mb-1.5">Industry</label>
+        <select name="industry" class="pro-input">
+          <option value="tech" {% if profile.industry == 'tech' %}selected{% endif %}>Technology</option>
+          <option value="agri" {% if profile.industry == 'agri' %}selected{% endif %}>Agriculture</option>
+          <option value="health" {% if profile.industry == 'health' %}selected{% endif %}>Healthcare</option>
+          <option value="edu" {% if profile.industry == 'edu' %}selected{% endif %}>Education</option>
+          <option value="finance" {% if profile.industry == 'finance' %}selected{% endif %}>FinTech</option>
+          <option value="retail" {% if profile.industry == 'retail' %}selected{% endif %}>Retail / E-commerce</option>
+          <option value="logistics" {% if profile.industry == 'logistics' %}selected{% endif %}>Logistics</option>
+          <option value="other" {% if profile.industry == 'other' %}selected{% endif %}>Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="profile-body block text-xs font-medium text-zinc-400 mb-1.5">Current Stage</label>
+        <select name="stage" class="pro-input">
+          <option value="idea" {% if profile.stage == 'idea' %}selected{% endif %}>Idea Stage</option>
+          <option value="mvp" {% if profile.stage == 'mvp' %}selected{% endif %}>MVP Stage</option>
+          <option value="early" {% if profile.stage == 'early' %}selected{% endif %}>Early Traction</option>
+          <option value="growth" {% if profile.stage == 'growth' %}selected{% endif %}>Growth Stage</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Right: Activity Snapshot -->
+    <div class="section-card">
+      <h2 class="profile-font font-bold text-white text-sm mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-chart-bar text-purple-400 text-xs"></i> Activity Snapshot
+      </h2>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between p-3 bg-zinc-900/60 rounded-xl border border-zinc-800/50">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-sky-500/10 rounded-lg flex items-center justify-center">
+              <i class="fa-solid fa-file-powerpoint text-sky-400 text-xs"></i>
+            </div>
+            <span class="profile-body text-zinc-300 text-sm">Pitches Submitted</span>
+          </div>
+          <span class="profile-font font-bold text-sky-400 text-lg">{{ pitch_count }}</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-zinc-900/60 rounded-xl border border-zinc-800/50">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-red-500/10 rounded-lg flex items-center justify-center">
+              <i class="fa-solid fa-shield-halved text-red-400 text-xs"></i>
+            </div>
+            <span class="profile-body text-zinc-300 text-sm">Risk Analyses</span>
+          </div>
+          <span class="profile-font font-bold text-red-400 text-lg">{{ risk_count }}</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-zinc-900/60 rounded-xl border border-zinc-800/50">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+              <i class="fa-solid fa-landmark text-emerald-400 text-xs"></i>
+            </div>
+            <span class="profile-body text-zinc-300 text-sm">Scheme Matches</span>
+          </div>
+          <span class="profile-font font-bold text-emerald-400 text-lg">{{ scheme_count }}</span>
+        </div>
+        {% if avg_score > 0 %}
+        <div class="flex items-center justify-between p-3 bg-zinc-900/60 rounded-xl border border-zinc-800/50">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-amber-500/10 rounded-lg flex items-center justify-center">
+              <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+            </div>
+            <span class="profile-body text-zinc-300 text-sm">Avg Pitch Score</span>
+          </div>
+          <span class="profile-font font-bold text-amber-400 text-lg">{{ avg_score }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Quick links -->
+      <div class="mt-4 pt-4 border-t border-zinc-800/50 space-y-2">
+        <a href="{% url 'pitch_lab' %}" class="profile-body flex items-center gap-2 text-xs text-zinc-400 hover:text-sky-400 transition-colors">
+          <i class="fa-solid fa-arrow-right text-xs text-sky-500"></i> Go to Pitch Lab
+        </a>
+        <a href="{% url 'risk_home' %}" class="profile-body flex items-center gap-2 text-xs text-zinc-400 hover:text-red-400 transition-colors">
+          <i class="fa-solid fa-arrow-right text-xs text-red-500"></i> Run Risk Analysis
+        </a>
+        <a href="{% url 'schemes_home' %}" class="profile-body flex items-center gap-2 text-xs text-zinc-400 hover:text-emerald-400 transition-colors">
+          <i class="fa-solid fa-arrow-right text-xs text-emerald-500"></i> Match Gov. Schemes
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Save bar -->
+  <div class="mt-5 flex items-center gap-4">
+    <button type="submit" class="save-btn">
+      <i class="fa-solid fa-floppy-disk"></i> Save Profile
+    </button>
+    <a href="{% url 'dashboard' %}" class="profile-body text-zinc-500 hover:text-zinc-300 text-sm transition-colors">
+      <i class="fa-solid fa-arrow-left text-xs mr-1"></i> Back to Dashboard
+    </a>
+  </div>
+</form>
 {% endblock %}
